@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h2>My FIle</h2>
+    <a href="{% url 'file:upload' %}" class="btn btn-primary mb-3">Upload File</a>
+    {% for file_data in files %}
+    <div class="text">
+        {{ file_data }}
+        <a download="{{ file_data.file.url }}" href="{{ file_data.file.url }}" class="btn btn-outline-primary">Download</a>
+    </div>
+    <hr>
+    {% endfor %}
+</div>
+{% endblock %}

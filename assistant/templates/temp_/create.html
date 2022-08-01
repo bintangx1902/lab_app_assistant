@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container car">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="gen">Generation</label>
+                <input type="text" name="gen" id="gen" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="class">Class</label>
+                <select name="class" id="class" class="custom-select">
+                    <option value="">. . . </option>
+                    {% for class in class_list %}
+                    <option value="{{ forloop.counter }}">{{ class }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="start">Start Time</label>
+                <input type="text" name="start" id="start" class="form-control" placeholder="ex : 08">
+            </div>
+            <div class="form-group">
+                <label for="end">End Time</label>
+                <input type="text" name="end" id="end" class="form-control" placeholder="ex : 1030">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
