@@ -50,5 +50,12 @@ def join_class(request):
 
 @login_required(login_url='/accounts/login/')
 def complete_data(request):
+    form = None
+    extend = UserData.objects.filter(user=request.user)
+    if extend:
+        extend = get_object_or_404(UserData, user=request.user)
+        if request.method == 'POST':
+            pass
+
 
     return
