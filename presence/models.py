@@ -12,7 +12,7 @@ class UserData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user', related_query_name='user')
     is_controller = models.BooleanField(default=False)
     phone_number = models.CharField(max_length=255, blank=True, null=True)
-    nim = models.CharField(max_length=255, default=0)
+    nim = models.CharField(max_length=255)
     cname = models.ForeignKey('ClassName', on_delete=models.CASCADE, related_name='user_data', related_query_name='user_data')
 
     def __str__(self):

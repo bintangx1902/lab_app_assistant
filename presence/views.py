@@ -50,12 +50,16 @@ def join_class(request):
 
 @login_required(login_url='/accounts/login/')
 def complete_data(request):
-    form = None
+    form = UserCompletionForms()
+    e_form = UserDataCompleteForms()
     extend = UserData.objects.filter(user=request.user)
     if extend:
         extend = get_object_or_404(UserData, user=request.user)
         if request.method == 'POST':
             pass
 
-
-    return
+    context = {
+        'form': form,
+        'e_form': e_form
+    }
+    return render(request, 'presence/forms.html', context=context)
