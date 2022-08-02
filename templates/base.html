@@ -12,6 +12,14 @@
         <title>Hello, world!</title>
     </head>
     <body>
+        {% if messages %}
+            {% for msg in messages %}
+        <div class="container mt-5 mx-auto">
+            <div class="alert alert-{{ msg.tags }}"> {{ msg }} </div>
+        </div>
+
+            {% endfor %}
+        {% endif %}
         {% block content %}
         {% endblock %}
 

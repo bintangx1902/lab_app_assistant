@@ -13,10 +13,10 @@ class UserData(models.Model):
     is_controller = models.BooleanField(default=False)
     phone_number = models.CharField(max_length=255, blank=True, null=True)
     nim = models.CharField(max_length=255)
-    cname = models.ForeignKey('ClassName', on_delete=models.CASCADE, related_name='user_data', related_query_name='user_data')
+    cname = models.ForeignKey('ClassName', on_delete=models.CASCADE, related_name='user_data', related_query_name='user_data', null=True, blank=True)
 
     def __str__(self):
-        return self.user.name
+        return self.user.username
 
 
 class ClassName(models.Model):

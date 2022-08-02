@@ -21,8 +21,8 @@ from django.conf import settings
 
 
 urlpatterns = [
+    path('admin/clearcache/', include('clearcache.urls')),
     path('admin/', admin.site.urls),
-
     path('accounts/', include('allauth.urls')),
 
     path('static/<path>', serve, settings.STATIC_ROOT),

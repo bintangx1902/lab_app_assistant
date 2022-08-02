@@ -37,6 +37,15 @@ from .forms import *
 
 @login_required(login_url='/accounts/login/')
 def join_class(request):
+    user = UserData.objects.filter(user=request.user)
+    if not user:
+        messages.warning(request, "Kamu Belum Melengkapi Datamu!")
+        return redirect('presence:complete-data')
+
+    user = UserData[0]
+    if user.cname:
+        return redirect('/')
+
     if request.method == 'POST':
         code = request.POST['class_code']
         get_class = ClassName.objects.filter(unique_code=code)
@@ -50,13 +59,28 @@ def join_class(request):
 
 @login_required(login_url='/accounts/login/')
 def complete_data(request):
-    form = UserCompletionForms()
-    e_form = UserDataCompleteForms()
-    extend = UserData.objects.filter(user=request.user)
-    if extend:
-        extend = get_object_or_404(UserData, user=request.user)
-        if request.method == 'POST':
-            pass
+    form = UserCompletionForms(instance=request.user)
+    get_data = UserData.objects.filter(user=request.user)
+    e_form = UserDataCompleteForms(instance=request.user.user) if get_data else UserDataCompleteForms()
+
+    if request.method == 'POST':
+        form = UserCompletionForms(request.POST or None, request.FILES or None, instance=request.user)
+        e_form = UserDataCompleteForms(instance=request.user.user) if get_data else UserDataCompleteForms()
+
+        if form.is_valid():
+            form.save()
+            form.save().save(using='backup')
+
+        if e_form.is_valid():
+            phone = e_form.cleaned_data['phone_number']
+            nim = e_form.cleaned_data['nim']
+            e_form.instance.user = request.user
+            e_form.instance.nim = nim
+            e_form.instance.phone_number = phone
+            e_form.save()
+            e_form.save().save(using='backup')
+
+        return redirect('presence:join-class')
 
     context = {
         'form': form,
