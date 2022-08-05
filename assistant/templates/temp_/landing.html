@@ -2,20 +2,24 @@
 
 {% block content %}
 <div class="row mx-auto my-5">
-    {% for x in loop %}
-    <div class="col-3 col-lg-3 mx-auto mb-4">
+    <div class="col-3 col-lg-3 mb-4">
         <div class="card">
             <div class="card-body">
-                <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur atque commodi cumque
-                    cupiditate distinctio dolorem, et fugit hic impedit iure nostrum officia omnis possimus praesentium
-                    quam reiciendis repellat suscipit totam.
-                </div>
-                <div>Doloribus nostrum officia tenetur? Ad culpa dicta dolorem minus mollitia nam neque nisi
-                    praesentium, quae quia! Aliquam commodi deleniti enim itaque maxime, necessitatibus nemo odio porro
-                    qui quisquam, suscipit vero.
-                </div></div>
+                <h5 class="card-title">Jumlah kelas</h5>
+                <h6 class="card-subtitle">Seluruh kelas yang sudah terdaftar</h6>
+                <p class="card-text">{{ class }} kelas</p>
+            </div>
         </div>
     </div>
-    {% endfor %}
+
+    <div class="col-3 col-lg-3 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Mahasiswa</h5>
+                <h6 class="card-subtitle">Seluruh mahasiswa yang sudah terdaftar</h6>
+                <p class="card-text">{{ student.count }} Mahasiswa </p>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

@@ -35,6 +35,11 @@ from .forms import *
 #     return redirect('dash:landing')
 
 
+class Redirect(View):
+    def get(self, *args, **kwargs):
+        return redirect('/accounts/login/')
+
+
 @login_required(login_url='/accounts/login/')
 def join_class(request):
     user = UserData.objects.filter(user=request.user)
@@ -42,17 +47,19 @@ def join_class(request):
         messages.warning(request, "Kamu Belum Melengkapi Datamu!")
         return redirect('presence:complete-data')
 
-    user = UserData[0]
-    if user.cname:
-        return redirect('/')
-
     if request.method == 'POST':
         code = request.POST['class_code']
         get_class = ClassName.objects.filter(unique_code=code)
         if not get_class:
             messages.error(request, 'Kode Kelas Tidak Ditemukan')
             return redirect('presence:join-class')
+        get_class = get_class[0]
         user = get_object_or_404(User, pk=request.user.pk)
+        """ checking join is creator or not """
+        if user == get_class.creator:
+            messages.info(request, "Kamu tidak bisa menjadi murid kelas sekaligus penanggung jawab!")
+            return redirect('presence:join-class')
+
 
     return render(request, 'presence/join_class.html')
 
@@ -65,22 +72,38 @@ def complete_data(request):
 
     if request.method == 'POST':
         form = UserCompletionForms(request.POST or None, request.FILES or None, instance=request.user)
-        e_form = UserDataCompleteForms(instance=request.user.user) if get_data else UserDataCompleteForms()
+        e_form = UserDataCompleteForms(request.POST or None, request.FILES or None,
+                                       instance=request.user.user) if get_data else UserDataCompleteForms(
+            request.POST or None, request.FILES or None)
 
         if form.is_valid():
             form.save()
-            form.save().save(using='backup')
+            user = User.objects.using('backup').get(username=request.user.username)
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.email = form.cleaned_data['email']
+            user.save(using='backup')
+            messages.info(request, 'Data akun anda berhasil di update')
 
         if e_form.is_valid():
             phone = e_form.cleaned_data['phone_number']
             nim = e_form.cleaned_data['nim']
-            e_form.instance.user = request.user
-            e_form.instance.nim = nim
-            e_form.instance.phone_number = phone
-            e_form.save()
-            e_form.save().save(using='backup')
 
-        return redirect('presence:join-class')
+            get_user_data = UserData.objects.filter(user=request.user)
+            if not get_user_data:
+                instance = UserData(
+                    user=request.user,
+                    nim=nim,
+                    phone_number=phone
+                )
+            else:
+                instance = get_user_data[0]
+                instance.phone_number = phone
+                instance.nim = nim
+
+            instance.save()
+            messages.info(request, 'Data Profile anda berhasil di update')
+        return redirect('presence:complete-data')
 
     context = {
         'form': form,

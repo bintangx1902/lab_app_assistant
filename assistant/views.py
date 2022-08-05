@@ -19,8 +19,16 @@ class AssistantLanding(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(AssistantLanding, self).get_context_data(*args, **kwargs)
         a = list(range(20))
+        class_ = ClassName.objects.all().count()
+        student = UserData.objects.filter(is_controller=False)
         context['loop'] = a
+        context['class'] = class_
+        context['student'] = student
         return context
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(AssistantLanding, self).dispatch(request, *args, **kwargs)
 
 
 class SeeAllFiles(ListView):
