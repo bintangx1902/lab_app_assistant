@@ -60,6 +60,18 @@ def join_class(request):
             messages.info(request, "Kamu tidak bisa menjadi murid kelas sekaligus penanggung jawab!")
             return redirect('presence:join-class')
 
+        if get_class in user.stud.all():
+            messages.info(request, f"Kamu sudah masuk kedalam kelas '{get_class.name}'")
+            return redirect('presence:join-class')
+
+        get_class.students.add(request.user)
+        get_class.save()
+
+        """ backup """
+        bc_class = ClassName.objects.using('backup').get(unique_code=code)
+        bc_user = User.objects.using('backup').get(username=request.user.username)
+        bc_class.students.add(bc_user)
+        bc_class.save(using='backup')
 
     return render(request, 'presence/join_class.html')
 
