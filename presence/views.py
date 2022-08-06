@@ -102,18 +102,22 @@ def complete_data(request):
             nim = e_form.cleaned_data['nim']
 
             get_user_data = UserData.objects.filter(user=request.user)
+            bc_user = User.objects.using('backup').get(pk=request.user.pk)
             if not get_user_data:
                 instance = UserData(
                     user=request.user,
                     nim=nim,
                     phone_number=phone
                 )
+
             else:
                 instance = get_user_data[0]
                 instance.phone_number = phone
                 instance.nim = nim
 
             instance.save()
+            instance.user = bc_user
+            instance.save(using='backup')
             messages.info(request, 'Data Profile anda berhasil di update')
         return redirect('presence:complete-data')
 
