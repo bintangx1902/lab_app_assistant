@@ -23,17 +23,27 @@
             <div class="card-body">
                 <h5 class="card-title">Kelas</h5>
                 <p class="card-text">pindah ke halaman daftar kelas</p>
-                <a href="{% url 'presence:join-class' %}" class="btn btn-primary col">Daftar Kelas</a>
+                <a href="{% url 'presence:class-list' %}" class="btn btn-primary col">Daftar Kelas</a>
             </div>
         </div>
 
         <div class="card col-5 col-lg-5 mx-auto mb-4">
             <div class="card-body">
-                <h5 class="card-title">Data Pribadi</h5>
-                <p class="card-text">pindah ke halaman lengkapi data pribadi</p>
-                <a href="{% url 'presence:join-class' %}" class="btn btn-primary col">Lengkapi Data</a>
+                <h5 class="card-title">Gabung Kelas</h5>
+                <p class="card-text">pindah ke halaman untuk masukan kode kelas</p>
+                <a href="{% url 'presence:join-class' %}" class="btn btn-primary col">Gabung</a>
             </div>
         </div>
+
+        {% if user.user.is_controller %}
+        <div class="card col-5 col-lg-5 mx-auto mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Assistance Page</h5>
+                <p class="card-text">pindah ke halaman Khusus Asisten</p>
+                <a href="{% url 'assist:landing' %}" class="btn btn-primary col">Assistance</a>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

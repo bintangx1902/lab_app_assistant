@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nama Kelas</th>
+            <th scope="col">PJ Kelas</th>
+            <th scope="col">Asisten Kelas</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for class in classes %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ class }}</td>
+            <td>{{ class.creator }}</td>
+            <td>
+                {% for pr in class.pr.all %}
+                {{ pr }}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

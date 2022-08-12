@@ -8,7 +8,7 @@ from .forms import *
 
 
 def templates(temp: str):
-    return f'presence/{str}.html'
+    return f'presence/{temp}.html'
 
 
 # def main_redirection(req):
@@ -133,5 +133,13 @@ def complete_data(request):
 
 class ClassList(ListView):
     model = ClassName
-    context_object_name = 'class'
+    context_object_name = 'classes'
     template_name = templates('class_list')
+
+    def get_queryset(self):
+        model = self.model
+        return model.objects.filter(students=self.request.user)
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(ClassList, self).dispatch(request, *args, **kwargs)
