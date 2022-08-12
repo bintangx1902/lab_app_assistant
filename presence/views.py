@@ -7,6 +7,10 @@ from django.views.generic import *
 from .forms import *
 
 
+def templates(temp: str):
+    return f'presence/{str}.html'
+
+
 # def main_redirection(req):
 #     # if req.GET:
 #     #     link = req.GET.get('link')
@@ -32,7 +36,7 @@ from .forms import *
 
 class LandingView(View):
     def get(self, *args, **kwargs):
-        return render(self.request, "presence/mhs_landing.html")
+        return render(self.request, templates('mhs_landing'))
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
@@ -73,7 +77,7 @@ def join_class(request):
         bc_class.students.add(bc_user)
         bc_class.save(using='backup')
 
-    return render(request, 'presence/join_class.html')
+    return render(request, templates('join_class'))
 
 
 @login_required(login_url='/accounts/login/')
@@ -124,4 +128,10 @@ def complete_data(request):
         'form': form,
         'e_form': e_form
     }
-    return render(request, 'presence/forms.html', context=context)
+    return render(request, templates('forms'), context=context)
+
+
+class ClassList(ListView):
+    model = ClassName
+    context_object_name = 'class'
+    template_name = templates('class_list')
