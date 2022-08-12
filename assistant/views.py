@@ -27,6 +27,7 @@ class AssistantLanding(TemplateView):
         return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(AssistantLanding, self).dispatch(request, *args, **kwargs)
 
