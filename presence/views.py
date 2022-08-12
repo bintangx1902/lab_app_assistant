@@ -1,14 +1,9 @@
-import datetime, pytz
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import *
-from django.contrib.auth.models import User
-from django.urls import reverse
-from django.http import HttpResponseRedirect, Http404
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.decorators import method_decorator
-from django.utils import timezone
-from django.contrib.sites.models import Site
+from django.views.generic import *
+
 from .forms import *
 
 
@@ -35,9 +30,14 @@ from .forms import *
 #     return redirect('dash:landing')
 
 
-class Redirect(View):
+class LandingView(View):
     def get(self, *args, **kwargs):
-        return redirect('/accounts/login/')
+        return render(self.request, "presence/mhs_landing.html")
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        get_user = self.request.user
+        return super(LandingView, self).dispatch(request, *args, **kwargs)
 
 
 @login_required(login_url='/accounts/login/')
@@ -116,7 +116,6 @@ def complete_data(request):
                 instance.nim = nim
 
             instance.save()
-            instance.user = bc_user
             instance.save(using='backup')
             messages.info(request, 'Data Profile anda berhasil di update')
         return redirect('presence:complete-data')
