@@ -1,20 +1,28 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.views.generic import *
-from django.http import HttpResponse, Http404
+import datetime
 import os
-from django.conf import settings
 import string
+
+from django.conf import settings
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.generic import *
+
 from .forms import *
 from .utils import slug_generator, check_slug
-from django.contrib.auth.models import User
 
 class_list = [f"Kelas {char}" for char in string.ascii_uppercase]
 
 
+def templates(temp: str):
+    return "temp_/{}.html".format(temp)
+
+
 class AssistantLanding(TemplateView):
-    template_name = 'temp_/landing.html'
+    template_name = templates('landing')
 
     def get_context_data(self, *args, **kwargs):
         context = super(AssistantLanding, self).get_context_data(*args, **kwargs)
@@ -35,7 +43,7 @@ class AssistantLanding(TemplateView):
 class SeeAllFiles(ListView):
     model = Files
     context_object_name = 'files'
-    template_name = 'temp_/list_.html'
+    template_name = templates('list_')
 
     def get_queryset(self):
         return self.model.objects.all()
@@ -87,13 +95,25 @@ class PresenceRecap(ListView):
 #
 #         return context
 
+class MyClassList(ListView):
+    model = ClassName
+    template_name = templates('class_list')
+    context_object_name = 'classes'
+
 
 class MyClass(DetailView):
     model = ClassName
-    template_name = 'temp_/my_class.html'
+    template_name = templates('my_class')
     slug_field = 'link'
     slug_url_kwarg = 'link'
     context_object_name = 'class'
+
+    def get_context_data(self, **kwargs):
+        context = super(MyClass, self).get_context_data(**kwargs)
+
+        qr_active = GenerateQRCode.objects.filter(class_name__link=self.kwargs['link'])
+        context['links'] = qr_active if qr_active.exists() else None
+        return context
 
 
 def create_class(request):
@@ -139,6 +159,36 @@ def create_class(request):
     return render(request, 'temp_/create.html', context)
 
 
+class GenerateQRCodeView(CreateView):
+    model = GenerateQRCode
+    template_name = templates('qr_generate')
+    slug_url_kwarg = 'link'
+    slug_field = 'link'
+    form_class = GenerateQRCodeForms
+    query_pk_and_slug = True
+
+    def get_success_url(self):
+        return reverse('assist:my-class', kwargs={'link': self.kwargs['link']})
+
+    def form_valid(self, form):
+        valid_until = timezone.now() + datetime.timedelta(days=1) if form.cleaned_data['valid_until'] is None else form.cleaned_data['valid_until']
+        code = slug_generator(16)
+        get_all_code = [x.qr_code for x in GenerateQRCode.objects.all()]
+        code = check_slug(code, get_all_code, 16)
+        class_ = ClassName.objects.get(link=self.kwargs['link'])
+
+        form.instance.valid_until = valid_until
+        form.instance.qr_code = code
+        form.instance.class_name = class_
+        form.instance.creator = self.request.user
+        return super(GenerateQRCodeView, self).form_valid(form)
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(GenerateQRCodeView, self).dispatch(request, *args, **kwargs)
+
+
 def delete_class(request, link):
     if request.method == "POST":
         model = get_object_or_404(ClassName, link=link)
@@ -146,7 +196,7 @@ def delete_class(request, link):
         bc_model = model.objects.using('backup').get(link=link)
         bc_model.delete()
 
-    return render(request, 'temp_/delete.html')
+    return render(request, templates('delete'))
 
 
 def backup(request):
@@ -158,4 +208,4 @@ def backup(request):
                 for db_save in db_temp:
                     db_save.save(using='backup')
 
-    return render(request, 'temp_/backup.html')
+    return render(request, templates('backup'))
