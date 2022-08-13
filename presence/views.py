@@ -1,9 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import *
-
 from .forms import *
 
 
@@ -149,3 +148,29 @@ class Presence(View):
     def get(self, *args, **kwargs):
         return render(self.request, templates('cam'))
 
+
+class UploadFileByClass(CreateView):
+    model = Files
+    slug_url_kwarg = 'link'
+    slug_field = 'link'
+    form_class = UploadFileForms
+    query_pk_and_slug = True
+    template_name = templates('upload')
+
+    def get_success_url(self):
+        return reverse('presence:file-list-class', kwargs={'link': self.kwargs['link']})
+
+    def form_valid(self, form):
+        class_ = ClassName.objects.get(link=self.kwargs['link'])
+        form.instance.user = self.request.user
+        form.instance.class_name = class_
+        return super(UploadFileByClass, self).form_valid(form)
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UploadFileByClass, self).dispatch(request, *args, **kwargs)
+
+
+class FileListClass(View):
+    def get(self, *args, **kwargs):
+        return render(self.request, templates('file_list_class'))
