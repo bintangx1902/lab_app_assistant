@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nama Kelas</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for class in classes %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ class }}</td>
+            <td><a href="{% url 'assist:my-class' class.link %}" class="btn btn-primary">Detail</a></td>
+            <td>@mdo</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
