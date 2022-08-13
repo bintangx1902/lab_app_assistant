@@ -115,6 +115,12 @@ class MyClass(DetailView):
         context['links'] = qr_active if qr_active.exists() else None
         return context
 
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(MyClass, self).dispatch(request, *args, **kwargs)
+
+
 
 def create_class(request):
     # form = ClassCreationForms()
