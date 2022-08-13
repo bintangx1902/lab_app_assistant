@@ -33,7 +33,7 @@ class ClassName(models.Model):
 class GenerateQRCode(models.Model):
     qr_code = models.SlugField(unique=True)
     valid_until = models.DateTimeField(blank=True)
-    class_name = models.ForeignKey(ClassName, on_delete=models.CASCADE)
+    class_name = models.ForeignKey(ClassName, on_delete=models.CASCADE, related_name='from_class', related_query_name='from_class')
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='creator')
     qr_img = models.FileField(blank=True, upload_to='qr/')
 
@@ -59,10 +59,10 @@ class GenerateQRCode(models.Model):
 
 class Recap(models.Model):
     qr = models.ForeignKey(GenerateQRCode, on_delete=models.CASCADE, related_name='qr_c', related_query_name='qr_c')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_recap', related_query_name='user_recap')
     time_stamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.name} presence @ {self.time_stamp.srtftime('%a %H:%M  %d/%m/%y')}"
+        return f"{self.user.username} presence @ {self.time_stamp.strftime('%a %H:%M  %d/%m/%y')}"
 
 
