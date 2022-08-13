@@ -143,3 +143,9 @@ class ClassList(ListView):
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(ClassList, self).dispatch(request, *args, **kwargs)
+
+
+class Presence(View):
+    def get(self, *args, **kwargs):
+        return render(self.request, templates('cam'))
+
