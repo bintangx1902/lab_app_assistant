@@ -12,6 +12,7 @@
                 <th scope="col">Nama Kelas</th>
                 <th scope="col">PJ Kelas</th>
                 <th scope="col">Asisten Kelas</th>
+                <th scope="col">File</th>
             </tr>
             </thead>
             <tbody>
@@ -24,6 +25,12 @@
                     {% for pr in class.pr.all %}
                     {{ pr }}
                     {% endfor %}
+                </td>
+                <td>
+<!--                    {{ class.from_class.all.count }} - -->
+<!--                    {% for x in class.from_class.all %}-->
+<!--                    {% endfor %}-->
+                    <a href="{% url 'presence:upload-file' class.link %}" class="btn btn-primary">Upload Files</a>
                 </td>
             </tr>
             {% endfor %}
