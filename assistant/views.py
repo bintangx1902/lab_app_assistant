@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import *
+from django.db.models import Q as __
 
 from .forms import *
 from .utils import slug_generator, check_slug
@@ -46,7 +47,15 @@ class SeeAllFiles(ListView):
     template_name = templates('list_')
 
     def get_queryset(self):
-        return self.model.objects.all()
+        get_date = self.request.GET.get('date')
+        return self.model.objects.filter(class_name__link=self.kwargs['link']).filter(__(time_stamp__date=get_date))
+
+    def get_context_data(self, **kwargs):
+        context = super(SeeAllFiles, self).get_context_data(**kwargs)
+        class_ = ClassName.objects.get(link=self.kwargs['link'])
+
+        context['class'] = class_
+        return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -54,6 +63,8 @@ class SeeAllFiles(ListView):
         return super(SeeAllFiles, self).dispatch(request, *args, **kwargs)
 
 
+@login_required(login_url='/accounts/login/')
+@user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/')
 def download_file(request, path):
     file_path = os.path.join(settings.MEDIA_ROOT, path)
     if os.path.exists(file_path):
@@ -100,6 +111,11 @@ class MyClassList(ListView):
     template_name = templates('class_list')
     context_object_name = 'classes'
 
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(MyClassList, self).dispatch(request, *args, **kwargs)
+
 
 class MyClass(DetailView):
     model = ClassName
@@ -119,7 +135,6 @@ class MyClass(DetailView):
     @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(MyClass, self).dispatch(request, *args, **kwargs)
-
 
 
 def create_class(request):
