@@ -164,9 +164,8 @@ class UploadFileByClass(CreateView):
         class_ = ClassName.objects.get(link=self.kwargs['link'])
         form.instance.user = self.request.user
         form.instance.class_name = class_
-        x = form.save(commit=False)
+        x = form.save()
         x.save(using='backup')
-        form.save()
         return super(UploadFileByClass, self).form_valid(form)
 
     @method_decorator(login_required(login_url='/accounts/login/'))
