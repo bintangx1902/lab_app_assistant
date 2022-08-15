@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from presence.models import ClassName
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your models here.
@@ -17,7 +18,12 @@ class Files(models.Model):
         return f"{self.user.username} has {path.basename(self.file.name)}"
 
     def delete(self, using=None, *args, **kwargs):
-        remove(path.join(settings.MEDIA_ROOT, self.file.name))
+        try:
+            file_path = path.join(settings.MEDIA_ROOT, self.file.name)
+            if path.exists(file_path):
+                remove(file_path)
+        except ObjectDoesNotExist as e:
+            print("File Does Not Exists")
         return super().delete(using=None, *args, **kwargs)
 
     def name(self):
