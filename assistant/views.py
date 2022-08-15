@@ -11,6 +11,7 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import *
 from django.db.models import Q as __
+from django.contrib import messages
 
 from .forms import *
 from .utils import slug_generator, check_slug
@@ -58,9 +59,21 @@ class SeeAllFiles(ListView):
         return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
-    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(SeeAllFiles, self).dispatch(request, *args, **kwargs)
+
+
+@login_required(login_url='/accounts/login/')
+@user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/')
+def delete_file(request, link, item_pk):
+    item = Files.objects.get(pk=item_pk)
+    item_bc = Files.objects.using('backup').get(pk=item_pk)
+    messages.info(request, f"Item {item} has been deleted")
+    item.delete()
+    item_bc.delete()
+
+    return reverse('assist:file-class', kwargs={'link': link})
 
 
 @login_required(login_url='/accounts/login/')
