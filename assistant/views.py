@@ -3,15 +3,15 @@ import os
 import string
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
+from django.db.models import Q as __
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import *
-from django.db.models import Q as __
-from django.contrib import messages
 
 from .forms import *
 from .utils import slug_generator, check_slug
@@ -49,7 +49,9 @@ class SeeAllFiles(ListView):
 
     def get_queryset(self):
         get_date = self.request.GET.get('date')
-        return self.model.objects.filter(class_name__link=self.kwargs['link']).filter(__(time_stamp__date=get_date))
+        model = self.model
+        return model.objects.filter(class_name__link=self.kwargs['link']).filter(
+            __(time_stamp__date=get_date)) if get_date else model.objects.filter(class_name__link=self.kwargs['link'])
 
     def get_context_data(self, **kwargs):
         context = super(SeeAllFiles, self).get_context_data(**kwargs)
@@ -154,16 +156,18 @@ def create_class(request):
     # form = ClassCreationForms()
     if request.method == 'POST':
         # form = ClassCreationForms(request.POST or None, request.FILES or None)
-        start = request.POST['start']
-        end = request.POST['end']
+        start = request.POST.get('start')
+        end = request.POST.get('end')
         class_ = request.POST.get('class')
         gen = request.POST.get('gen')
+        course = request.POST.get('course')
 
         if not class_ or not start or not end:
             return redirect(reverse('assist:create-class'))
         else:
             class_ = class_list[int(class_) - 1]
-        name = f"{class_} {gen} Jam {start}-{end}"
+
+        name = f"{gen} {class_} {course} Jam {start}-{end}"
         code = slug_generator(10)
         code_list = [c.unique_code for c in ClassName.objects.all()]
         code = check_slug(code, code_list, 10)
@@ -205,7 +209,8 @@ class GenerateQRCodeView(CreateView):
         return reverse('assist:my-class', kwargs={'link': self.kwargs['link']})
 
     def form_valid(self, form):
-        valid_until = timezone.now() + datetime.timedelta(days=1) if form.cleaned_data['valid_until'] is None else form.cleaned_data['valid_until']
+        valid_until = timezone.now() + datetime.timedelta(days=1) if form.cleaned_data['valid_until'] is None else \
+            form.cleaned_data['valid_until']
         code = slug_generator(16)
         get_all_code = [x.qr_code for x in GenerateQRCode.objects.all()]
         code = check_slug(code, get_all_code, 16)
@@ -215,6 +220,8 @@ class GenerateQRCodeView(CreateView):
         form.instance.qr_code = code
         form.instance.class_name = class_
         form.instance.creator = self.request.user
+        x = form.save()
+        x.save(using='backup')
         return super(GenerateQRCodeView, self).form_valid(form)
 
     @method_decorator(login_required(login_url='/accounts/login/'))
