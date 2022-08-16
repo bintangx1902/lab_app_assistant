@@ -76,6 +76,9 @@ def join_class(request):
         bc_class.students.add(bc_user)
         bc_class.save(using='backup')
 
+        messages.info(request, f"Kamu sudah berhasil masuk kedalam kelas {get_class.name}")
+        return redirect("presence:join-class")
+
     return render(request, templates('join_class'))
 
 
