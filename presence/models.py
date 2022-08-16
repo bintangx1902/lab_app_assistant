@@ -6,6 +6,7 @@ import qrcode
 from PIL import Image, ImageDraw
 from io import BytesIO
 from django.core.files import File
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class UserData(models.Model):
@@ -50,7 +51,13 @@ class GenerateQRCode(models.Model):
         return super().save(*args, **kwargs)
 
     def delete(self, using=None, *args, **kwargs):
-        remove(path.join(settings.MEDIA_ROOT, self.qr_img.name))
+        try:
+            file_path = path.join(settings.MEDIA_ROOT, self.qr_img.name)
+            if path.exists(file_path):
+                remove(file_path)
+        except ObjectDoesNotExist as e:
+            print(e)
+
         return super().delete(*args, **kwargs)
 
     def __str__(self):
