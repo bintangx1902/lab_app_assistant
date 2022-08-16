@@ -24,6 +24,7 @@
                     <th scope="col">#</th>
                     <th scope="col">FIle Owner</th>
                     <th scope="col">Item name</th>
+                    <th scope="col">Upload date</th>
                     <th scope="col">Download</th>
                     <th scope="col">Delete</th>
                 </tr>
@@ -34,6 +35,7 @@
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ file.user.first_name }} {{ file.user.last_name }}</td>
                     <td>{{ file.name }}</td>
+                    <td>{{ file.date }}</td>
                     <td>
                         <a download="{{ file_data.file.url }}" href="{{ file.file.url }}" class="btn btn-outline-primary">Download</a>
                     </td>
