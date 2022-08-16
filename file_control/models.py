@@ -28,3 +28,6 @@ class Files(models.Model):
 
     def name(self):
         return str(path.basename(self.file.name))
+
+    def date(self):
+        return self.time_stamp.strftime('%d - %m - %y')
