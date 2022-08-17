@@ -37,7 +37,8 @@ class AssistantLanding(TemplateView):
         return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
-    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(AssistantLanding, self).dispatch(request, *args, **kwargs)
 
@@ -61,13 +62,15 @@ class SeeAllFiles(ListView):
         return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
-    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(SeeAllFiles, self).dispatch(request, *args, **kwargs)
 
 
 @login_required(login_url='/accounts/login/')
-@user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/')
+@method_decorator(
+    user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
 def delete_file(request, link, item_pk):
     item = Files.objects.get(pk=item_pk)
     item_bc = Files.objects.using('backup').get(pk=item_pk)
@@ -79,7 +82,8 @@ def delete_file(request, link, item_pk):
 
 
 @login_required(login_url='/accounts/login/')
-@user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/')
+@method_decorator(
+    user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
 def download_file(request, path):
     file_path = os.path.join(settings.MEDIA_ROOT, path)
     if os.path.exists(file_path):
@@ -126,8 +130,13 @@ class MyClassList(ListView):
     template_name = templates('class_list')
     context_object_name = 'classes'
 
+    def get_queryset(self):
+        model = self.model
+        return model.objects.filter(__(pr=self.request.user) | __(creator=self.request.user))
+
     @method_decorator(login_required(login_url='/accounts/login/'))
-    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(MyClassList, self).dispatch(request, *args, **kwargs)
 
@@ -147,7 +156,8 @@ class MyClass(DetailView):
         return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
-    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         try:
             return super(MyClass, self).dispatch(request, *args, **kwargs)
@@ -155,6 +165,8 @@ class MyClass(DetailView):
             return redirect('assist:my-class-list')
 
 
+@login_required(login_url='/accounts/login/')
+@user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/')
 def create_class(request):
     # form = ClassCreationForms()
     if request.method == 'POST':
@@ -223,7 +235,8 @@ class GenerateQRCodeView(CreateView):
         return super(GenerateQRCodeView, self).form_valid(form)
 
     @method_decorator(login_required(login_url='/accounts/login/'))
-    @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         today = timezone.now().date()
         latest_gen = GenerateQRCode.objects.filter(class_name__link=self.kwargs['link'], created__date=today)
@@ -238,9 +251,30 @@ class JoinAssistantClas(View):
         return render(self.request, templates('join_class'))
 
     def post(self, *args, **kwargs):
-        return
+        code = self.request.POST.get('class_code')
+        get_class = ClassName.objects.filter(unique_code=code)
+        if not get_class:
+            messages.warning(self.request, 'Kelas dengan kode {} tidak terdaftar'.format(code))
+            return redirect('assist:join-class')
+        get_class = get_class[0]
+        pr_list = [user for user in get_class.pr.all()]
+        if self.request.user in pr_list:
+            messages.info(self.request, 'Kamu sudah terdaftar sebagai assisten di kelas ini')
+            return redirect('assist:join-class')
+        get_class.pr.add(self.request.user)
+        get_class.save()
+        get_class.save(using='backup')
+        return redirect(self.request, f'Kamu sekarang terdaftar asisten kelas {get_class.name}')
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(JoinAssistantClas, self).dispatch(request, *args, **kwargs)
 
 
+@login_required(login_url='/accounts/login/')
+@user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/')
 def delete_class(request, link):
     if request.method == "POST":
         model = get_object_or_404(ClassName, link=link)
