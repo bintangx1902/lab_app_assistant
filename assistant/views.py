@@ -149,7 +149,10 @@ class MyClass(DetailView):
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
     def dispatch(self, request, *args, **kwargs):
-        return super(MyClass, self).dispatch(request, *args, **kwargs)
+        try:
+            return super(MyClass, self).dispatch(request, *args, **kwargs)
+        except Http404:
+            return redirect('assist:my-class-list')
 
 
 def create_class(request):
@@ -180,11 +183,6 @@ def create_class(request):
         )
         c_name.save()
         c_name.save(using='backup')
-
-        """ class name backup """
-        bc_user = User.objects.using('backup').get(pk=request.user.id)
-        bc_class = ClassName.objects.using('backup').get(pk=c_name.pk)
-        bc_class.pr.add(bc_user)
 
         return redirect(reverse('assist:landing'))
         # print(class_list[int(class_)-1])
@@ -227,7 +225,20 @@ class GenerateQRCodeView(CreateView):
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(user_passes_test(lambda u: u.is_superuser and u.user.is_controller, '/'))
     def dispatch(self, request, *args, **kwargs):
+        today = timezone.now().date()
+        latest_gen = GenerateQRCode.objects.filter(class_name__link=self.kwargs['link'], created__date=today)
+        if latest_gen:
+            messages.info(request, 'Kode Qr tidak bisa di buat 2 di hari yang sama!')
+            return redirect(reverse('assist:my-class', kwargs={'link': self.kwargs['link']}))
         return super(GenerateQRCodeView, self).dispatch(request, *args, **kwargs)
+
+
+class JoinAssistantClas(View):
+    def get(self, *args, **kwargs):
+        return render(self.request, templates('join_class'))
+
+    def post(self, *args, **kwargs):
+        return
 
 
 def delete_class(request, link):
