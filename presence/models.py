@@ -37,23 +37,27 @@ class GenerateQRCode(models.Model):
     class_name = models.ForeignKey(ClassName, on_delete=models.CASCADE, related_name='from_class', related_query_name='from_class')
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='creator')
     qr_img = models.FileField(blank=True, upload_to='qr/')
+    created = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
+        file_path = path.join(settings.MEDIA_ROOT, self.qr_img.name)
         img_code = qrcode.make(self.qr_code)
-        canvas = Image.new('RGB', (600, 600), 'white')
+        canvas = Image.new('RGB', (330, 330), 'white')
         draw = ImageDraw.Draw(canvas)
         canvas.paste(img_code)
         f_name = f"qr_generated_{self.qr_code}.png"
         buffer = BytesIO()
-        canvas.save(buffer, 'PNG')
-        self.qr_img.save(f_name, File(buffer), save=False)
-        canvas.close()
+
+        if not path.isfile(file_path):
+            canvas.save(buffer, 'PNG')
+            self.qr_img.save(f_name, File(buffer), save=False)
+            canvas.close()
         return super().save(*args, **kwargs)
 
     def delete(self, using=None, *args, **kwargs):
         try:
             file_path = path.join(settings.MEDIA_ROOT, self.qr_img.name)
-            if path.exists(file_path):
+            if path.isfile(file_path):
                 remove(file_path)
         except ObjectDoesNotExist as e:
             print(e)
