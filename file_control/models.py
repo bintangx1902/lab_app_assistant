@@ -20,7 +20,7 @@ class Files(models.Model):
     def delete(self, using=None, *args, **kwargs):
         try:
             file_path = path.join(settings.MEDIA_ROOT, self.file.name)
-            if path.exists(file_path):
+            if path.isfile(file_path):
                 remove(file_path)
         except ObjectDoesNotExist as e:
             print("File Does Not Exists")
