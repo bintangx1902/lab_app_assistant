@@ -258,13 +258,23 @@ class JoinAssistantClas(View):
             return redirect('assist:join-class')
         get_class = get_class[0]
         pr_list = [user for user in get_class.pr.all()]
+        if get_class.creator == self.request.user:
+            messages.warning(self.request, "Kamu adalah PJ kelas ini maka tidak bisa sebgai asisten!")
+            return redirect('assist:join-class')
         if self.request.user in pr_list:
             messages.info(self.request, 'Kamu sudah terdaftar sebagai assisten di kelas ini')
             return redirect('assist:join-class')
         get_class.pr.add(self.request.user)
         get_class.save()
-        get_class.save(using='backup')
-        return redirect(self.request, f'Kamu sekarang terdaftar asisten kelas {get_class.name}')
+
+        """ backup """
+        bc_class = ClassName.objects.using('backup').get(unique_code=code)
+        bc_user = User.objects.using('backup').get(pk=self.request.user.pk)
+        bc_class.pr.add(bc_user)
+        bc_class.save()
+
+        messages.info(self.request, f'Kamu sekarang terdaftar asisten kelas {get_class.name}')
+        return redirect('assist:join-class')
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
