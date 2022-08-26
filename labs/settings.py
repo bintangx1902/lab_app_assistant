@@ -60,8 +60,8 @@ SITE_ID = 1
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/' #add login
-LOGIN_REDIRECT_URL = '/join-class' # add complete_data
+ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/'  # add login
+LOGIN_REDIRECT_URL = '/join-class'  # add complete_data
 
 
 
