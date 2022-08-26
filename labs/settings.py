@@ -48,7 +48,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'crispy_forms',
+    'rest_framework',
 
+    'api',
     'file_control',
     'presence',
     'assistant'
@@ -60,6 +62,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/' #add login
 LOGIN_REDIRECT_URL = '/join-class' # add complete_data
+
 
 
 MIDDLEWARE = [
