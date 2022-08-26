@@ -32,6 +32,7 @@ urlpatterns = [
 urlpatterns += [
     path('file/', include('file_control.urls', namespace='file')),
     path('assistant/', include('assistant.urls', namespace='assist')),
+    path('api/', include('api.urls', namespace='api')),
     path('', include('presence.urls', namespace='presence')),
 ]
 
