@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block head %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
 <style>
     .result {
         background-color: green;
@@ -15,30 +17,60 @@
 {% endblock %}
 
 {% block content %}
-<h1>testing</h1>
-<script src="{% static 'user/js/qrcode.min.js' %}"></script>
 
-<div class="row">
-    <div class="col">
-        <div style="width:500px;" id="reader"></div>
-    </div>
-    <div class="col" style="padding:30px;">
-        <h4>SCAN RESULT</h4>
-        <div id="result">Result Here</div>
+<div class="container">
+    <h1>testing</h1>
+    <script src="{% static 'user/js/qrcode.min.js' %}"></script>
+
+    <div class="row mx-auto">
+        <div class="col-lg-4 col-4 mx-auto">
+            <div style="width:500px;" id="reader"></div>
+        </div>
+        <div class="col-lg-4 col-4 mx-auto">
+            <h4>SCAN RESULT</h4>
+            <div id="result">Result Here</div>
+        </div>
     </div>
 </div>
 
+{% csrf_token %}
 
 <script type="text/javascript">
+    let token = document.getElementsByName("csrfmiddlewaretoken");
+    console.log(token[0].value)
+    let handle;
+
     function onScanSuccess(qrCodeMessage) {
-        document.getElementById('result').innerHTML = '<span class="result">' + qrCodeMessage + '</span>';
+
+        axios({
+            method: 'post',
+            url: '{% url "api:take-presence" %}?format=json',
+            headers: {
+                'X-CSRFToken': token[0].value,
+                'Content-type': 'Application/json'
+            },
+            data: {
+                'code': qrCodeMessage,
+                'unknown_number': '{{ request.user.id }}'
+            }
+        })
+        .then(response => {
+            console.log(response)
+            window.location.replace('{% url "presence:landing" %}')
+        })
+        .catch(error => {
+            onScanError(error.response.data.text)
+
+        })
+        document.getElementById('result').innerHTML = '<span class="result">' + handle + '</span>'
+
     }
 
     function onScanError(errorMessage) {
-        //handle scan error
+        handle = errorMessage;
     }
 
-    var html5QrcodeScanner = new Html5QrcodeScanner(
+    let html5QrcodeScanner = new Html5QrcodeScanner(
         "reader", {fps: 10, qrbox: 250});
     html5QrcodeScanner.render(onScanSuccess, onScanError);
 
