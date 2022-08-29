@@ -26,6 +26,7 @@ class ClassName(models.Model):
     pr = models.ManyToManyField(User, blank=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='class_creator', related_query_name='class_creator')
     students = models.ManyToManyField(User, related_name='stud', related_query_name='stud', null=True, blank=True)
+    lecture_name = models.CharField(max_length=255, default='', null=True, blank=True)
 
     def __str__(self):
         return f"{str(self.name)}"
