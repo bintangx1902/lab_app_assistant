@@ -1,5 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-test
+<div class="container my-5">
+    <div class="row mx-auto">
+        <div class="col-5">
+            <h2>My FIle in {{ class }}</h2>
+        </div>
+        <form method="get" class="col-7">
+            <div class="row mx-auto">
+                <input type="date" name="date" id="date" class="form-control col-10">
+                <div class="form-group col-2">
+                    <button class="btn btn-primary">set</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">FIle Owner</th>
+                    <th scope="col">Item name</th>
+                    <th scope="col">Upload date</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for file in files %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ file.user.first_name }} {{ file.user.last_name }}</td>
+                    <td>{{ file.name }}</td>
+                    <td>{{ file.date }}</td>
+                    <td><a href="{% url 'assist:delete-file' view.kwargs.link file.pk %}" class="btn btn-outline-danger">Delete</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
