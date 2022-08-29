@@ -63,7 +63,12 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/'  # add login
 LOGIN_REDIRECT_URL = '/join-class'  # add complete_data
 
-
+CACHES = {
+   'default': {
+      'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+      'LOCATION': join(BASE_DIR, 'caches'),
+   }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
