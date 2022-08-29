@@ -14,6 +14,18 @@
         {% endblock %}
     </head>
     <body>
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Account Info</h5>
+                    <div class="row mx-auto">
+                        <div class="col-3 col-sm-3">Username</div>
+                        <div class="col-9 col-sm-9 form-control">{{ request.user.username }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {% if messages %}
             {% for msg in messages %}
         <div class="container mt-5 mx-auto">
