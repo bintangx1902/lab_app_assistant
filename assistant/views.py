@@ -5,10 +5,9 @@ import string
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.models import User
 from django.db.models import Q as __
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.shortcuts import render, redirect, reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import *
@@ -68,17 +67,21 @@ class SeeAllFiles(ListView):
         return super(SeeAllFiles, self).dispatch(request, *args, **kwargs)
 
 
-@login_required(login_url='/accounts/login/')
-@method_decorator(
-    user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
-def delete_file(request, link, item_pk):
-    item = Files.objects.get(pk=item_pk)
-    item_bc = Files.objects.using('backup').get(pk=item_pk)
-    messages.info(request, f"Item {item} has been deleted")
-    item.delete()
-    item_bc.delete()
+class DeleteFile(View):
+    def get(self, *args, **kwargs):
+        return Http404
 
-    return reverse('assist:file-class', kwargs={'link': link})
+    def post(self, *args, **kwargs):
+        item = Files.objects.get(pk=kwargs['item_pk'])
+        messages.info(self.request, f"Item {item} has been deleted")
+        item.delete()
+
+        return reverse('assist:file-class', kwargs={'link': kwargs['link']})
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False)))
+    def dispatch(self, request, *args, **kwargs):
+        return super(DeleteFile, self).dispatch(request, *args, **kwargs)
 
 
 @login_required(login_url='/accounts/login/')
@@ -165,17 +168,16 @@ class MyClass(DetailView):
             return redirect('assist:my-class-list')
 
 
-@login_required(login_url='/accounts/login/')
-@user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/')
-def create_class(request):
-    # form = ClassCreationForms()
-    if request.method == 'POST':
-        # form = ClassCreationForms(request.POST or None, request.FILES or None)
-        start = request.POST.get('start')
-        end = request.POST.get('end')
-        class_ = request.POST.get('class')
-        gen = request.POST.get('gen')
-        course = request.POST.get('course')
+class CreateClass(View):
+    def get(self, *args, **kwargs):
+        return render(self.request, 'temp_/create.html', {'class_list': class_list})
+
+    def post(self, *args, **kwargs):
+        start = self.request.POST.get('start')
+        end = self.request.POST.get('end')
+        class_ = self.request.POST.get('class')
+        gen = self.request.POST.get('gen')
+        course = self.request.POST.get('course')
 
         if not class_ or not start or not end:
             return redirect(reverse('assist:create-class'))
@@ -191,20 +193,17 @@ def create_class(request):
             name=name,
             link=name.replace(' ', '-'),
             unique_code=code,
-            creator=request.user
+            creator=self.request.user
         )
         c_name.save()
-        c_name.save(using='backup')
 
         return redirect(reverse('assist:landing'))
-        # print(class_list[int(class_)-1])
 
-    context = {
-        'class_list': class_list,
-        # 'form': form
-    }
-
-    return render(request, 'temp_/create.html', context)
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False)))
+    def dispatch(self, request, *args, **kwargs):
+        return super(CreateClass, self).dispatch(request, *args, **kwargs)
 
 
 class GenerateQRCodeView(CreateView):
@@ -230,8 +229,6 @@ class GenerateQRCodeView(CreateView):
         form.instance.qr_code = code
         form.instance.class_name = class_
         form.instance.creator = self.request.user
-        x = form.save()
-        x.save(using='backup')
         return super(GenerateQRCodeView, self).form_valid(form)
 
     @method_decorator(login_required(login_url='/accounts/login/'))
@@ -267,12 +264,6 @@ class JoinAssistantClas(View):
         get_class.pr.add(self.request.user)
         get_class.save()
 
-        """ backup """
-        bc_class = ClassName.objects.using('backup').get(unique_code=code)
-        bc_user = User.objects.using('backup').get(pk=self.request.user.pk)
-        bc_class.pr.add(bc_user)
-        bc_class.save()
-
         messages.info(self.request, f'Kamu sekarang terdaftar asisten kelas {get_class.name}')
         return redirect('assist:join-class')
 
@@ -281,27 +272,3 @@ class JoinAssistantClas(View):
         user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(JoinAssistantClas, self).dispatch(request, *args, **kwargs)
-
-
-@login_required(login_url='/accounts/login/')
-@user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/')
-def delete_class(request, link):
-    if request.method == "POST":
-        model = get_object_or_404(ClassName, link=link)
-        model.delete()
-        bc_model = model.objects.using('backup').get(link=link)
-        bc_model.delete()
-
-    return render(request, templates('delete'))
-
-
-def backup(request):
-    if request.method == 'POST':
-        database = [User, Recap, Files, GenerateQRCode, UserData]
-        for db in database:
-            db_temp = db.objects.all()
-            if db_temp:
-                for db_save in db_temp:
-                    db_save.save(using='backup')
-
-    return render(request, templates('backup'))
