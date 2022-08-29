@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import *
+from django.db.models import Q as __
 
 from .forms import *
 
@@ -144,6 +145,18 @@ class UploadFileByClass(CreateView):
         return super(UploadFileByClass, self).dispatch(request, *args, **kwargs)
 
 
-class FileListClass(View):
-    def get(self, *args, **kwargs):
-        return render(self.request, templates('file_list_class'))
+class FileListClass(ListView):
+    model = Files
+    template_name = templates('file_list_class')
+    context_object_name = 'files'
+
+    def get_queryset(self):
+        get_date = self.request.GET.get('date')
+        model = self.model
+        return model.objects.filter(class_name__link=self.kwargs['link']).filter(
+            __(time_stamp__date=get_date)) if get_date else model.objects.filter(class_name__link=self.kwargs['link'])
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(FileListClass, self).dispatch(request, *args, **kwargs)
+
