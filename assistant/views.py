@@ -69,7 +69,7 @@ class SeeAllFiles(ListView):
 
 class DeleteFile(View):
     def get(self, *args, **kwargs):
-        return Http404
+        raise Http404()
 
     def post(self, *args, **kwargs):
         item = Files.objects.get(pk=kwargs['item_pk'])
