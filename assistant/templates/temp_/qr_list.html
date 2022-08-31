@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">code</th>
+                <th scope="col">created</th>
+                <th scope="col">creator</th>
+                <th scope="col">validate</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for code in qrcodes %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'assist:view-qr' view.kwargs.link code.qr_name %}">{{ code.qr_code }}</a></td>
+                <td>{{ code.created }}</td>
+                <td>{{ code.creator }}</td>
+                <td>{{ code.valid_until }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
