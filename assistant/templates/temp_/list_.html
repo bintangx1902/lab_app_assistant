@@ -39,7 +39,12 @@
                     <td>
                         <a download="{{ file_data.file.url }}" href="{{ file.file.url }}" class="btn btn-outline-primary">Download</a>
                     </td>
-                    <td><a href="{% url 'assist:delete-file' view.kwargs.link file.pk %}" class="btn btn-outline-danger">Delete</a></td>
+                    <td>
+                        <form action="{% url 'assist:delete-file' view.kwargs.link file.pk %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
