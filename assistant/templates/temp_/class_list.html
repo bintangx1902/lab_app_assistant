@@ -7,8 +7,9 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Nama Kelas</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Detail</th>
+            <th scope="col">See File</th>
+            <th scope="col">Presence</th>
         </tr>
         </thead>
         <tbody>
@@ -18,6 +19,7 @@
             <td>{{ class }}</td>
             <td><a href="{% url 'assist:my-class' class.link %}" class="btn btn-primary">Detail</a></td>
             <td><a href="{% url 'assist:file-class' class.link %}" class="btn btn-primary">See File</a></td>
+            <td><a href="{% url 'assist:generated-qr' class.link %}" class="btn btn-primary">See Presence History</a></td>
         </tr>
         {% endfor %}
         </tbody>
