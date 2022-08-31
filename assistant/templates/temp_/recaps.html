@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nim</th>
+                <th scope="col">time stamp</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rec in recaps %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ rec.user.user.nim }}</td>
+                <td>{{ rec.stamp }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}
