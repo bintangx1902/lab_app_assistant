@@ -9,7 +9,10 @@ urlpatterns = [
     path('join-class', JoinAssistantClas.as_view(), name='join-class'),
     path('my-class', MyClassList.as_view(), name='my-class-list'),
     path('my-class/<slug:link>/generate-qr', GenerateQRCodeView.as_view(), name='generate-qr'),
+    path('my-class/<slug:link>/generated-qr', QRGeneratedList.as_view(), name='generated-qr'),
     path('my-class/<slug:link>/file/delete/<int:item_pk>', DeleteFile.as_view(), name='delete-file'),
+    path('my-class/<slug:link>/file/<name>', QRCodeView.as_view(), name='view-qr'),
     path('my-class/<slug:link>/file', SeeAllFiles.as_view(), name='file-class'),
+    path('my-class/<slug:link>/recaps', PresenceRecap.as_view(), name='recaps'),
     path('my-class/<slug:link>', MyClass.as_view(), name='my-class'),
 ]
