@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import *
@@ -50,6 +50,7 @@ class JoinClass(View):
         return redirect("presence:join-class")
 
     @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(user_passes_test(lambda u: (u.user if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(JoinClass, self).dispatch(request, *args, **kwargs)
 
@@ -96,7 +97,7 @@ class DataComplement(View):
                 instance.nim = nim
 
             instance.save()
-            messages.info(self.self.request, 'Profile anda berhasil di update')
+            messages.info(self.request, 'Profile anda berhasil di update')
         return redirect('presence:complete-data')
 
     @method_decorator(login_required(login_url='/accounts/login/'))
@@ -114,6 +115,7 @@ class ClassList(ListView):
         return model.objects.filter(students=self.request.user)
 
     @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(user_passes_test(lambda u: (u.user if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(ClassList, self).dispatch(request, *args, **kwargs)
 
@@ -121,6 +123,11 @@ class ClassList(ListView):
 class Presence(View):
     def get(self, *args, **kwargs):
         return render(self.request, templates('cam'))
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(user_passes_test(lambda u: (u.user if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(Presence, self).dispatch(request, *args, **kwargs)
 
 
 class UploadFileByClass(CreateView):
