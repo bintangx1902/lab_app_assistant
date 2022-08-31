@@ -1,12 +1,13 @@
-from django.db import models
-from django.conf import settings
-from django.contrib.auth.models import User
+from io import BytesIO
 from os import path, remove
+
 import qrcode
 from PIL import Image, ImageDraw
-from io import BytesIO
-from django.core.files import File
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files import File
+from django.db import models
 
 
 class UserData(models.Model):
@@ -24,7 +25,8 @@ class ClassName(models.Model):
     link = models.SlugField(max_length=255, unique=True)
     unique_code = models.CharField(max_length=255, unique=True)
     pr = models.ManyToManyField(User, blank=True)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='class_creator', related_query_name='class_creator')
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='class_creator',
+                                related_query_name='class_creator')
     students = models.ManyToManyField(User, related_name='stud', related_query_name='stud', null=True, blank=True)
     lecture_name = models.CharField(max_length=255, default='', null=True, blank=True)
 
@@ -35,7 +37,8 @@ class ClassName(models.Model):
 class GenerateQRCode(models.Model):
     qr_code = models.SlugField(unique=True)
     valid_until = models.DateTimeField(blank=True)
-    class_name = models.ForeignKey(ClassName, on_delete=models.CASCADE, related_name='from_class', related_query_name='from_class')
+    class_name = models.ForeignKey(ClassName, on_delete=models.CASCADE, related_name='from_class',
+                                   related_query_name='from_class')
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='creator')
     qr_img = models.FileField(blank=True, upload_to='qr/')
     created = models.DateTimeField(auto_now_add=True)
@@ -68,6 +71,9 @@ class GenerateQRCode(models.Model):
     def __str__(self):
         return f"class : {self.class_name.name} - {self.qr_code}"
 
+    def qr_name(self):
+        return str(path.basename(self.qr_img.name))
+
 
 class Recap(models.Model):
     qr = models.ForeignKey(GenerateQRCode, on_delete=models.CASCADE, related_name='qr_c', related_query_name='qr_c')
@@ -77,4 +83,5 @@ class Recap(models.Model):
     def __str__(self):
         return f"{self.user.username} presence @ {self.time_stamp.strftime('%a %H:%M  %d/%m/%y')}"
 
-
+    def stamp(self):
+        return self.time_stamp.strftime('%a %H:%M  %d/%m/%y')
