@@ -76,10 +76,11 @@ class DeleteFile(View):
         messages.info(self.request, f"Item {item} has been deleted")
         item.delete()
 
-        return reverse('assist:file-class', kwargs={'link': kwargs['link']})
+        return redirect(reverse('assist:file-class', kwargs={'link': kwargs['link']}))
 
     @method_decorator(login_required(login_url='/accounts/login/'))
-    @method_decorator(user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False)))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False)))
     def dispatch(self, request, *args, **kwargs):
         return super(DeleteFile, self).dispatch(request, *args, **kwargs)
 
@@ -97,20 +98,63 @@ def download_file(request, path):
     raise Http404
 
 
+class QRGeneratedList(ListView):
+    model = GenerateQRCode
+    template_name = templates('qr_list')
+    context_object_name = 'qrcodes'
+
+    def get_queryset(self):
+        model = self.model
+        class_name = ClassName.objects.get(link=self.kwargs['link'])
+        query = model.objects.filter(class_name=class_name)
+        return query
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(QRGeneratedList, self).dispatch(request, *args, **kwargs)
+
+
 class PresenceRecap(ListView):
-    template_name = ''
+    template_name = templates('recaps')
     model = Recap
+    context_object_name = 'recaps'
 
     def get_queryset(self):
         """ my class only """
         model = self.model
-        get_mine = self.request.GET.get
-        query = model.objects.filter(
-            user=self.request.user,
-            class_name=get_mine
-        )
+        get_class = ClassName.objects.filter
 
-        return query
+    #     get_mine = self.request.GET.get
+    #     query = model.objects.filter(
+    #         user=self.request.user,
+    #         class_name=get_mine
+    #     )
+    #
+    #     return query
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(PresenceRecap, self).dispatch(request, *args, **kwargs)
+
+
+class QRCodeView(View):
+    def get(self, *args, **kwargs):
+        file = GenerateQRCode.objects.filter(qr_img=f"qr/{self.kwargs['name']}")
+        if not file:
+            messages.warning(self.request, 'file not found')
+            return redirect(reverse('assist:generated-qr', kwargs={'link': self.kwargs['link']}))
+        img = open(os.path.join(settings.MEDIA_ROOT, file[0].qr_img.name), 'rb').read()
+        return HttpResponse(img, content_type='image/png')
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(QRCodeView, self).dispatch(request, *args, **kwargs)
 
 
 #
@@ -215,10 +259,10 @@ class GenerateQRCodeView(CreateView):
     query_pk_and_slug = True
 
     def get_success_url(self):
-        return reverse('assist:my-class', kwargs={'link': self.kwargs['link']})
+        return reverse('assist:generated-qr', kwargs={'link': self.kwargs['link']})
 
     def form_valid(self, form):
-        valid_until = timezone.now() + datetime.timedelta(days=1) if form.cleaned_data['valid_until'] is None else \
+        valid_until = timezone.now() + datetime.timedelta(minutes=20) if form.cleaned_data['valid_until'] is None else \
             form.cleaned_data['valid_until']
         code = slug_generator(16)
         get_all_code = [x.qr_code for x in GenerateQRCode.objects.all()]
