@@ -29,7 +29,7 @@ class AssistantLanding(TemplateView):
         context = super(AssistantLanding, self).get_context_data(*args, **kwargs)
         a = list(range(20))
         class_ = ClassName.objects.all().count()
-        student = UserData.objects.filter(is_controller=False)
+        student = UserData.objects.all().exclude(__(user__username__contains='admin'))
         context['loop'] = a
         context['class'] = class_
         context['student'] = student
