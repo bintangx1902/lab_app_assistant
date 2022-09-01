@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from django.apps import apps
 from rest_framework import status
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 Recap = apps.get_model('presence', 'Recap')
 ClassName = apps.get_model('presence', 'ClassName')
@@ -24,6 +25,9 @@ class TakePresenceEndPoint(APIView):
             return Response(data={'text': 'number is unknown'}, status=status.HTTP_404_NOT_FOUND)
         user = user[0]
         get_qr = get_qr[0]
+        now = timezone.now()
+        if now > get_qr.valid_until:
+            return Response(data={'text': "Expired QR"}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
         """ find recap """
         recap = Recap.objects.filter(qr=get_qr, user=user)
@@ -35,6 +39,5 @@ class TakePresenceEndPoint(APIView):
             user=user
         )
         instance.save()
-        instance.save(using='backup')
 
-        return Response({'say': 'hai'})
+        return Response(data={'text': 'Berhasil di Recap'}, status=status.HTTP_202_ACCEPTED)
