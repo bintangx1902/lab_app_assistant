@@ -7,6 +7,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nim</th>
+                <th scope="col">Name</th>
                 <th scope="col">time stamp</th>
             </tr>
         </thead>
@@ -15,6 +16,7 @@
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ rec.user.user.nim }}</td>
+                <td>{{ rec.user.first_name }}</td>
                 <td>{{ rec.stamp }}</td>
             </tr>
         {% endfor %}
