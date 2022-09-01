@@ -63,6 +63,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/'  # add login
 LOGIN_REDIRECT_URL = '/join-class'  # add complete_data
 
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
 CACHES = {
    'default': {
       'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
@@ -146,7 +148,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
