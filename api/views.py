@@ -34,6 +34,10 @@ class TakePresenceEndPoint(APIView):
         if recap:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE, data={'text': 'Anda Sudah Absen'})
 
+        """ find if user in the class or not """
+        if user not in get_qr.class_name.students.all():
+            return Response(data={'text': 'Kamu Bukan Mahasiswa kelas ini !'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
         instance = Recap(
             qr=get_qr,
             user=user
