@@ -106,7 +106,7 @@ class QRGeneratedList(ListView):
     def get_queryset(self):
         model = self.model
         class_name = ClassName.objects.get(link=self.kwargs['link'])
-        query = model.objects.filter(class_name=class_name)
+        query = model.objects.filter(class_name=class_name).order_by('-pk')
         return query
 
     @method_decorator(login_required(login_url='/accounts/login/'))
@@ -124,15 +124,8 @@ class PresenceRecap(ListView):
     def get_queryset(self):
         """ my class only """
         model = self.model
-        get_class = ClassName.objects.filter
-
-    #     get_mine = self.request.GET.get
-    #     query = model.objects.filter(
-    #         user=self.request.user,
-    #         class_name=get_mine
-    #     )
-    #
-    #     return query
+        get_code = GenerateQRCode.objects.get(qr_code=self.kwargs['qr_code'])
+        return model.objects.filter(qr=get_code)
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
@@ -283,7 +276,7 @@ class GenerateQRCodeView(CreateView):
         latest_gen = GenerateQRCode.objects.filter(class_name__link=self.kwargs['link'], created__date=today)
         if latest_gen:
             messages.info(request, 'Kode Qr tidak bisa di buat 2 di hari yang sama!')
-            return redirect(reverse('assist:my-class', kwargs={'link': self.kwargs['link']}))
+            return redirect(reverse('assist:generated-qr', kwargs={'link': self.kwargs['link']}))
         return super(GenerateQRCodeView, self).dispatch(request, *args, **kwargs)
 
 
