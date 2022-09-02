@@ -167,3 +167,16 @@ class FileListClass(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(FileListClass, self).dispatch(request, *args, **kwargs)
 
+
+class MyPresenceRecaps(ListView):
+    model = Recap
+    template_name = templates('recaps')
+    context_object_name = 'recaps'
+
+    def get_queryset(self):
+        model = self.model
+        return model.objects.filter(user=self.request.user, qr__class_name__link=self.kwargs['link'])
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(MyPresenceRecaps, self).dispatch(request, *args, **kwargs)
