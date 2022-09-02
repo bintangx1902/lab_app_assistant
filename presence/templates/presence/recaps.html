@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Code</th>
+                <th scope="col">Generated</th>
+                <th scope="col">Response</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rec in recaps %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ rec.qr.qr_code }}</td>
+                <td>{{ rec.qr.created }}</td>
+                <td>{{ rec.time_stamp }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}
