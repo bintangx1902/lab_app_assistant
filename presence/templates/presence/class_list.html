@@ -12,6 +12,7 @@
                 <th scope="col">Nama Kelas</th>
                 <th scope="col">PJ Kelas</th>
                 <th scope="col">Asisten Kelas</th>
+                <th scope="col">Recaps</th>
                 <th scope="col">File</th>
             </tr>
             </thead>
@@ -26,6 +27,7 @@
                     {{ pr }}
                     {% endfor %}
                 </td>
+                <td><a href="{% url 'presence:my-presence-recap' class.link %}" class="btn btn-primary">See Recaps</a></td>
                 <td>
 <!--                    {{ class.from_class.all.count }} - -->
 <!--                    {% for x in class.from_class.all %}-->
