@@ -3,32 +3,23 @@
 {% block head %}
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
-<style>
-    .result {
-        background-color: green;
-        color: #fff;
-        padding: 20px;
-    }
-
-    .row {
-        display: flex;
-    }
-</style>
 {% endblock %}
 
 {% block content %}
-
-<div class="container">
-    <h1>testing</h1>
+<div class="container mt-5">
     <script src="{% static 'user/js/qrcode.min.js' %}"></script>
 
-    <div class="row mx-auto">
-        <div class="col-lg-4 col-4 mx-auto">
-            <div style="width:500px;" id="reader"></div>
+    <div class="d-lg-flex">
+        <div class="col-lg col mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div id="reader"></div>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-4 col-4 mx-auto">
+        <div class="col-lg col mx-auto">
             <h4>SCAN RESULT</h4>
-            <div id="result">Result Here</div>
+            <div id="result"></div>
         </div>
     </div>
 </div>
@@ -62,7 +53,7 @@
             onScanError(error.response.data.text)
 
         })
-        document.getElementById('result').innerHTML = '<span class="result">' + handle + '</span>'
+        document.getElementById('result').innerHTML = '<span class="alert alert-info">' + handle + '</span>'
 
     }
 
