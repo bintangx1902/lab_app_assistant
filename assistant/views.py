@@ -5,9 +5,11 @@ import string
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.views import PasswordChangeView
 from django.db.models import Q as __
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, reverse
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import *
@@ -37,7 +39,7 @@ class AssistantLanding(TemplateView):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(AssistantLanding, self).dispatch(request, *args, **kwargs)
 
@@ -62,7 +64,7 @@ class SeeAllFiles(ListView):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(SeeAllFiles, self).dispatch(request, *args, **kwargs)
 
@@ -80,14 +82,14 @@ class DeleteFile(View):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False)))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False)))
     def dispatch(self, request, *args, **kwargs):
         return super(DeleteFile, self).dispatch(request, *args, **kwargs)
 
 
 @login_required(login_url='/accounts/login/')
 @method_decorator(
-    user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
 def download_file(request, path):
     file_path = os.path.join(settings.MEDIA_ROOT, path)
     if os.path.exists(file_path):
@@ -111,7 +113,7 @@ class QRGeneratedList(ListView):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(QRGeneratedList, self).dispatch(request, *args, **kwargs)
 
@@ -129,7 +131,7 @@ class PresenceRecap(ListView):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(PresenceRecap, self).dispatch(request, *args, **kwargs)
 
@@ -145,7 +147,7 @@ class QRCodeView(View):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(QRCodeView, self).dispatch(request, *args, **kwargs)
 
@@ -176,7 +178,7 @@ class MyClassList(ListView):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(MyClassList, self).dispatch(request, *args, **kwargs)
 
@@ -197,7 +199,7 @@ class MyClass(DetailView):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         try:
             return super(MyClass, self).dispatch(request, *args, **kwargs)
@@ -238,7 +240,7 @@ class CreateClass(View):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False)))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False)))
     def dispatch(self, request, *args, **kwargs):
         return super(CreateClass, self).dispatch(request, *args, **kwargs)
 
@@ -270,7 +272,7 @@ class GenerateQRCodeView(CreateView):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         today = timezone.now().date()
         latest_gen = GenerateQRCode.objects.filter(class_name__link=self.kwargs['link'], created__date=today)
@@ -306,6 +308,51 @@ class JoinAssistantClas(View):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_superuser and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(JoinAssistantClas, self).dispatch(request, *args, **kwargs)
+
+
+class AssistantChangeUsername(View):
+    form_class = UserChangeDataForms
+
+    def get(self, *args, **kwargs):
+        return render(self.request, templates('c_log'), {'form': self.form_class()})
+
+    def post(self, *args, **kwargs):
+        form = self.form_class(self.request.POST or None, instance=self.request.user)
+        username_list = User.objects.filter(username=self.request.POST.get('username'))
+        if username_list:
+            if username_list[0].username == self.request.user.username:
+                messages.warning(self.request, "username sama dengan yang sekarang")
+            else:
+                messages.warning(self.request, "username '{}' tidak tersedia!".format(self.request.POST.get('username')))
+            return redirect('assist:change-username')
+        if form.is_valid():
+            messages.info(self.request, 'Username anda berhasil di ubah!')
+            form.save()
+        else:
+            messages.warning(self.request, 'Username anda tidak dapat di Ubah!')
+
+        return redirect('assist:change-username')
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(AssistantChangeUsername, self).dispatch(request, *args, **kwargs)
+
+
+class AssistantChangePassword(PasswordChangeView):
+    template_name = templates('c_log')
+    success_url = reverse_lazy('assist:landing')
+
+    def get_success_url(self):
+        messages.info(self.request, 'Data anda berhasil di Ubah!')
+        return self.success_url
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(AssistantChangePassword, self).dispatch(request, *args, **kwargs)
