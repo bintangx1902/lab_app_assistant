@@ -207,16 +207,18 @@ class MyClass(DetailView):
             return redirect('assist:my-class-list')
 
 
-class CreateClass(View):
-    def get(self, *args, **kwargs):
-        return render(self.request, 'temp_/create.html', {'class_list': class_list})
+class CreateClass(CreateView):
+    form_class = CreateClassForms
+    template_name = templates('create')
+    success_url = reverse_lazy('assist:my-class-list')
 
-    def post(self, *args, **kwargs):
+    def form_valid(self, form):
         start = self.request.POST.get('start')
         end = self.request.POST.get('end')
         class_ = self.request.POST.get('class')
         gen = self.request.POST.get('gen')
         course = self.request.POST.get('course')
+        form = self.form_class(self.request.POST or None)
 
         if not class_ or not start or not end:
             return redirect(reverse('assist:create-class'))
@@ -228,15 +230,11 @@ class CreateClass(View):
         code_list = [c.unique_code for c in ClassName.objects.all()]
         code = check_slug(code, code_list, 10)
 
-        c_name = ClassName(
-            name=name,
-            link=name.replace(' ', '-'),
-            unique_code=code,
-            creator=self.request.user
-        )
-        c_name.save()
-
-        return redirect(reverse('assist:landing'))
+        form.instance.name = name
+        form.instance.link = name.replace(' ', '-')
+        form.instance.unique_code = code
+        form.instance.creator = self.request.user
+        return super(CreateClass, self).form_valid(form)
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
