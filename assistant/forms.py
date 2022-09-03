@@ -1,5 +1,6 @@
 from django.apps import apps
 from django.forms import ModelForm, DateTimeInput
+from django.contrib.auth.models import User
 
 Files = apps.get_model('file_control', 'Files')
 Recap = apps.get_model('presence', 'Recap')
@@ -22,3 +23,9 @@ class GenerateQRCodeForms(ModelForm):
         widgets = {
             'valid_until': DateTimeInput(attrs={'type': 'datetime-local'})
         }
+
+
+class UserChangeDataForms(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username']
