@@ -29,3 +29,9 @@ class UserChangeDataForms(ModelForm):
     class Meta:
         model = User
         fields = ['username']
+
+
+class CreateClassForms(ModelForm):
+    class Meta:
+        model = ClassName
+        fields = ["lecture_name"]
