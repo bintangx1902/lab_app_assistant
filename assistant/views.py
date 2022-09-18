@@ -18,7 +18,7 @@ from .forms import *
 from .utils import slug_generator, check_slug
 
 class_list = [f"Kelas {char}" for char in string.ascii_uppercase]
-
+course_list = ['PBO', 'Struktur Data', 'Dasar Pemrograman', 'Pemrograman Deklaratif']
 
 def templates(temp: str):
     return "temp_/{}.html".format(temp)
@@ -220,10 +220,12 @@ class CreateClass(CreateView):
         course = self.request.POST.get('course')
         form = self.form_class(self.request.POST or None)
 
-        if not class_ or not start or not end:
+        if not class_ or not start or not end or not course:
+            messages.warning(self.request, 'Mohon lengkapi data dengan benar')
             return redirect(reverse('assist:create-class'))
         else:
             class_ = class_list[int(class_) - 1]
+            course = course_list[int(course) - 1]
 
         name = f"{gen} {class_} {course} Jam {start}-{end}"
         code = slug_generator(10)
@@ -235,6 +237,13 @@ class CreateClass(CreateView):
         form.instance.unique_code = code
         form.instance.creator = self.request.user
         return super(CreateClass, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateClass, self).get_context_data(**kwargs)
+
+        context['class_list'] = class_list
+        context['course_list'] = course_list
+        return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
