@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="container mt-5 mx-auto">
-    <div class="row mx-auto">
-        <div class="card col-5 col-lg-5 mx-auto mb-4">
+    <div class="display flex-column">
+        <div class="card card p-4 mb-3">
             <div class="card-body">
                 <h5 class="card-title">Presensi</h5>
                 <p class="card-text">pindah ke halaman presensi</p>
@@ -11,7 +11,7 @@
             </div>
         </div>
 
-        <div class="card col-5 col-lg-5 mx-auto mb-4">
+        <div class="card p-4 mb-3">
             <div class="card-body">
                 <h5 class="card-title">Data Pribadi</h5>
                 <p class="card-text">pindah ke halaman lengkapi data pribadi</p>
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="card col-5 col-lg-5 mx-auto mb-4">
+        <div class="card p-4 mb-3">
             <div class="card-body">
                 <h5 class="card-title">Kelas</h5>
                 <p class="card-text">pindah ke halaman daftar kelas</p>
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div class="card col-5 col-lg-5 mx-auto mb-4">
+        <div class="card p-4 mb-3">
             <div class="card-body">
                 <h5 class="card-title">Gabung Kelas</h5>
                 <p class="card-text">pindah ke halaman untuk masukan kode kelas</p>
@@ -36,7 +36,7 @@
         </div>
 
         {% if user.user.is_controller %}
-        <div class="card col-5 col-lg-5 mx-auto mb-4">
+        <div class="card p-4 mb-3">
             <div class="card-body">
                 <h5 class="card-title">Assistance Page</h5>
                 <p class="card-text">pindah ke halaman Khusus Asisten</p>
