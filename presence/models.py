@@ -24,11 +24,11 @@ class ClassName(models.Model):
     name = models.CharField(max_length=255)
     link = models.SlugField(max_length=255, unique=True)
     unique_code = models.CharField(max_length=255, unique=True)
-    pr = models.ManyToManyField(User, blank=True)
+    pr = models.ManyToManyField(User, blank=True, related_name='assist', related_query_name='assist')
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='class_creator',
                                 related_query_name='class_creator')
     students = models.ManyToManyField(User, related_name='stud', related_query_name='stud', null=True, blank=True)
-    lecture_name = models.CharField(max_length=255, default='', null=True, blank=True)
+    lecture_name = models.CharField(max_length=255, default='', null=True, blank=True, verbose_name='Nama Dosen : ')
 
     def __str__(self):
         return f"{str(self.name)}"
