@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-$im)yaclpfve=i$x^-)0(-&c8_9bq)y8e_4=tyzyj)fuur5(5x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-os.environ['HTTPS'] = 'on'
+# os.environ['HTTPS'] = 'on'
 
 ALLOWED_HOSTS = ['*']
 
