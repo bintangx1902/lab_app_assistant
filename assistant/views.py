@@ -1,5 +1,6 @@
 import datetime
 import os
+import re
 import string
 
 from django.conf import settings
@@ -19,6 +20,7 @@ from .utils import slug_generator, check_slug
 
 class_list = [f"Kelas {char}" for char in string.ascii_uppercase]
 course_list = ['PBO', 'Struktur Data', 'Dasar Pemrograman', 'Pemrograman Deklaratif']
+
 
 def templates(temp: str):
     return "temp_/{}.html".format(temp)
@@ -218,7 +220,6 @@ class CreateClass(CreateView):
         class_ = self.request.POST.get('class')
         gen = self.request.POST.get('gen')
         course = self.request.POST.get('course')
-        form = self.form_class(self.request.POST or None)
 
         if not class_ or not start or not end or not course:
             messages.warning(self.request, 'Mohon lengkapi data dengan benar')
@@ -228,6 +229,9 @@ class CreateClass(CreateView):
             course = course_list[int(course) - 1]
 
         name = f"{gen} {class_} {course} Jam {start}-{end}"
+        punc = r'[' + string.punctuation + ']'
+        name = re.sub(punc, '', name)
+
         code = slug_generator(10)
         code_list = [c.unique_code for c in ClassName.objects.all()]
         code = check_slug(code, code_list, 10)
@@ -333,7 +337,8 @@ class AssistantChangeUsername(View):
             if username_list[0].username == self.request.user.username:
                 messages.warning(self.request, "username sama dengan yang sekarang")
             else:
-                messages.warning(self.request, "username '{}' tidak tersedia!".format(self.request.POST.get('username')))
+                messages.warning(self.request,
+                                 "username '{}' tidak tersedia!".format(self.request.POST.get('username')))
             return redirect('assist:change-username')
         if form.is_valid():
             messages.info(self.request, 'Username anda berhasil di ubah!')
