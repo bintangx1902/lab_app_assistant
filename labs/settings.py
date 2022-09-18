@@ -139,14 +139,14 @@ DATABASES = {
         'NAME': join(BASE_DIR, 'db.sqlite3')
         # 'NAME': BASE_DIR / 'db.sqlite3',
     },
-    'backup': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD': '',
-        'NAME': 'labs',
-        'PORT': '3306',
-    },
+    # 'backup': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'HOST': 'localhost',
+    #     'USER': 'root',
+    #     'PASSWORD': '',
+    #     'NAME': 'labs',
+    #     'PORT': '3306',
+    # },
 
 }
 
