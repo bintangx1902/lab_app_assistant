@@ -16,7 +16,7 @@
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ rec.user.user.nim }}</td>
-                <td>{{ rec.user.first_name }}</td>
+                <td>{{ rec.user.first_name }} {{ rec.user.last_name }}</td>
                 <td>{{ rec.stamp }}</td>
             </tr>
         {% endfor %}
