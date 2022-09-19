@@ -116,10 +116,12 @@ AUTHENTICATION_BACKENDS = [
 
 ROOT_URLCONF = 'labs.urls'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [join(BASE_DIR, 'templates')],
+        'DIRS': [join(BASE_DIR, 'templates'), join(BASE_DIR, 'templates/accounts')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
