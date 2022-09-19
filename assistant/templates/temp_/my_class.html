@@ -28,15 +28,22 @@
     </div>
 
     <div class="form-group row">
-        <div class="col-3 col-sm-3">QRCode</div>
+        <div class="col-3 col-sm-3">Langsung Generate QRCode</div>
         <form method="post" action="{% url 'assist:generate-qr' class.link %}" class="col-9 col-sm-9" style="padding: 0px !important;">
             {% csrf_token %}
             <button href="" class="btn btn-primary col">Generate</button>
         </form>
     </div>
     <div class="form-group row">
-        <div class="col-3 col-sm-3">Penanggung Jawab Kelas</div>
+        <div class="col-3 col-sm-3">Lihat Rekap Presensi</div>
         <a href="{% url 'assist:generated-qr' view.kwargs.link %}" class="btn btn-primary col-9 col-sm-9"> Lihat Recap</a>
     </div>
+    <div class="form-group row">
+        <div class="col-3 col-sm-3">Ubah Detail Kelas</div>
+        <button type="button" class="btn btn-primary col-9 col-sm-9" data-toggle="modal" data-target="#staticBackdrop">Ubah Detail Kelas</button>
+    </div>
 </div>
+
+<!-- MODAL SECTION -->
+{% include 'temp_/modal/modal_update.html' %}
 {% endblock %}
