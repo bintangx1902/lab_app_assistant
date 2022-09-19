@@ -1,3 +1,4 @@
+
 """
 Django settings for labs project.
 
@@ -16,7 +17,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 # BASE_DIR = Path(__file__).resolve().parent.parent
 
 from os.path import join, dirname, abspath
-import os   
+import os
 
 BASE_DIR = dirname(dirname(abspath(__file__)))
 
@@ -27,7 +28,7 @@ BASE_DIR = dirname(dirname(abspath(__file__)))
 SECRET_KEY = 'django-insecure-$im)yaclpfve=i$x^-)0(-&c8_9bq)y8e_4=tyzyj)fuur5(5x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 os.environ['HTTPS'] = 'on'
 
