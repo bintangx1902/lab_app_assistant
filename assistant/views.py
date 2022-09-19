@@ -1,7 +1,5 @@
 import datetime
 import os
-import re
-import string
 
 from django.conf import settings
 from django.contrib import messages
@@ -16,10 +14,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import *
 
 from .forms import *
-from .utils import slug_generator, check_slug
-
-class_list = [f"Kelas {char}" for char in string.ascii_uppercase]
-course_list = ['PBO', 'Struktur Data', 'Dasar Pemrograman', 'Pemrograman Deklaratif']
+from .utils import *
 
 
 def templates(temp: str):
@@ -194,8 +189,10 @@ class MyClass(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(MyClass, self).get_context_data(**kwargs)
-
         qr_active = GenerateQRCode.objects.filter(class_name__link=self.kwargs['link'])
+
+        context['class_list'] = class_list
+        context['course_list'] = course_list
         context['links'] = qr_active if qr_active.exists() else None
         return context
 
@@ -228,16 +225,14 @@ class CreateClass(CreateView):
             class_ = class_list[int(class_) - 1]
             course = course_list[int(course) - 1]
 
-        name = f"{gen} {class_} {course} Jam {start}-{end}"
-        punc = r'[' + string.punctuation + ']'
-        name = re.sub(punc, '', name)
+        name, link = set_class_name(start, end, class_, gen, course)
 
         code = slug_generator(10)
         code_list = [c.unique_code for c in ClassName.objects.all()]
         code = check_slug(code, code_list, 10)
 
         form.instance.name = name
-        form.instance.link = name.replace(' ', '-')
+        form.instance.link = link
         form.instance.unique_code = code
         form.instance.creator = self.request.user
         return super(CreateClass, self).form_valid(form)
@@ -251,9 +246,38 @@ class CreateClass(CreateView):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
-        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False)))
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(CreateClass, self).dispatch(request, *args, **kwargs)
+
+
+def update_class_detail(request, link):
+    form_class = CreateClassForms
+    if request.method == 'POST':
+        lecture = request.POST.get('lecture')
+        start = request.POST.get('start')
+        class_ = request.POST.get('class')
+        end = request.POST.get('end')
+        gen = request.POST.get('gen')
+        course = request.POST.get('course')
+
+        class_name = ClassName.objects.get(link=link)
+        form = form_class(request.POST or None, instance=class_name)
+
+        if not start or not class_ or not course or not end:
+            messages.warning(request, 'Mohon lengkapi data dengan benar')
+            return redirect(reverse('assist:my-class', args=[link]))
+        else:
+            class_ = class_list[int(class_) - 1]
+            course = course_list[int(course) - 1]
+
+        name, link = set_class_name(start, end, class_, gen, course)
+
+        form.instance.name = name
+        form.instance.link = link
+        form.instance.lecture_name = lecture
+        form.save()
+    return redirect(reverse('assist:my-class', kwargs={'link': link}))
 
 
 class GenerateQRCodeView(CreateView):
