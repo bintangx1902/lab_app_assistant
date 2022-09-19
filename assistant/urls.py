@@ -16,5 +16,6 @@ urlpatterns = [
     path('my-class/<slug:link>/file', SeeAllFiles.as_view(), name='file-class'),
     path('my-class/<slug:link>/recaps/<qr_code>', PresenceRecap.as_view(), name='recaps'),
     path('my-class/<slug:link>/recaps', QRGeneratedList.as_view(), name='generated-qr'),
+    path('my-class/<slug:link>/update-detail', update_class_detail, name='update-detail'),
     path('my-class/<slug:link>', MyClass.as_view(), name='my-class'),
 ]
