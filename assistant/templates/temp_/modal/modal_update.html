@@ -1,0 +1,57 @@
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'assist:update-detail' view.kwargs.link %}">
+                    {% csrf_token %}
+                    {% load crispy_forms_tags %}
+                    <div class="form-group">
+                        <label for="gen">Angkatan Kelas*</label>
+                        <input type="text" name="gen" class="form-control" id="gen" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="class">Kelas*</label>
+                        <select name="class" id="class" class="custom-select">
+                            <option value="">. . .</option>
+                            {% for class in class_list %}
+                            <option value="{{ forloop.counter }}">{{ class }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="course">Mata Kuliah*</label>
+                        <select name="course" id="course" class="custom-select">
+                            <option value="">. . .</option>
+                            {% for course in course_list %}
+                            <option value="{{ forloop.counter }}">{{ course }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="start">Start Time*</label>
+                        <input type="time" name="start" class="form-control" id="start" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end">End Time*</label>
+                        <input type="time" name="end" class="form-control" id="end" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lecture">Nama Dosen*</label>
+                        <input type="text" name="lecture" class="form-control" id="lecture" aria-describedby="emailHelp" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
