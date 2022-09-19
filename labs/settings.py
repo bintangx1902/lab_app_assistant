@@ -28,7 +28,7 @@ BASE_DIR = dirname(dirname(abspath(__file__)))
 SECRET_KEY = 'django-insecure-$im)yaclpfve=i$x^-)0(-&c8_9bq)y8e_4=tyzyj)fuur5(5x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 os.environ['HTTPS'] = 'on'
 
@@ -54,6 +54,8 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'rest_framework',
+    "whitenoise.runserver_nostatic",
+    'whitenoise',
 
     'api',
     'file_control',
@@ -108,6 +110,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 AUTHENTICATION_BACKENDS = [
