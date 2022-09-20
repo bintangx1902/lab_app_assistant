@@ -1,5 +1,6 @@
 import datetime
 import os
+import csv
 
 from django.conf import settings
 from django.contrib import messages
@@ -392,3 +393,15 @@ class AssistantChangePassword(PasswordChangeView):
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(AssistantChangePassword, self).dispatch(request, *args, **kwargs)
+
+
+def recaps_csv(request, link, qr_code):
+    generated_qr = GenerateQRCode.objects.get(qr_code=qr_code)
+    response = HttpResponse('')
+    response['Content-Disposition'] = f'attachment; filename=rekap_presensi_{generated_qr.stamp()}.csv'
+    recaps = Recap.objects.filter(qr=generated_qr)
+    writer = csv.writer(response)
+    writer.writerow(['no', 'nim', 'nama', 'kelas', 'time_stamp'])
+    for index, recap in enumerate(recaps):
+        writer.writerow([int(index + 1), recap.user.user.nim, f"{recap.user.first_name} {recap.user.last_name}", recap.qr.class_name, recap.stamp()])
+    return response
