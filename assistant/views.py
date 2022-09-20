@@ -252,6 +252,8 @@ class CreateClass(CreateView):
         return super(CreateClass, self).dispatch(request, *args, **kwargs)
 
 
+@login_required(login_url='/accounts/login/')
+@user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/')
 def update_class_detail(request, link):
     form_class = CreateClassForms
     if request.method == 'POST':
@@ -395,6 +397,8 @@ class AssistantChangePassword(PasswordChangeView):
         return super(AssistantChangePassword, self).dispatch(request, *args, **kwargs)
 
 
+@login_required(login_url='/accounts/login/')
+@user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/')
 def recaps_csv(request, link, qr_code):
     generated_qr = GenerateQRCode.objects.get(qr_code=qr_code)
     response = HttpResponse('')
