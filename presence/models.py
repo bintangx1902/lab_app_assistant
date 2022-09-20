@@ -74,6 +74,9 @@ class GenerateQRCode(models.Model):
     def qr_name(self):
         return str(path.basename(self.qr_img.name))
 
+    def stamp(self):
+        return self.created.strftime('%a %H:%M  %d/%m/%y')
+
 
 class Recap(models.Model):
     qr = models.ForeignKey(GenerateQRCode, on_delete=models.CASCADE, related_name='qr_c', related_query_name='qr_c')
