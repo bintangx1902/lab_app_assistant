@@ -14,6 +14,7 @@ urlpatterns = [
     path('my-class/<slug:link>/file/delete/<int:item_pk>', DeleteFile.as_view(), name='delete-file'),
     path('my-class/<slug:link>/file/<name>', QRCodeView.as_view(), name='view-qr'),
     path('my-class/<slug:link>/file', SeeAllFiles.as_view(), name='file-class'),
+    path('my-class/<slug:link>/recaps/<qr_code>/export', recaps_csv, name='export'),
     path('my-class/<slug:link>/recaps/<qr_code>', PresenceRecap.as_view(), name='recaps'),
     path('my-class/<slug:link>/recaps', QRGeneratedList.as_view(), name='generated-qr'),
     path('my-class/<slug:link>/update-detail', update_class_detail, name='update-detail'),
