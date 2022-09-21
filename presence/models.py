@@ -81,6 +81,7 @@ class GenerateQRCode(models.Model):
 class Recap(models.Model):
     qr = models.ForeignKey(GenerateQRCode, on_delete=models.CASCADE, related_name='qr_c', related_query_name='qr_c')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_recap', related_query_name='user_recap')
+    presence = models.CharField(max_length=255, default='Hadir')
     time_stamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
