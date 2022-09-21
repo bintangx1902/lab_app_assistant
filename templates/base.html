@@ -36,6 +36,7 @@
         </ul>
     </div>
     </nav>
+    {% if request.user.is_authenticated %}
         <div class="container mt-5">
             <div class="card">
                 <div class="card-body">
@@ -47,7 +48,7 @@
                 </div>
             </div>
         </div>
-
+    {% endif %}
         {% if messages %}
             {% for msg in messages %}
         <div class="container mt-5 mx-auto">
