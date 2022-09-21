@@ -1,21 +1,42 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
 
 {% load i18n %}
+{% load static %}
+{% load l10n %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block title %}{% trans "Signup" %}{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'user/css/style.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign Up" %}</h1>
+<div class="container d-flex justify-content-center">
+    <div class="card card-p-3 mt-5 bg-dark text-light border-info" style="width:24rem;">
+        <div class="card-body">
+            <div class="d-inline-flex align-content-center mr-2">
+                <img
+                        src="{% static 'user/image/lab-saql.PNG' %}"
+                        width="50"
+                        height="50"
+                        alt="Card image cap"
+                />
+            </div>
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+            <h5 class="card-title text-center">Register</h5>
+            <form id="signup_form" method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                {% load crispy_forms_tags %}
+                {{ form | crispy }}
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+                <button id="register" type="submit" class="btn btn-primary mt-3 mb-3">Register</button>
 
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
+            </form>
+            <p>Already an Account ? <a href="{{ login_url }}">Sign In</a></p>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
