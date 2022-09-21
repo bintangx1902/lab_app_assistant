@@ -172,7 +172,7 @@ class MyClassList(ListView):
 
     def get_queryset(self):
         model = self.model
-        return model.objects.filter(__(pr=self.request.user) | __(creator=self.request.user))
+        return model.objects.filter(__(pr=self.request.user) | __(creator=self.request.user)).distinct()
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(
