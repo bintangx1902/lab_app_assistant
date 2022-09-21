@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %} Asisten - Izin {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <form method="post" class="form">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" name="nim" id="nim" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="condition">Perizinan</label>
+            <select name="condition" id="condition" class="custom-select" required>
+                <option value="">. . . </option>
+                {% for cond in conditions %}
+                <option value="{{ forloop.counter }}">{{ cond }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary">Set</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
