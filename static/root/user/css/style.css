@@ -1,0 +1,21 @@
+.card{
+    border-radius: 20px;
+    margin-bottom: 100px;
+}
+
+.form-control{
+    border-radius: 20px;
+}
+.btn{
+
+    border-radius: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+body{
+    font-family: Inter;
+    font-style: normal;
+    background: rgb(0,212,255,1);
+   
+}
