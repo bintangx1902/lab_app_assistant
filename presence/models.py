@@ -75,7 +75,7 @@ class GenerateQRCode(models.Model):
         return str(path.basename(self.qr_img.name))
 
     def stamp(self):
-        return self.created.strftime('%a %H:%M  %d/%m/%y')
+        return self.created.strftime('%a-%H:%M_%d-%m-%y')
 
 
 class Recap(models.Model):
