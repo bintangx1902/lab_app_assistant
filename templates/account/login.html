@@ -1,46 +1,76 @@
-{% extends "account/base.html" %}
+{% extends 'base.html'%}
 
 {% load i18n %}
 {% load account socialaccount %}
-
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
-
-{% block content %}
-
-<h1>{% trans "Sign In" %}</h1>
+{% load static %}
 
 {% get_providers as socialaccount_providers %}
 
-{% if socialaccount_providers %}
-<p>{% blocktrans with site.name as site_name %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+<!--{% if socialaccount_providers %}-->
+<!--<p>{% blocktrans with site.name as site_name %}Please sign in with one-->
+<!--of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>-->
+<!--for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>-->
 
-<div class="socialaccount_ballot">
+<!--<div class="socialaccount_ballot">-->
 
-  <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-  </ul>
+<!--  <ul class="socialaccount_providers">-->
+<!--    {% include "socialaccount/snippets/provider_list.html" with process="login" %}-->
+<!--  </ul>-->
 
-  <div class="login-or">{% trans 'or' %}</div>
+<!--  <div class="login-or">{% trans 'or' %}</div>-->
 
+<!--</div>-->
+
+<!--{% include "socialaccount/snippets/login_extra.html" %}-->
+
+<!--{% else %}-->
+<!--<p>{% blocktrans %}If you have not created an account yet, then please-->
+<!--<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>-->
+<!--{% endif %}-->
+
+<!--<form class="login" method="POST" action="{% url 'account_login' %}">-->
+<!--  {% csrf_token %}-->
+<!--  {{ form.as_p }}-->
+<!--  {% if redirect_field_value %}-->
+<!--  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />-->
+<!--  {% endif %}-->
+<!--  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>-->
+<!--  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>-->
+<!--</form>-->
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'user/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center">
+    <div class="card card-p-3 mt-5 bg-dark text-light border-info" style="width:20rem;">
+        <div class="card-body">
+            <div class="d-inline-flex align-content-center mr-2">
+                <img
+                        src="{% static 'user/image/lab-saql.PNG' %}"
+                        width="50"
+                        height="50"
+                        alt="Card image cap"
+                />
+            </div>
+
+            <h5 class="card-title text-center">Login</h5>
+            <form method="POST" action="{% url 'account_login' %}">
+                {% csrf_token %}
+                {% load crispy_forms_tags %}
+                {{ form | crispy }}
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+                <button id="submit" type="submit" class="btn btn-primary mt-3 mb-3">Login</button>
+            </form>
+            <p>Create an Account ? <a href="{{ signup_url }}">Register</a></p>
+
+        </div>
+    </div>
 </div>
 
-{% include "socialaccount/snippets/login_extra.html" %}
-
-{% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-{% endif %}
-
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-</form>
+<script src="{% static 'user/js/index.js' %}"></script>
 
 {% endblock %}
