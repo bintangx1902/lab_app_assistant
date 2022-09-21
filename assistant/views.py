@@ -1,6 +1,6 @@
+import csv
 import datetime
 import os
-import csv
 
 from django.conf import settings
 from django.contrib import messages
@@ -408,6 +408,61 @@ def recaps_csv(request, link, qr_code):
         writer = csv.writer(response)
         writer.writerow(['no', 'nim', 'nama', 'kelas', 'time_stamp'])
         for index, recap in enumerate(recaps):
-            writer.writerow([int(index + 1), recap.user.user.nim, f"{recap.user.first_name} {recap.user.last_name}", recap.qr.class_name, recap.stamp()])
+            writer.writerow([int(index + 1), recap.user.user.nim, f"{recap.user.first_name} {recap.user.last_name}",
+                             f"{recap.presence}", recap.qr.class_name, recap.stamp()])
         return response
     return redirect(reverse('assist:recaps', kwargs={'link': link, 'qr_code': qr_code}))
+
+
+class SetStudentAbsence(View):
+    def get(self, *args, **kwargs):
+        context = {'conditions': conditions}
+        return render(self.request, templates('absence'), context)
+
+    def post(self, *args, **kwargs):
+        nim = self.request.POST.get('nim')
+        cond = self.request.POST.get('condition')
+        user = UserData.objects.filter(nim=nim)
+
+        if not nim or not cond:
+            messages.warning(self.request, "Isi Form dengan benar!")
+            return redirect(reverse('assist:absence',
+                                    kwargs={'link': self.kwargs['link'], 'qr_code': self.kwargs['qr_code']}))
+
+        if not user:
+            messages.info(self.request, f"{user.user.first_name} {user.user.last_name} - {nim} tidak terdata di sistem")
+            return redirect(reverse('assist:absence',
+                                    kwargs={'link': self.kwargs['link'], 'qr_code': self.kwargs['qr_code']}))
+
+        user = user[0]
+        get_presence_qr = GenerateQRCode.objects.get(qr_code=self.kwargs['qr_code'])
+        cond = conditions[int(cond) - 1]
+
+        """ check if user is class student """
+        if get_presence_qr.class_name not in user.user.stud.all():
+            messages.info(self.request,
+                          f"{user.user.first_name} {user.user.last_name} - {nim} tidak terdaftar di kelas ini")
+            return redirect(reverse('assist:absence',
+                                    kwargs={'link': self.kwargs['link'], 'qr_code': self.kwargs['qr_code']}))
+        """ find if the student was recapitulated """
+        find = Recap.objects.filter(user=user.user, time_stamp__date=datetime.datetime.utcnow(), qr=get_presence_qr)
+        if find:
+            messages.info(self.request, f"{user.user.first_name} {user.user.last_name} - {nim} sudah di rekap")
+            return redirect(reverse('assist:absence',
+                                    kwargs={'link': self.kwargs['link'], 'qr_code': self.kwargs['qr_code']}))
+
+        recap = Recap(
+            user=user.user,
+            qr=get_presence_qr,
+            presence=cond
+        )
+
+        recap.save()
+        return redirect(reverse('assist:absence',
+                                kwargs={'link': self.kwargs['link'], 'qr_code': self.kwargs['qr_code']}))
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(SetStudentAbsence, self).dispatch(request, *args, **kwargs)
