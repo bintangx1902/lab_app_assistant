@@ -4,6 +4,7 @@ import string
 
 class_list = [f"Kelas {char}" for char in string.ascii_uppercase]
 course_list = ['PBO', 'Struktur Data', 'Dasar Pemrograman', 'Pemrograman Deklaratif']
+conditions = ['Izin', 'Sakit']
 
 
 def slug_generator(n):
