@@ -400,12 +400,14 @@ class AssistantChangePassword(PasswordChangeView):
 @login_required(login_url='/accounts/login/')
 @user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/')
 def recaps_csv(request, link, qr_code):
-    generated_qr = GenerateQRCode.objects.get(qr_code=qr_code)
-    response = HttpResponse('')
-    response['Content-Disposition'] = f'attachment; filename=rekap_presensi_{generated_qr.stamp()}.csv'
-    recaps = Recap.objects.filter(qr=generated_qr)
-    writer = csv.writer(response)
-    writer.writerow(['no', 'nim', 'nama', 'kelas', 'time_stamp'])
-    for index, recap in enumerate(recaps):
-        writer.writerow([int(index + 1), recap.user.user.nim, f"{recap.user.first_name} {recap.user.last_name}", recap.qr.class_name, recap.stamp()])
-    return response
+    if request.method == "POST":
+        generated_qr = GenerateQRCode.objects.get(qr_code=qr_code)
+        response = HttpResponse('')
+        response['Content-Disposition'] = f'attachment; filename=rekap_presensi_{generated_qr.stamp()}.csv'
+        recaps = Recap.objects.filter(qr=generated_qr)
+        writer = csv.writer(response)
+        writer.writerow(['no', 'nim', 'nama', 'kelas', 'time_stamp'])
+        for index, recap in enumerate(recaps):
+            writer.writerow([int(index + 1), recap.user.user.nim, f"{recap.user.first_name} {recap.user.last_name}", recap.qr.class_name, recap.stamp()])
+        return response
+    return redirect(reverse('assist:recaps', kwargs={'link': link, 'qr_code': qr_code}))
