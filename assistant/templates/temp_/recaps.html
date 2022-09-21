@@ -6,12 +6,14 @@
         {% csrf_token %}
         <button class="btn btn-primary">Download Recaps</button>
     </form>
+    <a href="{% url 'assist:absence' view.kwargs.link view.kwargs.qr_code %}" class="mb-3 btn btn-secondary">Mahasiswa yang tidak hadir</a>
     <table class="table">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nim</th>
                 <th scope="col">Name</th>
+                <th scope="col">Presence</th>
                 <th scope="col">time stamp</th>
             </tr>
         </thead>
@@ -21,6 +23,7 @@
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ rec.user.user.nim }}</td>
                 <td>{{ rec.user.first_name }} {{ rec.user.last_name }}</td>
+                <td>{{ rec.presence }}</td>
                 <td>{{ rec.stamp }}</td>
             </tr>
         {% endfor %}
