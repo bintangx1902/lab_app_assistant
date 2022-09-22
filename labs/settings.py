@@ -18,6 +18,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from os.path import join, dirname, abspath
 import os
+from decouple import config
 
 BASE_DIR = dirname(dirname(abspath(__file__)))
 
@@ -25,12 +26,12 @@ BASE_DIR = dirname(dirname(abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$im)yaclpfve=i$x^-)0(-&c8_9bq)y8e_4=tyzyj)fuur5(5x'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = bool(int(config('DEBUG')))
 
-os.environ['HTTPS'] = 'on'
+os.environ['HTTPS'] = config('HTTPS')
 
 ALLOWED_HOSTS = ['*']
 
@@ -77,9 +78,9 @@ INSTALLED_APPS = [
 # SESSION_COOKIE_HTTPONLY = False
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 60 * 60
+SESSION_COOKIE_AGE = eval(config('COOKIE_AGE'))
 
-SITE_ID = 1
+SITE_ID = int(config('SITE_ID'))
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -146,18 +147,9 @@ WSGI_APPLICATION = 'labs.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': join(BASE_DIR, 'db.sqlite3')
+        'NAME': join(BASE_DIR, config('DB_NAME'))
         # 'NAME': BASE_DIR / 'db.sqlite3',
     },
-    # 'backup': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'HOST': 'localhost',
-    #     'USER': 'root',
-    #     'PASSWORD': '',
-    #     'NAME': 'labs',
-    #     'PORT': '3306',
-    # },
-
 }
 
 # Password validation
