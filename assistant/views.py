@@ -295,7 +295,7 @@ class GenerateQRCodeView(CreateView):
         return reverse('assist:generated-qr', kwargs={'link': self.kwargs['link']})
 
     def form_valid(self, form):
-        valid_until = timezone.now() + datetime.timedelta(minutes=20) if form.cleaned_data['valid_until'] is None else \
+        valid_until = timezone.now() + datetime.timedelta(hours=1) if form.cleaned_data['valid_until'] is None else \
             form.cleaned_data['valid_until']
         code = slug_generator(16)
         get_all_code = [x.qr_code for x in GenerateQRCode.objects.all()]
@@ -315,8 +315,9 @@ class GenerateQRCodeView(CreateView):
         today = timezone.now().date()
         latest_gen = GenerateQRCode.objects.filter(class_name__link=self.kwargs['link'], created__date=today)
         if latest_gen:
-            messages.info(request, 'Kode Qr tidak bisa di buat 2 di hari yang sama!')
-            return redirect(reverse('assist:generated-qr', kwargs={'link': self.kwargs['link']}))
+            # messages.info(request, 'Kode Qr tidak bisa di buat 2 di hari yang sama!')
+            # return redirect(reverse('assist:generated-qr', kwargs={'link': self.kwargs['link']}))
+            pass
         return super(GenerateQRCodeView, self).dispatch(request, *args, **kwargs)
 
 
@@ -406,7 +407,7 @@ def recaps_csv(request, link, qr_code):
         response['Content-Disposition'] = f'attachment; filename=rekap_presensi_{generated_qr.stamp()}.csv'
         recaps = Recap.objects.filter(qr=generated_qr)
         writer = csv.writer(response)
-        writer.writerow(['no', 'nim', 'nama', 'kelas', 'time_stamp'])
+        writer.writerow(['no', 'nim', 'nama', 'kehadiran', 'kelas', 'time_stamp'])
         for index, recap in enumerate(recaps):
             writer.writerow([int(index + 1), recap.user.user.nim, f"{recap.user.first_name} {recap.user.last_name}",
                              f"{recap.presence}", recap.qr.class_name, recap.stamp()])
