@@ -1,6 +1,7 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
+{% load static %}
 
 {% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
@@ -9,13 +10,65 @@
 
 <p>{% trans 'Are you sure you want to sign out?' %}</p>
 
-<form method="post" action="{% url 'account_logout' %}">
-  {% csrf_token %}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-  {% endif %}
-  <button type="submit">{% trans 'Sign Out' %}</button>
-</form>
+<!--<form method="post" action="{% url 'account_logout' %}">-->
+<!--    {% csrf_token %}-->
+<!--    {% if redirect_field_value %}-->
+<!--    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>-->
+<!--    {% endif %}-->
+<!--    <button class="btn btn-danger py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">Login</button>-->
+<!--</form>-->
 
+<div class="container sm:px-10">
+    <div class="block xl:grid grid-cols-2 gap-4">
+        <!-- BEGIN: Register Info -->
+        <div class="hidden xl:flex flex-col min-h-screen">
+            <a href="" class="-intro-x flex items-center pt-5">
+                <img alt="SAQ - Logo" class="w-20" src="{% static 'user/images/logo.PNG' %}"/>
+                <span class="text-white font-bold text-2xl ml-3 "> SAQ Laboratory</span>
+            </a>
+            <div class="my-auto">
+                <img alt="Ilustration Login" class="-intro-x w-1/2 -mt-16"
+                     src="{% static 'user/midone/images/illustration.svg' %}"/>
+                <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
+                    Selamat Datang
+                    <br/>
+                    Sobat SAQ!!!
+                </div>
+                <div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Kelola akun SAQ kamu
+                    di satu tempat.
+                </div>
+            </div>
+        </div>
+        <!-- END: Register Info -->
+        <!-- BEGIN: Register Form -->
+        <div class="xl:hidden flex justify-center">
+            <img class="w-16" src="{% static 'user/images/logo.PNG' %}" alt="">
+            <span class="text-white text-2xl font-bold ml-3 mt-4"> SAQ Laboratory</span>
+        </div>
+        <div class="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0">
+
+            <form method="post" action="{% url 'account_logout' %}"
+                class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
+
+                <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">Logout</h2>
+                <div class="intro-x mt-2 text-slate-400 dark:text-slate-400 xl:hidden text-center">Hanya beberapa klik
+                    untuk masuk. Kelola akun SAQ kamu di satu tempat.
+                </div>
+                {% csrf_token %}
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+                <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
+                    <button class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">Logout</button>
+                    <a class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top"
+                       href="/">Cancel</a>
+                </div>
+            </form>
+        </div>
+        <!-- END: Register Form -->
+    </div>
+</div>
+
+<script src="{% static 'user/midone/js/app.js' %}"></script>
 
 {% endblock %}
