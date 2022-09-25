@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'crispy_forms',
+    "crispy_tailwind",
     'rest_framework',
     "whitenoise.runserver_nostatic",
     'whitenoise',
@@ -82,7 +83,7 @@ SESSION_COOKIE_AGE = eval(config('COOKIE_AGE'))
 
 SITE_ID = int(config('SITE_ID'))
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = 'tailwind'
 
 ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/'  # add login
 LOGIN_REDIRECT_URL = '/join-class'  # add complete_data
