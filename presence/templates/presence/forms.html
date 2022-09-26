@@ -5,8 +5,8 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% load crispy_forms_tags %}
-        {{ form | crispy }}
-        {{ e_form | crispy }}
+        {% crispy form 'bootstrap4' %}
+        {% crispy e_form 'bootstrap4' %}
         <div class="form-group">
             <button class="btn btn-primary">Save</button>
             <a href="{% url 'presence:join-class' %}" class="btn btn-secondary">Join Class</a>
