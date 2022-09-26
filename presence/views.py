@@ -1,9 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.models import Q as __
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import *
-from django.db.models import Q as __
 
 from .forms import *
 
@@ -56,22 +56,27 @@ class JoinClass(View):
 
 
 class DataComplement(View):
+    form_class = UserCompletionForms
+    e_form_class = UserDataCompleteForms
+    model = UserData
+    template_name = templates('forms')
+
     def get(self, *args, **kwargs):
-        form = UserCompletionForms(instance=self.request.user)
-        get_data = UserData.objects.filter(user=self.request.user)
-        e_form = UserDataCompleteForms(instance=self.request.user.user) if get_data else UserDataCompleteForms()
+        form = self.form_class(instance=self.request.user)
+        get_data = self.model.objects.filter(user=self.request.user)
+        e_form = self.e_form_class(instance=self.request.user.user) if get_data else UserDataCompleteForms()
 
         context = {
             'form': form,
             'e_form': e_form
         }
 
-        return render(self.request, templates('forms'), context=context)
+        return render(self.request, self.template_name, context=context)
 
     def post(self, *args, **kwargs):
-        form = UserCompletionForms(self.request.POST or None, self.request.FILES or None, instance=self.request.user)
-        get_data = UserData.objects.filter(user=self.request.user)
-        e_form = UserDataCompleteForms(self.request.POST or None, self.request.FILES or None,
+        form = self.form_class(self.request.POST or None, self.request.FILES or None, instance=self.request.user)
+        get_data = self.model.objects.filter(user=self.request.user)
+        e_form = self.e_form_class(self.request.POST or None, self.request.FILES or None,
                                        instance=self.request.user.user) if get_data else UserDataCompleteForms(
             self.request.POST or None, self.request.FILES or None)
 
