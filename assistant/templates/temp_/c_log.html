@@ -6,7 +6,7 @@
         {% csrf_token %}
         {% load crispy_forms_tags %}
 
-        {{ form | crispy }}
+        {% crispy form 'bootstrap4' %}
         <button class="btn btn-primary">Save Changes</button>
         <a href="{% url 'assist:change-password' %}" class="btn btn-secondary">Change Password</a>
     </form>
