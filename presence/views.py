@@ -1,11 +1,16 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q as __
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import *
+from django.utils import timezone
 
 from .forms import *
+from http import HTTPStatus
+
+TokenToResetPassword = apps.get_model('assistant', 'TokenToResetPassword')
 
 
 def templates(temp: str):
@@ -77,7 +82,7 @@ class DataComplement(View):
         form = self.form_class(self.request.POST or None, self.request.FILES or None, instance=self.request.user)
         get_data = self.model.objects.filter(user=self.request.user)
         e_form = self.e_form_class(self.request.POST or None, self.request.FILES or None,
-                                       instance=self.request.user.user) if get_data else UserDataCompleteForms(
+                                   instance=self.request.user.user) if get_data else UserDataCompleteForms(
             self.request.POST or None, self.request.FILES or None)
 
         if form.is_valid():
@@ -185,3 +190,52 @@ class MyPresenceRecaps(ListView):
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(MyPresenceRecaps, self).dispatch(request, *args, **kwargs)
+
+
+class ResetPassword(View):
+    template_name = templates('reset')
+    model = [UserData, TokenToResetPassword]
+
+    def get(self, *args, **kwargs):
+        token = self.model[1].objects.get(token=self.kwargs['token'])
+        now = timezone.now()
+        if now > token.valid_until:
+            return HttpResponse(status=HTTPStatus.NOT_ACCEPTABLE)
+
+        return render(self.request, self.template_name)
+
+    def post(self, *args, **kwargs):
+        nim = self.request.POST.get('nim')
+        pass1 = self.request.POST.get('password1')
+        pass2 = self.request.POST.get('password2')
+
+        get_nim = self.model[0].objects.filter(nim=nim)
+        if not get_nim:
+            messages.warning(self.request, f"NIM {nim} tidak terdata di sistem!")
+            return redirect(reverse('presence:reset-password', kwargs={'token': self.kwargs['token']}))
+
+        nim = get_nim[0]
+        if pass1 != pass2:
+            messages.warning(self.request, "password harus sama")
+            return redirect(reverse('presence:reset-password', kwargs={'token': self.kwargs['token']}))
+
+        passw = pass2
+        user = User.objects.get(username=nim.user.username)
+        user.set_password(passw)
+        user.save()
+
+        token = self.model[1].objects.get(token=self.kwargs['token'])
+        token.user.add(user)
+        token.save()
+        messages.info(self.request, f"Password berhasil di ganti!")
+        return redirect(settings.LOGIN_URL)
+
+    def dispatch(self, request, *args, **kwargs):
+        token = self.kwargs['token']
+        if not token:
+            raise Http404
+        # find token
+        token = self.model[1].objects.filter(token=token)
+        if not token:
+            raise Http404("token not found")
+        return super(ResetPassword, self).dispatch(request, *args, **kwargs)
