@@ -10,11 +10,11 @@ from django.db.models import Q as __
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
-from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import *
 
 from .forms import *
+from .models import *
 from .utils import *
 
 
@@ -467,3 +467,34 @@ class SetStudentAbsence(View):
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(SetStudentAbsence, self).dispatch(request, *args, **kwargs)
+
+
+class GenerateTokenToResetPassword(View):
+    model = TokenToResetPassword
+    template_name = templates('token')
+
+    def get(self, *args, **kwargs):
+        tokens = self.model.objects.filter(creator=self.request.user).order_by('-id')
+        context = {'tokens': tokens}
+        return render(self.request, self.template_name, context)
+
+    def post(self, *args, **kwargs):
+        valid_until = timezone.now() + datetime.timedelta(minutes=10)
+        token = slug_generator(12)
+        get_all_token = [x.token for x in TokenToResetPassword.objects.all()]
+        token = check_slug(token, get_all_token, 12)
+
+        instance = self.model.objects.create(
+            creator=self.request.user,
+            token=token,
+            valid_until=valid_until
+        )
+        instance.save()
+        messages.info(self.request, 'Token berhasil di buat')
+        return redirect('assist:generate-token')
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(GenerateTokenToResetPassword, self).dispatch(request, *args, **kwargs)
