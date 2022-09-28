@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %} Reset Password Token {% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <form method="post" class="form-group">
+        {% csrf_token %}
+        <div class="form-group">
+            <button class="btn btn-primary">Generate Token</button>
+        </div>
+    </form>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Token</th>
+                    <th scope="col">Valid Until</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for token in tokens %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td><a href="{% url 'presence:reset-password' token.token %}" target="_blank">{{ token.token }}</a></td>
+                    <td>{{ token.val_stamp }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
