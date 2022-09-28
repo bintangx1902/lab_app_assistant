@@ -9,6 +9,7 @@ urlpatterns = [
     path('join-class', JoinAssistantClas.as_view(), name='join-class'),
     path('change-username', AssistantChangeUsername.as_view(), name='change-username'),
     path('change-password', AssistantChangePassword.as_view(), name='change-password'),
+    path('generate-token', GenerateTokenToResetPassword.as_view(), name='generate-token'),
     path('my-class', MyClassList.as_view(), name='my-class-list'),
     path('my-class/<slug:link>/generate-qr', GenerateQRCodeView.as_view(), name='generate-qr'),
     path('my-class/<slug:link>/file/delete/<int:item_pk>', DeleteFile.as_view(), name='delete-file'),
