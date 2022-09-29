@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'rest_framework',
     "whitenoise.runserver_nostatic",
     'whitenoise',
+    'robots',
 
     'api',
     'file_control',
@@ -77,6 +78,11 @@ INSTALLED_APPS = [
 # SECURE_CONTENT_TYPE_NOSNIFF = False
 # SECURE_BROWSER_XSS_FILTER = False
 # SESSION_COOKIE_HTTPONLY = False
+
+ROBOTS_USE_SCHEME_IN_HOST = True
+ROBOTS_USE_SITEMAP = True
+ROBOTS_SITEMAP_URLS = {}
+ROBOTS_SITEMAP_VIEW_NAME = None
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = eval(config('COOKIE_AGE'))
