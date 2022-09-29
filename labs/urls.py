@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/clearcache/', include('clearcache.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-
+    path('robots.txt', include('robots.urls')),
     path('static/<path>', serve, settings.STATIC_ROOT),
     path('media/<path>', serve, settings.MEDIA_ROOT),
 ]
