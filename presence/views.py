@@ -67,47 +67,43 @@ class DataComplement(View):
     template_name = templates('forms')
 
     def get(self, *args, **kwargs):
-        form = self.form_class(instance=self.request.user)
-        get_data = self.model.objects.filter(user=self.request.user)
-        e_form = self.e_form_class(instance=self.request.user.user) if get_data else UserDataCompleteForms()
-
-        context = {
-            'form': form,
-            'e_form': e_form
-        }
+        user = User.objects.get(pk=self.request.user.pk)
+        data = self.model.objects.filter(user=self.request.user)
+        context = {'user': user}
+        if hasattr(self.request.user, 'user'):
+            context['profile'] = data[0]
 
         return render(self.request, self.template_name, context=context)
 
     def post(self, *args, **kwargs):
-        form = self.form_class(self.request.POST or None, self.request.FILES or None, instance=self.request.user)
+        first_name = self.request.POST.get('f_name')
+        last_name = self.request.POST.get('l_name')
+        email = self.request.POST.get('email')
+        nim = self.request.POST.get('nim')
+        phone = self.request.POST.get('phone')
+
         get_data = self.model.objects.filter(user=self.request.user)
-        e_form = self.e_form_class(self.request.POST or None, self.request.FILES or None,
-                                   instance=self.request.user.user) if get_data else UserDataCompleteForms(
-            self.request.POST or None, self.request.FILES or None)
-
-        if form.is_valid():
-            form.save()
-            messages.info(self.request, 'Data akun anda berhasil di update')
-
-        if e_form.is_valid():
-            phone = e_form.cleaned_data['phone_number']
-            nim = e_form.cleaned_data['nim']
-
-            get_user_data = UserData.objects.filter(user=self.request.user)
-            if not get_user_data:
-                instance = UserData(
-                    user=self.request.user,
-                    nim=nim,
-                    phone_number=phone
-                )
-
-            else:
-                instance = get_user_data[0]
-                instance.phone_number = phone
-                instance.nim = nim
-
+        if hasattr(self.request.user, 'user'):
+            instance = get_data[0]
+            instance.nim = nim
+            instance.phone = phone
             instance.save()
-            messages.info(self.request, 'Profile anda berhasil di update')
+            messages.info(self.request, 'data nim dan nomor telepon telah disimpan!')
+        else:
+            instance = UserData(
+                user=self.request.user,
+                nim=nim,
+                phone_number=phone
+            )
+            instance.save()
+
+        user = User.objects.get(pk=self.request.user.pk)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.save()
+
+        messages.info(self.request, 'Profile anda berhasil di update')
         return redirect('presence:complete-data')
 
     @method_decorator(login_required(login_url='/accounts/login/'))
