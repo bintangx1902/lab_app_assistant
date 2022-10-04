@@ -86,7 +86,7 @@ class DataComplement(View):
         if hasattr(self.request.user, 'user'):
             instance = get_data[0]
             instance.nim = nim
-            instance.phone = phone
+            instance.phone_number = phone
             instance.save()
             messages.info(self.request, 'data nim dan nomor telepon telah disimpan!')
         else:
