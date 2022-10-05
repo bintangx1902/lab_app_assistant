@@ -1,6 +1,7 @@
 import csv
 import datetime
 import os
+from itertools import chain
 
 from django.conf import settings
 from django.contrib import messages
@@ -498,3 +499,29 @@ class GenerateTokenToResetPassword(View):
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(GenerateTokenToResetPassword, self).dispatch(request, *args, **kwargs)
+
+
+class FinderView(View):
+    template_name = templates('finder')
+
+    def get(self, *args, **kwargs):
+        return render(self.request, self.template_name)
+
+    def post(self, *args, **kwargs):
+        data = self.request.POST.get('data')
+        nim = str(data).isnumeric()
+
+        user = User.objects.filter(username=data)
+        user_data = UserData.objects.filter(nim=data)
+        result = list(chain(user, user_data))
+        context = {'result': result, 'nim': nim}
+        return render(self.request, self.template_name, context)
+
+
+class SeeStudentJoined(View):
+    def get(self, *args, **kwargs):
+        get_class = ClassName.objects.get(link=self.kwargs['link'])
+        get_student = get_class.students.all()
+
+        context = {'students': get_student}
+        return render
