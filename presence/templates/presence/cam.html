@@ -40,11 +40,11 @@
             url: '{% url "api:take-presence" %}?format=json',
             headers: {
                 'X-CSRFToken': token[0].value,
-                'Content-type': 'Application/json'
+                'Content-Type': 'Application/json'
             },
             data: {
-                'code': qrCodeMessage,
-                'unknown_number': '{{ request.user.id }}'
+                "code": String(qrCodeMessage),
+                "number": "{{ request.user.id }}"
             }
         })
         .then(response => {
