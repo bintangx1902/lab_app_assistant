@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .serializers import *
 from django.contrib.auth import logout
 
+
 def payloads(token):
     try:
         payload = jwt.decode(token, 'secret', algorithms='HS256')
@@ -30,7 +31,7 @@ class TakePresenceEndPoint(APIView):
 
     def post(self, *args, **kwargs):
         code = self.request.data.get('code')
-        user_id = int(self.request.data.get('unknown_number'))
+        user_id = int(self.request.data.get('number'))
         get_qr = GenerateQRCode.objects.filter(qr_code=code)
         user = User.objects.filter(id=user_id)
         if not get_qr:
