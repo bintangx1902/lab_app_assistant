@@ -9,6 +9,7 @@ from django.utils import timezone
 
 from .forms import *
 from http import HTTPStatus
+from .utils import *
 
 TokenToResetPassword = apps.get_model('assistant', 'TokenToResetPassword')
 
@@ -83,13 +84,28 @@ class DataComplement(View):
         phone = self.request.POST.get('phone')
 
         get_data = self.model.objects.filter(user=self.request.user)
+        nim_list = [x.nim for x in self.model.objects.all()]
+        msg, check = check_nim(nim_list, nim)
+
+        """ check nim first """
         if hasattr(self.request.user, 'user'):
+            get_user = User.objects.get(pk=self.request.user.pk)
+            if get_user.user.nim != nim:
+                if check:
+                    messages.warning(self.request, msg)
+                    return redirect('presence:complete-data')
+
             instance = get_data[0]
             instance.nim = nim
             instance.phone_number = phone
             instance.save()
             messages.info(self.request, 'data nim dan nomor telepon telah disimpan!')
+
         else:
+            if check:
+                messages.warning(self.request, msg)
+                return redirect('presence:complete-data')
+
             instance = UserData(
                 user=self.request.user,
                 nim=nim,
