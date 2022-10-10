@@ -17,3 +17,12 @@ class TokenToResetPassword(models.Model):
     def val_stamp(self):
         return self.valid_until.strftime('%a %H:%M  %d/%m/%y')
 
+
+class StudentScore(models.Model):
+    name = models.CharField(max_length=255)
+    score = models.FloatField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    classification = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.name} : {self.score}"
