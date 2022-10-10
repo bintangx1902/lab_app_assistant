@@ -18,6 +18,10 @@ from .forms import *
 from .models import *
 from .utils import *
 
+pre_test = [f"Pre-test {x}" for x in range(17)]
+lap = [f"Laporan {x}" for x in range(17)]
+classification = ['PRETEST', 'LAPORAN']
+
 
 def templates(temp: str):
     return "temp_/{}.html".format(temp)
@@ -517,6 +521,12 @@ class FinderView(View):
         context = {'result': result, 'nim': nim}
         return render(self.request, self.template_name, context)
 
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(FinderView, self).dispatch(request, *args, **kwargs)
+
 
 class SeeStudentJoined(View):
     def get(self, *args, **kwargs):
@@ -525,3 +535,58 @@ class SeeStudentJoined(View):
 
         context = {'students': get_student}
         return render
+
+
+class AddStudentScore(View):
+    template_name = templates('score')
+
+    def get(self, *args, **kwargs):
+        get_class = ClassName.objects.get(link=self.kwargs['link'])
+        get_classification = self.request.GET.get('classification')
+        show = False
+
+        context = {
+            'classification': classification,
+            'class_name': get_class,
+            'show': show
+        }
+        if get_classification:
+            context['show'] = True
+            class_ = classification[int(get_classification) - 1]
+            items = [f"{class_}-{x}" for x in range(1, 21)]
+            context['items'] = items
+
+        return render(self.request, self.template_name, context)
+
+    def post(self, *args, **kwargs):
+        get_class = ClassName.objects.get(link=self.kwargs['link'])
+        get_classification = int(self.request.GET.get('classification'))
+        name = self.request.POST.get('named')
+
+        nim_list, score_list = [], []
+        for key, value in self.request.POST.items():
+            if 'data' in key:
+                nim_list.append(value)
+            elif 'score' in key:
+                score_list.append(value)
+
+        data_zip = dict(zip(nim_list, score_list))
+        print(self.request.GET)
+        for nim, score in data_zip.items():
+            user = UserData.objects.get(nim=nim)
+            class_ = classification[get_classification - 1]
+
+            instance = StudentScore(
+                user=user.user,
+                score=score,
+                classification=class_,
+                name=name
+            )
+            instance.save()
+        return redirect(reverse('assist:score', kwargs={'link': self.kwargs['link']}))
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(AddStudentScore, self).dispatch(request, *args, **kwargs)
