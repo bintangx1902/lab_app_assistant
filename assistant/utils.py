@@ -33,3 +33,12 @@ def set_class_name(start, end, class_, gen, course):
     class_link = f"{name} {start}-{end}".replace(' ', '-')
 
     return class_name, class_link
+
+
+def uts_uas_find(models, target, name, link):
+    """ models must be class models """
+    target = target.upper()
+    find = models.objects.filter(class_name__link=link, name=name, classification=target)
+    if find:
+        return True
+    return False
