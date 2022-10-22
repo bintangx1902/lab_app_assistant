@@ -20,7 +20,7 @@ from .utils import *
 
 pre_test = [f"Pre-test {x}" for x in range(17)]
 lap = [f"Laporan {x}" for x in range(17)]
-classification = ['PRETEST', 'LAPORAN']
+classification = ['PRETEST', 'LAPORAN', 'POST-TEST', 'UTS', 'UAS']
 
 
 def templates(temp: str):
@@ -550,10 +550,17 @@ class AddStudentScore(View):
             'class_name': get_class,
             'show': show
         }
+
         if get_classification:
             context['show'] = True
             class_ = classification[int(get_classification) - 1]
             items = [f"{class_}-{x}" for x in range(1, 21)]
+            multiple = True
+            if class_ == 'UAS' or class_ == 'UTS':
+                multiple = not multiple
+                context['name'] = class_
+
+            context['multiple'] = multiple
             context['items'] = items
 
         return render(self.request, self.template_name, context)
@@ -571,16 +578,21 @@ class AddStudentScore(View):
                 score_list.append(value)
 
         data_zip = dict(zip(nim_list, score_list))
-        print(self.request.GET)
+        class_ = classification[get_classification - 1]
+
+        if uts_uas_find(StudentScore, class_, name, self.kwargs['link']):
+            messages.warning(self.request, f"{name} hanya bisa 1 kali input")
+            return redirect(reverse('assist:score', kwargs={'link': self.kwargs['link']}))
+
         for nim, score in data_zip.items():
             user = UserData.objects.get(nim=nim)
-            class_ = classification[get_classification - 1]
 
             instance = StudentScore(
                 user=user.user,
                 score=score,
                 classification=class_,
-                name=name
+                name=name,
+                class_name=ClassName.objects.get(link=self.kwargs['link'])
             )
             instance.save()
         return redirect(reverse('assist:score', kwargs={'link': self.kwargs['link']}))
