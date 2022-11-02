@@ -12,5 +12,6 @@ urlpatterns = [
     path('class/<slug:link>/upload-file', UploadFileByClass.as_view(), name='upload-file'),
     path('class/<slug:link>/file-list', FileListClass.as_view(), name='file-list-class'),
     path('class/<slug:link>/recaps', MyPresenceRecaps.as_view(), name='my-presence-recap'),
+    path('class/<slug:link>/recaps/score', SeeMyScoreView.as_view(), name='my-score-recap'),
     path('', LandingView.as_view(), name='landing'),
 ]
