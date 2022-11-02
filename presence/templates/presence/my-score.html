@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %} Rekap Nilai Saya {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get">
+                <div class="form-group">
+                    <select class="form-control" name="class">
+                        <option value="" selected>. . .</option>
+                        {% for item in class %}
+                        <option value="{{ forloop.counter }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">Check</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for score in scores %}
+                <tr>
+                    <th scope="row">1</th>
+                    <td>{{ score.name }}</td>
+                    <td>{{ score.score }}</td>
+                    <td>@mdo</td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td colspan="3">Rata - Rata</td>
+                    <td>{{ score }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
