@@ -320,8 +320,8 @@ class GenerateQRCodeView(CreateView):
         today = timezone.now().date()
         latest_gen = GenerateQRCode.objects.filter(class_name__link=self.kwargs['link'], created__date=today)
         if latest_gen:
-            # messages.info(request, 'Kode Qr tidak bisa di buat 2 di hari yang sama!')
-            # return redirect(reverse('assist:generated-qr', kwargs={'link': self.kwargs['link']}))
+            messages.info(request, 'Kode Qr tidak bisa di buat 2 di hari yang sama!')
+            return redirect(reverse('assist:generated-qr', kwargs={'link': self.kwargs['link']}))
             pass
         return super(GenerateQRCodeView, self).dispatch(request, *args, **kwargs)
 
