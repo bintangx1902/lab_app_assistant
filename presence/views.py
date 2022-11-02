@@ -1,17 +1,20 @@
+from http import HTTPStatus
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q as __
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import *
-from django.utils import timezone
 
 from .forms import *
-from http import HTTPStatus
 from .utils import *
 
 TokenToResetPassword = apps.get_model('assistant', 'TokenToResetPassword')
+StudentScore = apps.get_model('assistant', 'StudentScore')
+classification = ['PRETEST', 'LAPORAN', 'POST-TEST', 'UTS', 'UAS', 'All']
 
 
 def templates(temp: str):
@@ -251,3 +254,27 @@ class ResetPassword(View):
         if not token:
             raise Http404("token not found")
         return super(ResetPassword, self).dispatch(request, *args, **kwargs)
+
+
+class SeeMyScoreView(ListView):
+    model = StudentScore
+    template_name = templates('my-score')
+    context_object_name = 'scores'
+
+    def get_queryset(self):
+        get_classification = self.request.GET.get('class')
+        get_classification = classification[int(get_classification) - 1] if get_classification is not None else None
+        return self.model.objects.filter(user=self.request.user, classification=get_classification)
+
+    def get_context_data(self, **kwargs):
+        context = super(SeeMyScoreView, self).get_context_data(**kwargs)
+        *_, score = total_average(self.get_queryset(), models.Avg).values()
+
+        context['class'] = classification
+        context['score'] = score
+        return context
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(SeeMyScoreView, self).dispatch(request, *args, **kwargs)
+
