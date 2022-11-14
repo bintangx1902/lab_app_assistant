@@ -1,54 +1,69 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5 mx-auto">
-    <div class="display flex-column">
-        <div class="card card p-4 mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Presensi</h5>
-                <p class="card-text">pindah ke halaman presensi</p>
-                <a href="{% url 'presence:take-presence' %}" class="btn btn-primary col">Presensi</a>
+<div class="container-fluid mt-5 mx-auto">
+    <div class="row mx-auto align-items-center justify-content-center">
+
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card p-4 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Presensi</h5>
+                    <p class="card-text">pindah ke halaman presensi</p>
+                    <a href="{% url 'presence:take-presence' %}" class="btn btn-primary col">Presensi</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card p-4 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Data Pribadi</h5>
+                    <p class="card-text">pindah ke halaman lengkapi data pribadi</p>
+                    <a href="{% url 'presence:complete-data' %}" class="btn btn-primary col">Lengkapi Data</a>
+                </div>
             </div>
         </div>
 
-        <div class="card p-4 mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Data Pribadi</h5>
-                <p class="card-text">pindah ke halaman lengkapi data pribadi</p>
-                <a href="{% url 'presence:complete-data' %}" class="btn btn-primary col">Lengkapi Data</a>
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card p-4 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Kelas</h5>
+                    <p class="card-text">pindah ke halaman daftar kelas</p>
+                    <a href="{% url 'presence:class-list' %}" class="btn btn-primary col">Daftar Kelas</a>
+                </div>
             </div>
         </div>
 
-        <div class="card p-4 mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Kelas</h5>
-                <p class="card-text">pindah ke halaman daftar kelas</p>
-                <a href="{% url 'presence:class-list' %}" class="btn btn-primary col">Daftar Kelas</a>
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card p-4 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Gabung Kelas</h5>
+                    <p class="card-text">pindah ke halaman untuk masukan kode kelas</p>
+                    <a href="{% url 'presence:join-class' %}" class="btn btn-primary col">Gabung</a>
+                </div>
             </div>
         </div>
 
-        <div class="card p-4 mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Gabung Kelas</h5>
-                <p class="card-text">pindah ke halaman untuk masukan kode kelas</p>
-                <a href="{% url 'presence:join-class' %}" class="btn btn-primary col">Gabung</a>
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card p-4 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Lihat Nilai</h5>
+                    <p class="card-text">Pindah ke halaman ini untuk melihat nilai yang sudah di rekap
+                        <small>New</small></p>
+                    <a href="#" class="btn btn-primary col disabled">See Nilai Saya</a>
+                </div>
             </div>
         </div>
 
-        <div class="card p-4 mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Lihat Nilai</h5>
-                <p class="card-text">Pindah ke halaman ini untuk melihat nilai yang sudah di rekap <small>New</small> </p>
-                <a href="#" class="btn btn-primary col disabled">See Nilai Saya</a>
-            </div>
-        </div>
 
         {% if user.user.is_controller %}
-        <div class="card p-4 mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Assistance Page</h5>
-                <p class="card-text">pindah ke halaman Khusus Asisten</p>
-                <a href="{% url 'assist:landing' %}" class="btn btn-primary col">Assistance</a>
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card p-4 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Assistance Page</h5>
+                    <p class="card-text">pindah ke halaman Khusus Asisten</p>
+                    <a href="{% url 'assist:landing' %}" class="btn btn-primary col">Assistance</a>
+                </div>
             </div>
         </div>
         {% endif %}
