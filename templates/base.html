@@ -62,8 +62,10 @@
                 <div class="card-body">
                     <h5 class="card-title">Account Info</h5>
                     <div class="row mx-auto">
-                        <div class="col-3 col-sm-3">Username</div>
-                        <div class="col-9 col-sm-9 form-control">{{ request.user.username }}</div>
+                        <div class="col-lg-3 col-sm-3">Username</div>
+                        <div class="col-lg-9 col-sm-9">
+                            <input type="text" name="my-account" id="my-account" class="form-control" value="{{ request.user.username }}">
+                        </div>
                     </div>
                 </div>
             </div>
