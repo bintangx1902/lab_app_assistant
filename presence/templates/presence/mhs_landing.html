@@ -55,6 +55,15 @@
             </div>
         </div>
 
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card p-4 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Upload File</h5>
+                    <p class="card-text">Unggah berkas yang kalian disini!</p>
+                    <a href="{% url 'file:upload' %}" class="btn btn-primary col">Upload !</a>
+                </div>
+            </div>
+        </div>
 
         {% if user.user.is_controller %}
         <div class="col-lg-4 col-md-6 col-12">
