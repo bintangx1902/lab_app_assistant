@@ -2,13 +2,19 @@
 
 {% block content %}
 <div class="container my-5">
-    {% load crispy_forms_tags %}
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <div class="form-group">
-            <button class="btn btn-primary">Save</button>
+    <div class="card">
+        <div class="card-body">
+            {% load crispy_forms_tags %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <div class="form-group">
+                    <button class="btn btn-primary">Save</button>
+                    <a href="{% url 'file:all-file' %}" class="btn btn-secondary">My Files</a>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
+
 </div>
 {% endblock %}
