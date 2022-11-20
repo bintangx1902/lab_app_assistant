@@ -1,14 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container my-5">
-    <h2>My FIle</h2>
-    <a href="{% url 'file:upload' %}" class="btn btn-primary mb-3">Upload File</a>
-    {% for file_data in files %}
-    <div class="text">
-        {{ file_data.name }}
+<div class="container-fluid my-5">
+
+    <div class="row mx-auto">
+        <div class="col-10 mx-auto">
+            <h2>My Files</h2>
+            <a href="{% url 'file:upload' %}" class="btn btn-primary">Upload File</a>
+            <div class="table-responsive mt-3">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">File Name</th>
+                        <th scope="col">Class</th>
+                        <th scope="col">Uploaded</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for data in files %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ data.name }}</td>
+                        <td>{{ data.class_name }}</td>
+                        <td>{{ data.time_stamp | date:'l, d F Y - h:i a' }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <hr>
-    {% endfor %}
+    <!--    <h2>My FIle</h2>-->
+    <!--    <a href="{% url 'file:upload' %}" class="btn btn-primary mb-3">Upload File</a>-->
+    <!--    {% for file_data in files %}-->
+    <!--    <div class="text">-->
+    <!--        {{ file_data.name }}-->
+    <!--    </div>-->
+    <!--    <hr>-->
+    <!--    {% endfor %}-->
+
+
 </div>
 {% endblock %}
