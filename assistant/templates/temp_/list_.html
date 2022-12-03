@@ -1,16 +1,52 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<style>
+    label.col-2 {
+        display: none;
+    }
+
+    #end_date_div {
+        display: none;
+    }
+    #to_date{
+        display: none;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container my-5">
+    <input type="button" value="Range" class="btn btn-secondary" onclick="showRange()" id="to_range">
+    <input type="button" value="Date" class="btn btn-secondary" onclick="showDate()" id="to_date">
+
     <div class="row mx-auto">
-        <div class="col-5">
+        <div class="col-12 col-lg-5">
             <h2>File in Class {{ class }}</h2>
         </div>
-        <form method="get" class="col-7">
+
+        <form method="get" class="col-12 col-lg-7">
             <div class="row mx-auto">
-                <input type="date" name="date" id="date" class="form-control col-10">
-                <div class="form-group col-2">
-                    <button class="btn btn-primary">set</button>
+                <label for="date" class="col-2" id="label1">Start Date</label>
+
+                <div class="col-12" id="input_date1">
+                    <div class="row">
+                        <input type="date" name="date" id="date" class="form-control col-10">
+                        <div class="form-group col-2 p-0" >
+                            <button class="btn btn-primary col">set</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mx-auto" id="end_date_div">
+                <label for="end_date" class="col-2" id="label2">End Date</label>
+                <div class="col-12" id="input_date2">
+                    <div class="row">
+                        <input type="date" name="end_date" id="end_date" class="form-control col-10">
+                        <div class="form-group col-2 p-0" >
+                            <button class="btn btn-primary col">set</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -51,4 +87,28 @@
         </table>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    function showRange() {
+        document.getElementById('label1').style.display = "inline-block"
+        document.getElementById('label2').style.display = "inline-block"
+        document.getElementById('end_date_div').style.display = "flex"
+        document.getElementById('to_range').style.display = "none"
+        document.getElementById('to_date').style.display = "inline-block"
+        document.getElementById('input_date1').className = "col-10"
+        document.getElementById('input_date2').className = "col-10"
+    }
+
+    function showDate() {
+        document.getElementById('label1').style.display = "none"
+        document.getElementById('label2').style.display = "none"
+        document.getElementById('end_date_div').style.display = "none"
+        document.getElementById('to_range').style.display = "inline-block"
+        document.getElementById('to_date').style.display = "none"
+        document.getElementById('input_date1').className = "col-12"
+
+    }
+</script>
 {% endblock %}
