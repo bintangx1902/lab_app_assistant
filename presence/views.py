@@ -262,9 +262,12 @@ class SeeMyScoreView(ListView):
     context_object_name = 'scores'
 
     def get_queryset(self):
+        model = self.model
         get_classification = self.request.GET.get('class')
         get_classification = classification[int(get_classification) - 1] if get_classification is not None else None
-        return self.model.objects.filter(user=self.request.user, classification=get_classification)
+        return model.objects.filter(user=self.request.user,
+                                    classification=get_classification) if get_classification else model.objects.filter(
+            user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super(SeeMyScoreView, self).get_context_data(**kwargs)
@@ -277,4 +280,3 @@ class SeeMyScoreView(ListView):
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(SeeMyScoreView, self).dispatch(request, *args, **kwargs)
-
