@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %} Student List {% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">NIM</th>
+                    <th scope="col">WA</th>
+                    <th scope="col">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ student.first_name }} {{ student.last_name }}</td>
+                    <td>{{ student.user.nim }}</td>
+                    <td>{{ student.user.phone_number }}</td>
+                    <td>{{ student.email }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock %}
