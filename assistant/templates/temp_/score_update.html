@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %} Mahasiswa {{ class_name }} {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if main_form %}
+    <form method="get">
+        <div class="form-group">
+            <label for="classification">Jenis Rekap</label>
+            <select name="classification" id="classification" class="form-control">
+                <option selected value="">. . .</option>
+                {% for class in classification %}
+                <option value="{{ forloop.counter }}">{{ class }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary">Set</button>
+        </div>
+    </form>
+    {% endif %}
+
+    {% if show %}
+    <div class="card">
+        <div class="card-body">
+            <form method="get">
+                <div class="form-group">
+                    <label for="named">Urutan ke : </label>
+                    <select name="named" id="named" class="form-control">
+                        <option selected value="">. . .</option>
+                        {% for item in items %}
+                        <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-outline-primary">Cek</button>
+                </div>
+            </form>
+<!--            <form method="post" enctype="multipart/form-data">-->
+<!--                {% csrf_token %}-->
+<!--                {% if multiple %}-->
+<!--                <div class="form-group">-->
+<!--                    <label for="named">Urutan ke </label>-->
+<!--                    <select name="named" id="named" class="form-control" required>-->
+<!--                        <option selected value="">. . .</option>-->
+<!--                        {% for item in items %}-->
+<!--                        <option value="{{ item }}">{{ item }}</option>-->
+<!--                        {% endfor %}-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--                {% else %}-->
+<!--                <input type="text" name="named" id="named" readonly value="{{ name }}" hidden>-->
+<!--                {% endif %}-->
+<!--                {% for std in class_name.students.all %}-->
+<!--                <div class="form-group row">-->
+<!--                    <div class="col-lg-3">-->
+<!--                        <input type="text" name="data{{ forloop.counter }}" id="data{{ forloop.counter }}"-->
+<!--                               class="form-control" value="{{ std.user.nim }}" readonly>-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-9">-->
+<!--                        <input type="number" name="score{{ forloop.counter }}" id="{{ forloop.counter }}"-->
+<!--                               class="form-control" max="100" title="nilai maximum adalah 100" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                {% endfor %}-->
+<!--                <div class="form-group">-->
+<!--                    <button class="btn btn-primary">Cek</button>-->
+<!--                </div>-->
+<!--            </form>-->
+
+        </div>
+    </div>
+
+    {% endif %}
+
+    {% if show_student %}
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for score in scores %}
+                <div class="form-group">
+                    <label for="std{{ forloop.counter}}">{{ score.user.user.nim }} - {{ score.user.user.full_name }}</label>
+                    <input type="number" name="score{{ forloop.counter }}" min="0" max="100"  id="std{{ forloop.counter}}"  class="form-control" value="{{ score.score }}">
+                    <input type="text" hidden value="{{ score.user.user.nim }}" name="data{{ forloop.counter }}">
+                </div>
+                {% endfor %}
+                <div class="form-group">
+                    <button class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
