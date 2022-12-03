@@ -24,14 +24,14 @@
                 <td>{{ class.creator }}</td>
                 <td>
                     {% for pr in class.pr.all %}
-                    {{ pr }}
+                    {{ pr }} <br>
                     {% endfor %}
                 </td>
-                <td><a href="{% url 'presence:my-presence-recap' class.link %}" class="btn btn-primary">See Recaps</a></td>
                 <td>
-<!--                    {{ class.from_class.all.count }} - -->
-<!--                    {% for x in class.from_class.all %}-->
-<!--                    {% endfor %}-->
+                    <a href="{% url 'presence:my-presence-recap' class.link %}" class="btn btn-primary mt-0 mx-1 mb-1">Presence Recaps</a>
+                    <a href="{% url 'presence:my-score-recap' class.link %}" class="btn btn-primary m-1">Score Recaps</a>
+                </td>
+                <td>
                     <a href="{% url 'presence:upload-file' class.link %}" class="btn btn-primary">Upload Files</a>
                 </td>
             </tr>
