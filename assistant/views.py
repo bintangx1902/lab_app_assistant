@@ -72,6 +72,15 @@ class SeeAllFiles(ListView):
         return super(SeeAllFiles, self).dispatch(request, *args, **kwargs)
 
 
+class SeeAllStudents(ListView):
+    model = ClassName
+    template_name = templates('student_list')
+    context_object_name = 'students'
+
+    def get_queryset(self):
+        return self.model.objects.get(link=self.kwargs['link']).students.all()
+
+
 class DeleteFile(View):
     def get(self, *args, **kwargs):
         raise Http404()
@@ -602,3 +611,67 @@ class AddStudentScore(View):
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(AddStudentScore, self).dispatch(request, *args, **kwargs)
+
+
+class UpdateScore(View):
+    model = StudentScore
+    template_name = templates('score_update')
+
+    def get(self, *args, **kwargs):
+        get_classification = self.request.GET.get('classification')
+        named = self.request.GET.get('named')
+        class_ = ClassName.objects.get(link=self.kwargs['link'])
+        show = not True
+        show_student = False
+        main_form = True
+
+        context = {
+            'main_form': main_form,
+            'classification': classification,
+            'class_name': class_,
+            'show': show,
+            'show_student': show_student
+        }
+
+        if named:
+            context['main_form'] = False
+            context['show_student'] = True
+            score_list = StudentScore.objects.filter(class_name__link=self.kwargs['link']).filter(name=named)
+            context['scores'] = score_list
+
+        if get_classification:
+            context['show'] = True
+            class_ = classification[int(get_classification) - 1]
+            items = [f"{class_}-{x}" for x in range(1, 21)]
+            multiple = True
+            if class_ == 'UAS' or class_ == 'UTS':
+                multiple = not multiple
+                context['name'] = class_
+
+            context['multiple'] = multiple
+            context['items'] = items
+        return render(self.request, self.template_name, context)
+
+    def post(self, *args, **kwargs):
+        named = self.request.GET.get('named')
+
+        nim_list, score_list = [], []
+        for key, value in self.request.POST.items():
+            if 'score' in key:
+                score_list.append(value)
+            elif 'data' in key:
+                nim_list.append(value)
+
+        for nim, score in dict(zip(nim_list, score_list)).items():
+            user = UserData.objects.get(nim=nim)
+            new_score = StudentScore.objects.get(user=user.user, name=named)
+            new_score.score = score
+            new_score.save()
+
+        return redirect(reverse('assist:update-score', kwargs={'link': self.kwargs['link']}))
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UpdateScore, self).dispatch(request, *args, **kwargs)
