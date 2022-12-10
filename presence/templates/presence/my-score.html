@@ -34,7 +34,7 @@
             <tbody>
             {% for score in scores %}
                 <tr>
-                    <th scope="row">1</th>
+                    <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ score.name }}</td>
                     <td>{{ score.score }}</td>
                     <td>@mdo</td>
