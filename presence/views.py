@@ -3,7 +3,7 @@ from http import HTTPStatus
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q as __
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -264,6 +264,13 @@ class SeeMyScoreView(ListView):
     def get_queryset(self):
         model = self.model
         get_classification = self.request.GET.get('class')
+        if get_classification is not None:
+            try:
+                get_classification = int(get_classification)
+            except Exception:
+                raise Http404
+            if int(get_classification) > 6:
+                get_classification = 6
         get_classification = classification[int(get_classification) - 1] if get_classification is not None else None
         return model.objects.filter(user=self.request.user,
                                     classification=get_classification) if get_classification else model.objects.filter(
