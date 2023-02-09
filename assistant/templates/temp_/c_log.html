@@ -2,13 +2,12 @@
 
 {% block content %}
 <div class="container mt-5">
-    <form method="post", enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% load crispy_forms_tags %}
-
-        {% crispy form 'bootstrap4' %}
         <button class="btn btn-primary">Save Changes</button>
         <a href="{% url 'assist:change-password' %}" class="btn btn-secondary">Change Password</a>
+        {% crispy form 'bootstrap4' %}
     </form>
 </div>
 {% endblock %}
