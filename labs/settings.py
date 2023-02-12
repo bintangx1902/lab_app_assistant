@@ -92,6 +92,7 @@ SITE_ID = int(config('SITE_ID'))
 CRISPY_TEMPLATE_PACK = 'tailwind'
 
 ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/'  # add login
+LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/join-class'  # add complete_data
 
 ACCOUNT_EMAIL_VERIFICATION = "none"
