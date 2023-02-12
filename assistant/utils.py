@@ -3,7 +3,7 @@ import re
 import string
 
 class_list = [f"Kelas {char}" for char in string.ascii_uppercase]
-course_list = ['PBO', 'Struktur Data', 'Dasar Pemrograman', 'Pemrograman Deklaratif']
+course_list = ['PBO', 'Struktur Data', 'Dasar Pemrograman', 'Pemrograman Deklaratif', 'Pemrograman Mobile Lanjut', 'Pemrograman Web Lanjut']
 conditions = ['Izin', 'Sakit']
 
 

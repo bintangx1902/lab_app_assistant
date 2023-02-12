@@ -36,3 +36,7 @@ class CreateClassForms(ModelForm):
     class Meta:
         model = ClassName
         fields = ["lecture_name"]
+
+        widgets = {
+            'lecture_name': forms.TextInput(attrs={'class': 'form-control'})
+        }
