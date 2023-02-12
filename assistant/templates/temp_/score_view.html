@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %} Score View - {{ class.name }} {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="form-group">
+        <select name="options" id="scoring-type" class="form-control">
+            <option value="">. . .</option>
+            {% for option in options %}
+            <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <form action="{% url 'assist:download-score' class.link %}?options={{ request.GET.options }}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {% if datas %}
+            <button class="btn btn-outline-primary">Download</button>
+            {% else %}
+            <button disabled class="btn btn-outline-primary">Download</button>
+            {% endif %}
+        </div>
+    </form>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">NIM</th>
+                    <th scope="col">Nama Lengkap</th>
+                    <th scope="col">NIlai</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for data in datas %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ data.user.user.nim }}</td>
+                    <td>{{ data.user.first_name }} {{ data.user.last_name }}</td>
+                    <td>{{ data.score }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    document.querySelector("#scoring-type").addEventListener("change", function (element) {
+        window.location.href = `/assistant/my-class/2022-Kelas-A-Dasar-Pemrograman-Jam-1540-1810/score/view?options=${element.target.value}`
+    })
+</script>
+{% endblock %}

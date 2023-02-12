@@ -24,6 +24,8 @@ urlpatterns = [
     path('my-class/<slug:link>/update-detail', update_class_detail, name='update-detail'),
     path('my-class/<slug:link>/score/update', UpdateScore.as_view(), name='update-score'),
     path('my-class/<slug:link>/score', AddStudentScore.as_view(), name='score'),
+    path('my-class/<slug:link>/score/view', ViewStudentScore.as_view(), name='view-score'),
+    path('my-class/<slug:link>/score/view/export', DownloadScore.as_view(), name='download-score'),
     path('my-class/<slug:link>/students', SeeAllStudents.as_view(), name='see-all-students'),
     path('my-class/<slug:link>', MyClass.as_view(), name='my-class'),
 ]

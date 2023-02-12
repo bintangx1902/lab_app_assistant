@@ -40,7 +40,7 @@ class AssistantLanding(TemplateView):
         context['student'] = student
         return context
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -65,7 +65,7 @@ class SeeAllFiles(ListView):
         context['class'] = class_
         return context
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -92,14 +92,14 @@ class DeleteFile(View):
 
         return redirect(reverse('assist:file-class', kwargs={'link': kwargs['link']}))
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False)))
     def dispatch(self, request, *args, **kwargs):
         return super(DeleteFile, self).dispatch(request, *args, **kwargs)
 
 
-@login_required(login_url='/accounts/login/')
+@login_required(login_url=settings.LOGIN_URL)
 @method_decorator(
     user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
 def download_file(request, path):
@@ -123,7 +123,7 @@ class QRGeneratedList(ListView):
         query = model.objects.filter(class_name=class_name).order_by('-pk')
         return query
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -141,7 +141,7 @@ class PresenceRecap(ListView):
         get_code = GenerateQRCode.objects.get(qr_code=self.kwargs['qr_code'])
         return model.objects.filter(qr=get_code)
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -157,7 +157,7 @@ class QRCodeView(View):
         img = open(os.path.join(settings.MEDIA_ROOT, file[0].qr_img.name), 'rb').read()
         return HttpResponse(img, content_type='image/png')
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -188,7 +188,7 @@ class MyClassList(ListView):
         model = self.model
         return model.objects.filter(__(pr=self.request.user) | __(creator=self.request.user)).distinct()
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -211,7 +211,7 @@ class MyClass(DetailView):
         context['links'] = qr_active if qr_active.exists() else None
         return context
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -259,14 +259,14 @@ class CreateClass(CreateView):
         context['course_list'] = course_list
         return context
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(CreateClass, self).dispatch(request, *args, **kwargs)
 
 
-@login_required(login_url='/accounts/login/')
+@login_required(login_url=settings.LOGIN_URL)
 @user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/')
 def update_class_detail(request, link):
     form_class = CreateClassForms
@@ -322,7 +322,7 @@ class GenerateQRCodeView(CreateView):
         form.instance.creator = self.request.user
         return super(GenerateQRCodeView, self).form_valid(form)
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -359,7 +359,7 @@ class JoinAssistantClas(View):
         messages.info(self.request, f'Kamu sekarang terdaftar asisten kelas {get_class.name}')
         return redirect('assist:join-class')
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -390,7 +390,7 @@ class AssistantChangeUsername(View):
 
         return redirect('assist:change-username')
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -405,14 +405,14 @@ class AssistantChangePassword(PasswordChangeView):
         messages.info(self.request, 'Data anda berhasil di Ubah!')
         return self.success_url
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(AssistantChangePassword, self).dispatch(request, *args, **kwargs)
 
 
-@login_required(login_url='/accounts/login/')
+@login_required(login_url=settings.LOGIN_URL)
 @user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/')
 def recaps_csv(request, link, qr_code):
     if request.method == "POST":
@@ -476,7 +476,7 @@ class SetStudentAbsence(View):
         return redirect(reverse('assist:absence',
                                 kwargs={'link': self.kwargs['link'], 'qr_code': self.kwargs['qr_code']}))
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -507,7 +507,7 @@ class GenerateTokenToResetPassword(View):
         messages.info(self.request, 'Token berhasil di buat')
         return redirect('assist:generate-token')
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -530,7 +530,7 @@ class FinderView(View):
         context = {'result': result, 'nim': nim}
         return render(self.request, self.template_name, context)
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -606,7 +606,7 @@ class AddStudentScore(View):
             instance.save()
         return redirect(reverse('assist:score', kwargs={'link': self.kwargs['link']}))
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
@@ -670,8 +670,58 @@ class UpdateScore(View):
 
         return redirect(reverse('assist:update-score', kwargs={'link': self.kwargs['link']}))
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super(UpdateScore, self).dispatch(request, *args, **kwargs)
+
+
+class ViewStudentScore(View):
+    def get(self, *args, **kwargs):
+        get_option = self.request.GET.get('options')
+        options = StudentScore.objects.filter(class_name__link=kwargs['link'])
+        disc_options = [x[0] for x in options.values_list('name').distinct()]
+
+        context = {
+            'options': disc_options,
+        }
+        if get_option:
+            data = StudentScore.objects.filter(name=get_option, class_name__link=kwargs['link'])
+            context['datas'] = data
+
+        context['class'] = ClassName.objects.get(link=kwargs['link'])
+        return render(self.request, templates('score_view'), context)
+
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
+class DownloadScore(View):
+    def get(self, *args, **kwargs):
+        return Http404
+
+    def post(self, *args, **kwargs):
+        option = self.request.GET.get('options')
+        if option:
+            to_download = StudentScore.objects.filter(name=option, class_name__link=kwargs.get('link'))
+            content = f"attachment; filename=rekap_nilai_{option}_{kwargs.get('link')}.csv"
+        else:
+            raise Http404
+        response = HttpResponse('')
+        response['Content-Disposition'] = content
+        writer = csv.writer(response)
+        writer.writerow(['no', 'NIM', 'nama lengkap', 'nilai'])
+        for idx, data in enumerate(to_download):
+            writer.writerow([int(idx) + 1, data.user.user.nim, f"{data.user.first_name} {data.user.last_name}", data.score])
+
+        return response
+
+    @method_decorator(login_required(login_url=settings.LOGIN_URL))
+    @method_decorator(
+        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
