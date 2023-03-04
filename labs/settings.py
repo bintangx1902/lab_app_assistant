@@ -1,4 +1,3 @@
-
 """
 Django settings for labs project.
 
@@ -98,10 +97,10 @@ LOGIN_REDIRECT_URL = '/join-class'  # add complete_data
 ACCOUNT_EMAIL_VERIFICATION = "none"
 
 CACHES = {
-   'default': {
-      'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-      'LOCATION': join(BASE_DIR, 'caches'),
-   }
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': join(BASE_DIR, 'caches'),
+    }
 }
 
 REST_FRAMEWORK = {
@@ -130,6 +129,12 @@ AUTHENTICATION_BACKENDS = [
 ROOT_URLCONF = 'labs.urls'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('LAB_EMAIL')
+EMAIL_HOST_PASSWORD = config('LAB_PASSWORD')
+DEFAULT_FROM_EMAIL = config('LAB_EMAIL')
 
 TEMPLATES = [
     {
