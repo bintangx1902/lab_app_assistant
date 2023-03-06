@@ -572,6 +572,7 @@ class AddStudentScore(View):
             context['multiple'] = multiple
             context['items'] = items
 
+        context['class'] = get_class
         return render(self.request, self.template_name, context)
 
     def post(self, *args, **kwargs):
@@ -650,6 +651,8 @@ class UpdateScore(View):
 
             context['multiple'] = multiple
             context['items'] = items
+
+        context['class'] = class_
         return render(self.request, self.template_name, context)
 
     def post(self, *args, **kwargs):
@@ -714,9 +717,10 @@ class DownloadScore(View):
         response = HttpResponse('')
         response['Content-Disposition'] = content
         writer = csv.writer(response)
-        writer.writerow(['no', 'NIM', 'nama lengkap', 'nilai'])
+        writer.writerow(['No', 'Kelas', 'NIM', 'Nama Lengkap', 'Nilai', 'Konteks'])
         for idx, data in enumerate(to_download):
-            writer.writerow([int(idx) + 1, data.user.user.nim, f"{data.user.first_name} {data.user.last_name}", data.score])
+            writer.writerow([int(idx) + 1, to_download.first().class_name, data.user.user.nim,
+                             f"{data.user.first_name} {data.user.last_name}", data.score, option])
 
         return response
 

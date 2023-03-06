@@ -80,6 +80,7 @@
         <div class="card-body">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                {% if scores %}
                 {% for score in scores %}
                 <div class="form-group">
                     <label for="std{{ forloop.counter}}">{{ score.user.user.nim }} - {{ score.user.user.full_name }}</label>
@@ -90,6 +91,11 @@
                 <div class="form-group">
                     <button class="btn btn-primary">Save</button>
                 </div>
+                {% else %}
+                <h2 class="bold">Tidak ada Data !</h2>
+                <a href="{% url 'assist:update-score' class.link %}" class="btn btn-primary">Reload</a>
+                {% endif %}
+
             </form>
         </div>
     </div>
