@@ -6,3 +6,9 @@ def check_nim(nim_list: list, target: str):
 
 def total_average(models, Avg):
     return models.aggregate(Avg('score'))
+
+
+def check_request(models, user):
+    """ models must be request password models """
+    find = models.objects.filter(user=user, is_done=False)
+    return True if find else False
