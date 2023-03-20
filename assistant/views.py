@@ -13,6 +13,7 @@ from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import *
+from django.core.mail import send_mail
 
 from .forms import *
 from .models import *
@@ -493,7 +494,7 @@ class GenerateTokenToResetPassword(View):
         return render(self.request, self.template_name, context)
 
     def post(self, *args, **kwargs):
-        valid_until = timezone.now() + datetime.timedelta(minutes=10)
+        valid_until = timezone.now() + datetime.timedelta(minutes=15)
         token = slug_generator(12)
         get_all_token = [x.token for x in TokenToResetPassword.objects.all()]
         token = check_slug(token, get_all_token, 12)
@@ -505,6 +506,17 @@ class GenerateTokenToResetPassword(View):
         )
         instance.save()
         messages.info(self.request, 'Token berhasil di buat')
+        """ send token to email """
+        target = [x.user.email for x in ResetPasswordRequest.objects.filter(is_done=False)]
+        host = self.request.META['HTTP_HOST']
+        x = send_mail(
+            'Request Link Lupa Password',
+            f"Silahkan klik Link ini '{host}/reset-password/{token}'",
+            'bintangpratomo@gmail.com',
+            target,
+            fail_silently=False,
+        )
+        messages.info(self.request, 'Email berhasil di kirim' if x else 'Tidak dapat Sending email')
         return redirect('assist:generate-token')
 
     @method_decorator(login_required(login_url=settings.LOGIN_URL))
