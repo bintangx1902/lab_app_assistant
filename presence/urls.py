@@ -6,6 +6,7 @@ app_name = 'presence'
 urlpatterns = [
     path('join-class', JoinClass.as_view(), name='join-class'),
     path('data-completions', DataComplement.as_view(), name='complete-data'),
+    path('reset-password/request', RequestPasswordReset.as_view(), name='request-password-reset'),
     path('reset-password/<token>', ResetPassword.as_view(), name='reset-password'),
     path('presence', Presence.as_view(), name='take-presence'),
     path('class', ClassList.as_view(), name='class-list'),
