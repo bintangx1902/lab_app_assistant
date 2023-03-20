@@ -12,10 +12,6 @@ from django.views.generic import *
 from .forms import *
 from .utils import *
 
-TokenToResetPassword = apps.get_model('assistant', 'TokenToResetPassword')
-StudentScore = apps.get_model('assistant', 'StudentScore')
-classification = ['PRETEST', 'LAPORAN', 'POST-TEST', 'UTS', 'UAS', 'All']
-
 
 def templates(temp: str):
     return f'presence/{temp}.html'
@@ -209,7 +205,7 @@ class MyPresenceRecaps(ListView):
 
 class ResetPassword(View):
     template_name = templates('reset')
-    model = [UserData, TokenToResetPassword]
+    model = [UserData, TokenToResetPassword, ResetPasswordRequest]
 
     def get(self, *args, **kwargs):
         token = self.model[1].objects.get(token=self.kwargs['token'])
@@ -223,6 +219,7 @@ class ResetPassword(View):
         nim = self.request.POST.get('nim')
         pass1 = self.request.POST.get('password1')
         pass2 = self.request.POST.get('password2')
+        token = get_object_or_404(self.model[1], token=kwargs['token'])
 
         get_nim = self.model[0].objects.filter(nim=nim)
         if not get_nim:
@@ -239,9 +236,10 @@ class ResetPassword(View):
         user.set_password(passw)
         user.save()
 
-        token = self.model[1].objects.get(token=self.kwargs['token'])
-        token.user.add(user)
-        token.save()
+        to_update = ResetPasswordRequest.objects.get(user=nim.user, token=token, is_done=False)
+        to_update.is_done = True
+        to_update.save()
+
         messages.info(self.request, f"Password berhasil di ganti!")
         return redirect(settings.LOGIN_URL)
 
@@ -287,3 +285,22 @@ class SeeMyScoreView(ListView):
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(SeeMyScoreView, self).dispatch(request, *args, **kwargs)
+
+
+class RequestPasswordReset(View):
+    model = ResetPasswordRequest
+    template_name = templates('request-reset')
+
+    def get(self, *args, **kwargs):
+        return render(self.request, self.template_name)
+
+    def post(self, *args, **kwargs):
+        nim = get_object_or_404(UserData, nim=self.request.POST.get('NIM'))
+        if check_request(self.model, nim.user):
+            return
+        instance = self.model(user=nim.user)
+        instance.save()
+        return redirect(settings.LOGIN_URL)
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
