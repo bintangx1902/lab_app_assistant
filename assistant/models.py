@@ -9,7 +9,6 @@ class TokenToResetPassword(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     valid_until = models.DateTimeField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
-    user = models.ManyToManyField(User, related_name='user_pass', related_query_name='user_pass', blank=True, null=True)
 
     def __str__(self):
         now = timezone.now()
@@ -29,3 +28,13 @@ class StudentScore(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.name} : {self.score}"
+
+
+class ResetPasswordRequest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_done = models.BooleanField(default=False)
+    token = models.ForeignKey(TokenToResetPassword, on_delete=models.CASCADE, null=True, blank=True)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} is requested" if not self.is_done else f"{self.user} has changed password"
