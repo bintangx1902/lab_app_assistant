@@ -236,7 +236,8 @@ class ResetPassword(View):
         user.set_password(passw)
         user.save()
 
-        to_update = ResetPasswordRequest.objects.get(user=nim.user, token=token, is_done=False)
+        to_update = ResetPasswordRequest.objects.get(user=nim.user, is_done=False)
+        to_update.token = token
         to_update.is_done = True
         to_update.save()
 
