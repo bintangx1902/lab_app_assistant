@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <script src="{% static 'user/js/qrcode.min.js' %}"></script>
+    <script src="{% static 'user/js/html5.qrcode.min.js' %}"></script>
 
     <div class="d-lg-flex">
         <div class="col-lg col mx-auto">
@@ -28,12 +28,13 @@
 
 {% csrf_token %}
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 <script type="text/javascript">
     let token = document.getElementsByName("csrfmiddlewaretoken");
     console.log(token[0].value)
     let handle;
 
-    function onScanSuccess(qrCodeMessage) {
+    function onScanSuccess(decodedText, decodedResult) {
 
         axios({
             method: 'post',
@@ -43,29 +44,30 @@
                 'Content-Type': 'Application/json'
             },
             data: {
-                "code": String(qrCodeMessage),
+                "code": String(decodedText),
                 "number": "{{ request.user.id }}"
             }
         })
         .then(response => {
-            console.log(response)
+            alert(response.data.text)
             window.location.replace('{% url "presence:landing" %}')
         })
         .catch(error => {
             onScanError(error.response.data.text)
-
+            alert(handle)
         })
         document.getElementById('result').innerHTML = '<span class="alert alert-info">' + handle + '</span>'
-
     }
 
-    function onScanError(errorMessage) {
+    function onScanFailure(errorMessage) {
         handle = errorMessage;
     }
 
     let html5QrcodeScanner = new Html5QrcodeScanner(
-        "reader", {fps: 10, qrbox: 250});
-    html5QrcodeScanner.render(onScanSuccess, onScanError);
+        "reader",
+        {fps: 10, qrbox: {width: 250, height: 250}},
+        /* verbose= */ false);
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 
 </script>
 {% endblock %}

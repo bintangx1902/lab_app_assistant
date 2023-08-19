@@ -43,7 +43,7 @@
 {% block content %}
 <div class="container sm:px-10">
     <div class="block xl:grid grid-cols-2 gap-4">
-        <!-- BEGIN: Register Info -->
+        <!-- BEGIN: Login Info -->
         <div class="hidden xl:flex flex-col min-h-screen">
             <a href="" class="-intro-x flex items-center pt-5">
                 <img alt="SAQ - Logo" class="w-20" src="{% static 'user/images/logo.PNG' %}"/>
@@ -62,8 +62,8 @@
                 </div>
             </div>
         </div>
-        <!-- END: Register Info -->
-        <!-- BEGIN: Register Form -->
+        <!-- END: Login Info -->
+        <!-- BEGIN: Login Form -->
         <div class="xl:hidden flex justify-center">
             <img class="w-16" src="{% static 'user/images/logo.PNG' %}" alt="">
             <span class="text-white text-2xl font-bold ml-3 mt-4"> SAQ Laboratory</span>
@@ -81,6 +81,8 @@
                     {% csrf_token %}
                     {% load crispy_forms_tags %}
                     {{ form | crispy }}
+
+                    <a class="align-top text-decoration-underline" href="{% url 'presence:request-password-reset' %}">Click here if you forgot your password</a>
                 </div>
                 {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
@@ -92,7 +94,7 @@
                 </div>
             </form>
         </div>
-        <!-- END: Register Form -->
+        <!-- END: Login Form -->
     </div>
 </div>
 
