@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.views import PasswordChangeView
 from django.db.models import Q as __
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import *
@@ -741,3 +741,29 @@ class DownloadScore(View):
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+
+class AddNewAssistant(View):
+    template_name = templates('join_class')
+
+    def get(self, *args, **kwargs):
+        return render(self.request, self.template_name, {'assist': True})
+
+    def post(self, *args, **kwargs):
+        nim = self.request.POST.get('class_code')
+        nim = list(nim.split(', '))
+        for i in nim:
+            get_user = get_object_or_404(UserData, nim=i)
+            user = get_user.user
+
+            get_user.is_controller, user.is_staff = True, True
+            get_user.save()
+            user.save()
+        return redirect('assist:landing')
+
+class DeletePreviousData(View):
+    def get(self, *args, **kwargs):
+        return
+
+    def post(self, *agrs, **kwargs):
+        return
