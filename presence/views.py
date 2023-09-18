@@ -32,7 +32,8 @@ class JoinClass(View):
         return render(self.request, templates('join_class'))
 
     def post(self, *args, **kwargs):
-        code = self.request.POST['class_code']
+        code: str = self.request.POST['class_code']
+        code = code.replace(' ', '')
         get_class = ClassName.objects.filter(unique_code=code)
         if not get_class:
             messages.error(self.request, 'Kode Kelas Tidak Ditemukan')
@@ -57,6 +58,10 @@ class JoinClass(View):
     @method_decorator(login_required(login_url='/accounts/login/'))
     @method_decorator(user_passes_test(lambda u: (u.user if hasattr(u, 'user') else False), '/'))
     def dispatch(self, request, *args, **kwargs):
+        null = check_nullable(self.request.user.pk)
+        if null:
+            messages.info(self.request, 'Kamu belum melengkapi Data Pribadi')
+            return redirect('presence:complete-data')
         return super(JoinClass, self).dispatch(request, *args, **kwargs)
 
 
@@ -285,6 +290,10 @@ class SeeMyScoreView(ListView):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
+        null = check_nullable(self.request.user.pk)
+        if null:
+            messages.info(self.request, 'Kamu belum melengkapi Data Pribadi')
+            return redirect('presence:complete-data')
         return super(SeeMyScoreView, self).dispatch(request, *args, **kwargs)
 
 

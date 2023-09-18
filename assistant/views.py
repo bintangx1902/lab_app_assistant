@@ -341,7 +341,8 @@ class JoinAssistantClas(View):
         return render(self.request, templates('join_class'))
 
     def post(self, *args, **kwargs):
-        code = self.request.POST.get('class_code')
+        code: str = self.request.POST.get('class_code')
+        code = code.replace(' ', '')
         get_class = ClassName.objects.filter(unique_code=code)
         if not get_class:
             messages.warning(self.request, 'Kelas dengan kode {} tidak terdaftar'.format(code))
@@ -760,10 +761,3 @@ class AddNewAssistant(View):
             get_user.save()
             user.save()
         return redirect('assist:landing')
-
-class DeletePreviousData(View):
-    def get(self, *args, **kwargs):
-        return
-
-    def post(self, *agrs, **kwargs):
-        return
