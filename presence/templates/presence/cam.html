@@ -35,7 +35,6 @@
     let handle;
 
     function onScanSuccess(decodedText, decodedResult) {
-
         axios({
             method: 'post',
             url: '{% url "api:take-presence" %}?format=json',
@@ -48,19 +47,21 @@
                 "number": "{{ request.user.id }}"
             }
         })
-        .then(response => {
-            alert(response.data.text)
-            window.location.replace('{% url "presence:landing" %}')
-        })
-        .catch(error => {
-            onScanError(error.response.data.text)
-            alert(handle)
-        })
-        document.getElementById('result').innerHTML = '<span class="alert alert-info">' + handle + '</span>'
+            .then(response => {
+                alert(response.data.text)
+                window.location.replace('{% url "presence:landing" %}')
+            })
+            .catch(error => {
+                onScanFailure(error.response.data.text)
+                alert(handle)
+                window.location.replace('{% url "presence:landing" %}')
+            })
+        // document.getElementById('result').innerHTML = '<span class="alert alert-info">' + handle + '</span>'
+        // console.log(`Code matched = ${decodedText}`, decodedResult);
     }
 
-    function onScanFailure(errorMessage) {
-        handle = errorMessage;
+    function onScanFailure(error) {
+        handle = error;
     }
 
     let html5QrcodeScanner = new Html5QrcodeScanner(
