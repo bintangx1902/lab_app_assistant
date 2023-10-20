@@ -650,7 +650,7 @@ class UpdateScore(View):
         if named:
             context['main_form'] = False
             context['show_student'] = True
-            score_list = StudentScore.objects.filter(class_name__link=self.kwargs['link']).filter(name=named)
+            score_list = StudentScore.objects.filter(class_name__link=self.kwargs['link']).filter(name=named).order_by('-score')
             context['scores'] = score_list
 
         if get_classification:

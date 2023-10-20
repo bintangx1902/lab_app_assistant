@@ -4,6 +4,9 @@
 
 {% block content %}
 <div class="container mt-5">
+    <a href="{% url 'assist:score' request.resolver_match.kwargs.link %}" class="btn btn-outline-success">Buat Nilai</a>
+</div>
+<div class="container mt-3">
     {% if main_form %}
     <form method="get">
         <div class="form-group">

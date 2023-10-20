@@ -3,7 +3,8 @@
 {% block title %} Mahasiswa {{ class_name }} {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-5"><a href="{% url 'assist:update-score' request.resolver_match.kwargs.link %}" class="btn btn-outline-success">Update Nilai Mahasiswa</a></div>
+<div class="container mt-4">
     <form method="get">
         <div class="form-group">
             <label for="classification">Jenis Rekap</label>
