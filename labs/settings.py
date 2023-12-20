@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'corsheaders',
 
     'crispy_forms',
     "crispy_tailwind",
@@ -118,11 +119,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    'corsheaders.middleware.CorsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://saqku.zaws.net",
+]
+SECURE_REFERRER_POLICY = 'same-origin'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -138,8 +144,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('LAB_EMAIL')
 EMAIL_HOST_PASSWORD = config('LAB_PASSWORD')
 DEFAULT_FROM_EMAIL = config('LAB_EMAIL')
-
-
 
 TEMPLATES = [
     {
