@@ -96,6 +96,7 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/join-class'  # add complete_data
 
 ACCOUNT_EMAIL_VERIFICATION = "none"
+CSRF_HEADER_NAME = "HTTP_X_CSRFTOKEN"
 
 CACHES = {
     'default': {
