@@ -241,10 +241,13 @@ class ResetPassword(View):
         user.set_password(passw)
         user.save()
 
-        to_update = ResetPasswordRequest.objects.get(user=nim.user, is_done=False)
-        to_update.token = token
-        to_update.is_done = True
-        to_update.save()
+        try:
+            to_update = ResetPasswordRequest.objects.get(user=nim.user, is_done=False)
+            to_update.token = token
+            to_update.is_done = True
+            to_update.save()
+        except ObjectDoesNotExist as e:
+            print(e)
 
         messages.info(self.request, f"Password berhasil di ganti!")
         return redirect(settings.LOGIN_URL)

@@ -19,14 +19,13 @@ from django.views.static import serve
 from django.conf.urls.static import static
 from django.conf import settings
 
-
 urlpatterns = [
     path('admin/clearcache/', include('clearcache.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('robots.txt', include('robots.urls')),
-    path('static/<path>', serve, settings.STATIC_ROOT),
-    path('media/<path>', serve, settings.MEDIA_ROOT),
+    path('static/<path>', serve, {'document_root': settings.STATIC_ROOT}),
+    path('media/<path>', serve, {'document_root': settings.MEDIA_ROOT}),
 ]
 
 urlpatterns += [
@@ -39,4 +38,3 @@ urlpatterns += [
 if not settings.DEBUG or settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
