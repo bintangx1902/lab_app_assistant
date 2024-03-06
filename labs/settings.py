@@ -34,6 +34,8 @@ os.environ['HTTPS'] = config('HTTPS')
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app', 'http://*.ngrok-free.app', 'http://*zaws.net', 'https://*.zaws.net']
+
 # Application definition
 
 INSTALLED_APPS = [
