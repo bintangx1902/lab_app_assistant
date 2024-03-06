@@ -246,8 +246,8 @@ class ResetPassword(View):
             to_update.token = token
             to_update.is_done = True
             to_update.save()
-        except ObjectDoesNotExist as e:
-            print(e)
+        except ObjectDoesNotExist:
+            pass
 
         messages.info(self.request, f"Password berhasil di ganti!")
         return redirect(settings.LOGIN_URL)
