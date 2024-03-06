@@ -4,8 +4,10 @@ import string
 
 class_list = [f"Kelas {char}" for char in string.ascii_uppercase]
 course_list = ['PBO', 'Struktur Data', 'Algoritma Pemrograman 1', 'Algoritma Pemrograman 2', 'Pemrograman Mobile Lanjut',
-               'Pemrograman Web Lanjut', 'Pengantar Basis Data', 'Data Mining & Data Warehouse']
+               'Pemrograman Web Lanjut', 'Pengantar Basis Data', 'Data Mining & Data Warehouse', 'Pengantar Kecerdasan Buatan',
+               'Pemrograman SQL']
 conditions = ['Izin', 'Sakit']
+major_list = ['S1 Informatika', "S1 Sistem Informasi"]
 
 
 def slug_generator(n):
@@ -23,9 +25,10 @@ def check_slug(link: str, link_list: list, n):
             return link
 
 
-def set_class_name(start, end, class_, gen, course):
+def set_class_name(start, end, class_, gen, course, major):
+    major = int(major)
     punc = r'[' + string.punctuation + ']'
-    name = f"{gen} {class_} {course} Jam"
+    name = f"{gen} {class_} {course} {major_list[major-1]} Jam"
     name = re.sub(punc, '', name)
     class_name = f"{name} {start}-{end}"
 

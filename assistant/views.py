@@ -233,6 +233,7 @@ class CreateClass(CreateView):
         class_ = self.request.POST.get('class')
         gen = self.request.POST.get('gen')
         course = self.request.POST.get('course')
+        major = self.request.POST.get('major')
 
         if not class_ or not start or not end or not course:
             messages.warning(self.request, 'Mohon lengkapi data dengan benar')
@@ -241,7 +242,7 @@ class CreateClass(CreateView):
             class_ = class_list[int(class_) - 1]
             course = course_list[int(course) - 1]
 
-        name, link = set_class_name(start, end, class_, gen, course)
+        name, link = set_class_name(start, end, class_, gen, course, major)
 
         code = slug_generator(10)
         code_list = [c.unique_code for c in ClassName.objects.all()]

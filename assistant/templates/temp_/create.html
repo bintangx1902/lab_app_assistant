@@ -9,11 +9,11 @@
 
             <div class="form-group">
                 <label for="gen">Periode Kelas : </label>
-                <input type="text" name="gen" id="gen" class="form-control">
+                <input type="text" name="gen" id="gen" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="class">Kelas : </label>
-                <select name="class" id="class" class="custom-select">
+                <select name="class" id="class" class="custom-select" required>
                     <option value="">. . . </option>
                     {% for class in class_list %}
                     <option value="{{ forloop.counter }}">{{ class }}</option>
@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label for="course">Mata Kuliah </label>
-                <select name="course" id="course" class="custom-select">
+                <select name="course" id="course" class="custom-select" required>
                     <option value="">. . . </option>
                     {% for course in course_list %}
                     <option value="{{ forloop.counter }}">{{ course }}</option>
@@ -30,12 +30,20 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="major">Jurusan </label>
+                <select name="major" id="major" class="custom-select" required>
+                    <option value="">. . . </option>
+                    <option value="1">S1 Informatika</option>
+                    <option value="2">S1 Sistem Informasi</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="start">Start Time</label>
-                <input type="time" name="start" id="start" class="form-control" placeholder="ex : 08">
+                <input type="time" name="start" id="start" class="form-control" placeholder="ex : 08" required>
             </div>
             <div class="form-group">
                 <label for="end">End Time</label>
-                <input type="time" name="end" id="end" class="form-control" placeholder="ex : 1030">
+                <input type="time" name="end" id="end" class="form-control" placeholder="ex : 1030" required>
             </div>
             {{ form | crispy }}
             <div class="form-group">
