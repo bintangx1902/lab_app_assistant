@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Presence{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="form">
+                <form enctype="multipart/form-data" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="nim">NIM </label>
+                        <input type="text" class="form-control bg-transparent" id="nim" readonly value="{{ data.user.user.nim }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="f_name">Nama Lengkap </label>
+                        <input type="text" class="form-control bg-transparent" id="f_name" readonly value="{{ data.user.first_name }} {{ data.user.last_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="nim">NIM </label>
+                        <input type="text" class="form-control bg-transparent" id="nim" readonly value="{{ data.user.user.nim }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="t_stamp">Time Stamp </label>
+                        <input type="text" class="form-control bg-transparent" id="t_stamp" readonly value="{{ data.stamp_ }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="presence">Presensi  </label>
+                        <input type="text" class="form-control bg-transparent" readonly value="{{ data.presence }}" id="presence">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-danger"><i class="fa fa-trash"></i> Delete This Recap</button>
+                    </div>
+                </form>
+                {{ test }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -32,8 +32,8 @@ class JoinClass(View):
         return render(self.request, templates('join_class'))
 
     def post(self, *args, **kwargs):
-        code: str = self.request.POST['class_code']
-        code = code.replace(' ', '')
+        code: str = self.request.POST.get('class_code')
+        code = code.strip()
         get_class = ClassName.objects.filter(unique_code=code)
         if not get_class:
             messages.error(self.request, 'Kode Kelas Tidak Ditemukan')

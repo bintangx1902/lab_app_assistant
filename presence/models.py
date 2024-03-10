@@ -38,6 +38,7 @@ class ClassName(models.Model):
 
 
 class GenerateQRCode(models.Model):
+    assistance = models.CharField(max_length=255, default='')
     qr_code = models.SlugField(unique=True)
     valid_until = models.DateTimeField(blank=True)
     class_name = models.ForeignKey(ClassName, on_delete=models.CASCADE, related_name='from_class',
@@ -47,13 +48,13 @@ class GenerateQRCode(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        file_path = path.join(settings.MEDIA_ROOT, self.qr_img.name)
         img_code = qrcode.make(self.qr_code)
         canvas = Image.new('RGB', (330, 330), 'white')
-        draw = ImageDraw.Draw(canvas)
+        file_path = path.join(settings.MEDIA_ROOT, self.qr_img.name)
         canvas.paste(img_code)
         f_name = f"qr_generated_{self.qr_code}.png"
         buffer = BytesIO()
+        draw = ImageDraw.Draw(canvas)
 
         if not path.isfile(file_path):
             canvas.save(buffer, 'PNG')
@@ -80,6 +81,9 @@ class GenerateQRCode(models.Model):
     def stamp(self):
         return self.created.strftime('%a-%H:%M_%d-%m-%y')
 
+    def stamp_(self):
+        return self.created.strftime('%A %H:%M - %d %B %Y')
+
 
 class Recap(models.Model):
     qr = models.ForeignKey(GenerateQRCode, on_delete=models.CASCADE, related_name='qr_c', related_query_name='qr_c')
@@ -92,3 +96,6 @@ class Recap(models.Model):
 
     def stamp(self):
         return self.time_stamp.strftime('%a %H:%M  %d/%m/%y')
+
+    def stamp_(self):
+        return self.time_stamp.strftime('%A %H:%M - %d %B %Y')

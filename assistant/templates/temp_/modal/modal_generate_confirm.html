@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Create QR</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -14,7 +14,11 @@
                     {% load crispy_forms_tags %}
                     <div class="form-group">
                         <h2 class="modal-title">Buat QR</h2>
-                        <p class="modal-text">klik sure untuk melanjutkan pembuatan kode QR</p>
+                        <p class="modal-text">klik sure untuk melanjutkan pembuatan kode QR </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="assist">Assistensi </label>
+                        <input type="text" class="form-control" id="assist" name="assist">
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary col">Sure</button>

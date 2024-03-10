@@ -1,91 +1,100 @@
 <!doctype html>
 {% load static %}
 <html lang="en">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-              integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
-        <title>{% block title %}{% endblock %}</title>
-        {% block head %}
-        {% endblock %}
-    </head>
-    <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light position-sticky">
-        <div class="container-fluid ">
-            <div >
-                <img
-                src="{% static 'user/image/lab-saql.PNG' %}"
-                width="50"
-                height="50"
-                class="d-inline-block align-top mr-2"
-                alt="Logo SAQ"
-                /> <a class="navbar-brand mt-1" href="/">SAQ Laboratory</a>
-            </div>
-
-            <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-            ><span class="navbar-toggler-icon"></span></button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mt-1">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    {% if request.user.is_authenticated %}
-                    <li><a href="/accounts/logout/" class="nav-link">Logout</a></li>
-                    {% else %}
-                    <li><a href="/accounts/login/" class="nav-link">Login</a></li>
-                    <li><a href="/accounts/signup/" class="nav-link">Register</a></li>
-                    {% endif %}
-                    {% if request.user.user.is_controller %}
-                    <a href="{% url 'assist:landing' %}" class="nav-link bold">Assistant Page</a>
-                    {% endif %}
-                </ul>
-            </div>
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light position-sticky">
+    <div class="container-fluid ">
+        <div>
+            <img
+                    src="{% static 'user/image/lab-saql.PNG' %}"
+                    width="50"
+                    height="50"
+                    class="d-inline-block align-top mr-2"
+                    alt="Logo SAQ"
+            /> <a class="navbar-brand mt-1" href="/">SAQ Laboratory</a>
         </div>
 
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        ><span class="navbar-toggler-icon"></span></button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mt-1">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                {% if request.user.is_authenticated %}
+                <li><a href="/accounts/logout/" class="nav-link">Logout</a></li>
+                {% else %}
+                <li><a href="/accounts/login/" class="nav-link">Login</a></li>
+                <li><a href="/accounts/signup/" class="nav-link">Register</a></li>
+                {% endif %}
+                {% if request.user.user.is_controller %}
+                <a href="{% url 'assist:landing' %}" class="nav-link bold">Assistant Page</a>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
 
 
-    </nav>
-    {% if request.user.is_authenticated %}
-        <div class="container mt-5">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Account Info</h5>
-                    <div class="row mx-auto">
-                        <div class="col-lg-3 col-sm-3">Username</div>
-                        <div class="col-lg-9 col-sm-9">
-                            <input type="text" name="my-account" id="my-account" class="form-control bg-transparent" disabled value="{{ request.user.username }}">
-                        </div>
-                    </div>
+</nav>
+{% if request.user.is_authenticated %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Account Info</h5>
+            <div class="row mx-auto">
+                <div class="col-lg-3 col-sm-3">Username</div>
+                <div class="col-lg-9 col-sm-9">
+                    <input type="text" name="my-account" id="my-account" class="form-control bg-transparent" disabled
+                           value="{{ request.user.username }}">
                 </div>
             </div>
         </div>
-    {% endif %}
-        {% if messages %}
-            {% for msg in messages %}
-        <div class="container mt-5 mx-auto">
-            <div class="alert alert-{{ msg.tags }}"> {{ msg }} </div>
-        </div>
+    </div>
+</div>
+{% endif %}
+{% if messages %}
+{% for msg in messages %}
+<div class="container mt-5 mx-auto">
+    <div class="alert alert-{{ msg.tags }}"> {{ msg }}</div>
+</div>
 
-            {% endfor %}
-        {% endif %}
-        {% block content %}
-        {% endblock %}
+{% endfor %}
+{% endif %}
+{% block content %}
+{% endblock %}
 
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
-        {% block script %}
-        {% endblock %}
-    </body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+        crossorigin="anonymous"></script>
+{% block script %}
+{% endblock %}
+</body>
 </html>

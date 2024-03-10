@@ -2,16 +2,20 @@
 
 {% block content %}
 <div class="container my-5">
-    <form action="{% url 'assist:generate-qr' view.kwargs.link %}" method="post" class="mb-3">
-        {% csrf_token %}
-        <button class="btn btn-primary">Generate QR</button>
-    </form>
-    <table class="table">
+<!--    <form action="{% url 'assist:generate-qr' view.kwargs.link %}" method="post" class="mb-3">-->
+<!--        {% csrf_token %}-->
+<!--        <button class="btn btn-primary">Generate QR</button>-->
+<!--    </form>-->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdropGenerate">
+        Generate QR Code
+    </button>
+    <table class="table mt-3">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">code</th>
                 <th scope="col">Recaps</th>
+                <th scope="col">Assistance</th>
                 <th scope="col">created</th>
                 <th scope="col">creator</th>
                 <th scope="col">validate</th>
@@ -21,8 +25,9 @@
         {% for code in qrcodes %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td><a href="{% url 'assist:view-qr' view.kwargs.link code.qr_name %}">{{ code.qr_code }}</a></td>
+                <td><a href="{% url 'assist:view-qr' view.kwargs.link code.qr_name %}" target="_blank">{{ code.qr_code }}</a></td>
                 <td><a href="{% url 'assist:recaps' view.kwargs.link code.qr_code %}" class="btn btn-primary">See</a></td>
+                <td>{{ code.assistance }}</td>
                 <td>{{ code.created }}</td>
                 <td>{{ code.creator }}</td>
                 <td>{{ code.valid_until }}</td>
@@ -31,4 +36,9 @@
         </tbody>
     </table>
 </div>
+
+<!-- Modal Section -->
+{% include 'temp_/modal/modal_generate_confirm.html' %}
+
 {% endblock %}
+

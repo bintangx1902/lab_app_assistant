@@ -124,6 +124,11 @@ class QRGeneratedList(ListView):
         query = model.objects.filter(class_name=class_name).order_by('-pk')
         return query
 
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['class'] = get_object_or_404(ClassName, link=self.kwargs.get('link'))
+        return context
+
     @method_decorator(login_required(login_url=settings.LOGIN_URL))
     @method_decorator(
         user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
@@ -142,11 +147,18 @@ class PresenceRecap(ListView):
         get_code = GenerateQRCode.objects.get(qr_code=self.kwargs['qr_code'])
         return model.objects.filter(qr=get_code)
 
-    @method_decorator(login_required(login_url=settings.LOGIN_URL))
-    @method_decorator(
-        user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
-    def dispatch(self, request, *args, **kwargs):
-        return super(PresenceRecap, self).dispatch(request, *args, **kwargs)
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        assist = get_object_or_404(GenerateQRCode, qr_code=self.kwargs.get('qr_code')).assistance
+
+        context['assist'] = assist
+        return context
+
+    # @method_decorator(login_required(login_url=settings.LOGIN_URL))
+    # @method_decorator(
+    #     user_passes_test(lambda u: u.is_staff and (u.user.is_controller if hasattr(u, 'user') else False), '/'))
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super(PresenceRecap, self).dispatch(request, *args, **kwargs)
 
 
 class QRCodeView(View):
@@ -315,9 +327,11 @@ class GenerateQRCodeView(CreateView):
             form.cleaned_data['valid_until']
         code = slug_generator(16)
         get_all_code = [x.qr_code for x in GenerateQRCode.objects.all()]
+        assist = self.request.POST.get('assist')
         code = check_slug(code, get_all_code, 16)
         class_ = ClassName.objects.get(link=self.kwargs['link'])
 
+        form.instance.assistance = assist
         form.instance.valid_until = valid_until
         form.instance.qr_code = code
         form.instance.class_name = class_
@@ -421,7 +435,7 @@ def recaps_csv(request, link, qr_code):
     if request.method == "POST":
         generated_qr = GenerateQRCode.objects.get(qr_code=qr_code)
         response = HttpResponse('')
-        response['Content-Disposition'] = f'attachment; filename=rekap_presensi_{generated_qr.stamp()}.csv'
+        response['Content-Disposition'] = f'attachment; filename=rekap_presensi_{generated_qr.assistance}_{generated_qr.stamp_()}.csv'
         recaps = Recap.objects.filter(qr=generated_qr)
         writer = csv.writer(response)
         writer.writerow(['no', 'nim', 'nama', 'kehadiran', 'kelas', 'time_stamp'])
@@ -762,3 +776,17 @@ class AddNewAssistant(View):
             get_user.save()
             user.save()
         return redirect('assist:landing')
+
+
+class DeletePresenceRecap(DeleteView):
+    template_name = templates('delete_recap')
+    model = Recap
+    pk_url_kwarg = 'pk'
+    query_pk_and_slug = True
+    context_object_name = 'data'
+
+    def get_success_url(self):
+        messages.warning(self.request, 'Berhasil di delete')
+        return reverse('assist:recaps', kwargs={'link': self.kwargs.get('link'), 'qr_code': self.kwargs.get('qr_code')})
+
+
