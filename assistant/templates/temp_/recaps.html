@@ -16,7 +16,9 @@
                 <th scope="col">Name</th>
                 <th scope="col">Presence</th>
                 <th scope="col">Time Stamp</th>
+                {% if check %}
                 <th scope="col">Delete</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -27,11 +29,13 @@
                 <td>{{ rec.user.first_name }} {{ rec.user.last_name }}</td>
                 <td>{{ rec.presence }}</td>
                 <td>{{ rec.stamp }}</td>
+                {% if check %}
                 <td>
                     <a href="{% url 'assist:delete-recap' view.kwargs.link view.kwargs.qr_code rec.pk %}"
                        class="btn btn-danger"><i class="fa fa-trash"></i>
                     </a>
                 </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

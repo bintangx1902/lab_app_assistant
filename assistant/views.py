@@ -149,9 +149,12 @@ class PresenceRecap(ListView):
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        assist = get_object_or_404(GenerateQRCode, qr_code=self.kwargs.get('qr_code')).assistance
+        assist = get_object_or_404(GenerateQRCode, qr_code=self.kwargs.get('qr_code'))
 
-        context['assist'] = assist
+        if self.request.user == assist.creator:
+            context['check'] = True
+
+        context['assist'] = assist.assistance
         return context
 
     # @method_decorator(login_required(login_url=settings.LOGIN_URL))
@@ -357,7 +360,7 @@ class JoinAssistantClas(View):
 
     def post(self, *args, **kwargs):
         code: str = self.request.POST.get('class_code')
-        code = code.replace(' ', '')
+        code = code.strip()
         get_class = ClassName.objects.filter(unique_code=code)
         if not get_class:
             messages.warning(self.request, 'Kelas dengan kode {} tidak terdaftar'.format(code))
