@@ -1,9 +1,13 @@
 {% extends 'base-3.html' %}
 
 {% block content %}
-
-<main class="lg:flex" style="width: 100vw">
-
+<div
+  class="absolute inset-0 -z-20 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
+  <div
+    class="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#f8fafc,transparent)]"></div>
+</div>
+<main class="lg:flex max-w-[85rem] w-full mx-auto" >
+  
     <div class="flex-1">
       <div class="mt-4 px-8">
         <div class="flex justify-between items-center">
@@ -20,11 +24,11 @@
                   <span>Hi, Welcome</span>
                 </h4>
                 <p class="break-words text-sm text-black font-semibold">
-                  Ari Putra
+                  {{ request.user.username }}
                 </p>
                 <p
                   class="break-words text-xs text-stone-500 font-normal font-lexend">
-                  202331280
+                  
                 </p>
               </div>
             </div>
@@ -34,8 +38,8 @@
     </div>
 
     <div
-      class="flex-1 lg:flex-[4] mt-8 w-full rounded-xl lg:border"
-      style="height: 100vh; background-color: #fcfcfc">
+      class="flex-1 lg:flex-[4] mt-8 w-full lg:border flex flex-col bg-white border border-gray-200 shadow-sm rounded-xl p-4 md:p-5"
+      style="height: 100vh;">
       <hr
         class="h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400" />
       <div class="py-2 px-4 font-semibold text-xl text-slate-600">
@@ -219,10 +223,16 @@
               <div class="flex flex-col">
                 <p class="font-semibold text-base">Finder</p>
                 <p class="font-light text-sm text-slate-800">
-                  Finder ini berguna untuk mencari data mahasiswa yang terdata
-                  di sistem, cari berdasarkan username atau menggunakan nim
+                  Finder ini berguna untuk mencari data mahasiswa 
+                </p>
+                <p class="font-light text-sm text-slate-800">
+                  yang terdata di sistem,cari berdasarkan username 
+                </p>
+                <p class="font-light text-sm text-slate-800">
+                  atau menggunakan nim
                   mahasiswa tersebut
                 </p>
+
               </div>
               <div></div>
             </div>

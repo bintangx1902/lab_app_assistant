@@ -1,34 +1,152 @@
-{% extends 'base.html' %}
+{% extends 'base-3.html' %}
 
 {% block title %} Reset Password Token {% endblock %}
 
 {% block content %}
-<div class="container my-5">
-    <form method="post" class="form-group">
-        {% csrf_token %}
-        <div class="form-group">
-            <button class="btn btn-primary">Generate Token</button>
-        </div>
-    </form>
-    <div class="table-responsive">
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Token</th>
-                    <th scope="col">Valid Until</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for token in tokens %}
-                <tr>
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td><a href="{% url 'presence:reset-password' token.token %}" target="_blank">{{ token.token }}</a></td>
-                    <td>{{ token.val_stamp }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+<main class="" style="width: 100vw">
+    <div
+      class="absolute inset-0 -z-20 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
+      <div
+        class="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#f8fafc,transparent)]"></div>
     </div>
-</div>
+    <div class="lg:flex py-2 lg:justify-evenly">
+      <div class="flex items-center lg:items-start gap-4 px-1 pb-5">
+        <div class="flex">
+          <a href="{% url 'assist:landing' %}" type="submit">
+            <div
+              class="flex items-center p-1 rounded-xl text-slate-600 flex-col bg-white border border-gray-200 shadow-sm md:p-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                class="size-8"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            </div>
+          </a>
+        </div>
+
+        <div>
+          <div
+            class="py-3 px-2 flex gap-4 shadow rounded-lg flex-1"
+            style="background-color: white">
+            <div
+            class="flex items-center p-2 rounded-full text-fuchsia-600 bg-fuchsia-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              width="24"
+              height="24"
+              class="size-8">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z" />
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <p class="font-semibold text-base">
+              Generate Token untuk Ubah password
+            </p>
+            <p class="font-light text-sm text-slate-800">
+              Dapatkan Token Reset Password
+            </p>
+          </div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="mt-0 flex flex-col bg-white border border-gray-200 shadow-sm rounded-xl p-4 md:p-5">
+        <p class="font-light py-2 text-sm" style="color: #acafb5">
+          All of your List
+        </p>
+        <div>
+            <form method="post" class="form-group">
+            {% csrf_token %}
+            <button type="submit" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-basic-modal" data-hs-overlay="#hs-basic-modal">
+                Generate Token
+            </button>
+        </form>
+        </div>
+        <div class="mt-0">
+          <div class="flex flex-col">
+            <div class="-m-1.5 overflow-x-auto">
+              <div class="p-1.5 min-w-full inline-block align-middle">
+                <div class="overflow-hidden">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                          class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                          #
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                          Token
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                          Valid Until
+                        </th>
+                    
+                      </tr>
+                    </thead>
+                    <tbody>
+                            
+                    
+                        {% for token in tokens %}
+                      <tr
+                        class="odd:bg-white even:bg-gray-100 hover:bg-gray-100">
+                        <th
+                          class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800" scope="row">
+                          {{ forloop.counter }}
+                        </th>
+                        <td
+                        class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                        <a
+                          type="submit"
+                          href="{% url 'presence:reset-password' token.token %}"
+                          target="_blank"
+                          class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
+                          {{ token.token }}
+                        </a>
+                      </td>
+                        <td
+                          class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                          {{ token.val_stamp }}
+                        </td>
+
+                      </tr>
+                      {% endfor %}
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 {% endblock %}
