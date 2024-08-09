@@ -1,55 +1,446 @@
-{% extends 'base.html' %}
+{% extends 'base-3.html' %}
 
 {% block content %}
-<div class="container card mt-3">
-    <div class="card-body">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% load crispy_forms_tags %}
-
-            <div class="form-group">
-                <label for="gen">Periode Kelas : </label>
-                <input type="text" name="gen" id="gen" class="form-control" required>
+    <!-- Main 1 -->
+    <main class="" style="width: 100vw">
+        <div
+          class="absolute inset-0 -z-20 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
+          <div
+            class="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#f8fafc,transparent)]"></div>
+        </div>
+        <div class="lg:flex py-2 lg:justify-evenly">
+          <div class="flex items-center lg:items-start gap-4 px-1 pb-5">
+            <div class="flex">
+              <a href="{% url 'assist:landing' %}" type="submit">
+                <div
+                  class="flex items-center p-1 rounded-xl text-slate-600 flex-col bg-white border border-gray-200 shadow-sm md:p-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    class="size-8"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15.75 19.5 8.25 12l7.5-7.5" />
+                  </svg>
+                </div>
+              </a>
             </div>
-            <div class="form-group">
-                <label for="class">Kelas : </label>
-                <select name="class" id="class" class="custom-select" required>
-                    <option value="">. . . </option>
-                    {% for class in class_list %}
-                    <option value="{{ forloop.counter }}">{{ class }}</option>
-                    {% endfor %}
-                </select>
+  
+            <div>
+              <div
+                class="py-3 px-2 flex gap-4 shadow rounded-lg flex-1"
+                style="background-color: white">
+                <div
+                  class="flex items-center p-2 rounded-full text-fuchsia-600 bg-fuchsia-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    width="24"
+                    height="24"
+                    class="size-8">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </div>
+                <div class="flex flex-col">
+                  <p class="font-semibold text-base">Buat Kelas</p>
+                  <p class="font-light text-sm text-slate-800">
+                    Mulai Kelas Baru
+                  </p>
+                </div>
+                <div></div>
+              </div>
             </div>
-            <div class="form-group">
-                <label for="course">Mata Kuliah </label>
-                <select name="course" id="course" class="custom-select" required>
-                    <option value="">. . . </option>
-                    {% for course in course_list %}
-                    <option value="{{ forloop.counter }}">{{ course }}</option>
-                    {% endfor %}
-                </select>
+          </div>
+  
+          <div
+            class="mt-0 flex flex-col bg-white border border-gray-200 shadow-sm rounded-xl p-4 md:p-5">
+            <p class="font-light py-2 text-sm" style="color: #acafb5">
+              Hello there, This is your detail class
+            </p>
+            <div class="mt-0">
+              <!-- Form -->
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% load crispy_forms_tags %}
+                <!-- Grid -->
+                <div class="grid sm:grid-cols-12 gap-2 sm:gap-6">
+                  <div class="sm:col-span-3">
+                    <label
+                      for="af-account-full-name"
+                      class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+                      Periode Kelas :
+                    </label>
+                    <div class="hs-tooltip inline-block">
+                      <svg
+                        class="hs-tooltip-toggle ms-1 inline-block size-3 text-gray-400 dark:text-neutral-600"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                          d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                      </svg>
+                      <span
+                        class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+                        role="tooltip">
+                        Displayed on public forums, such as Preline
+                      </span>
+                    </div>
+                  </div>
+                  <!-- End Col -->
+  
+                  <div class="sm:col-span-9">
+                    <div class="sm:flex">
+                      <input
+                        id="af-account-full-name"
+                        type="text"
+                        class="py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm -mt-px -ms-px first:rounded-t-lg last:rounded-b-lg sm:first:rounded-s-lg sm:mt-0 sm:first:ms-0 sm:first:rounded-se-none sm:last:rounded-es-none sm:last:rounded-e-lg text-sm relative focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                        name="gen"
+                         />
+                    </div>
+                  </div>
+                  <!-- End Col -->
+  
+                  <div class="sm:col-span-3">
+                    <label
+                      for="af-account-full-name"
+                      class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+                      Kelas
+                    </label>
+                    <div class="hs-tooltip inline-block">
+                      <svg
+                        class="hs-tooltip-toggle ms-1 inline-block size-3 text-gray-400 dark:text-neutral-600"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                          d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                      </svg>
+                      <span
+                        class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+                        role="tooltip">
+                        Displayed on public forums, such as Preline
+                      </span>
+                    </div>
+                  </div>
+                  <!-- End Col -->
+  
+                  <div class="sm:col-span-9">
+                    <div class="sm:flex">
+                      <!-- Select -->
+                      <select
+                        data-hs-select='{
+  "placeholder": "Select option...",
+  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+  "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+  "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
+  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600 \" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+  "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+  }'
+                        class="hidden"
+                        name="class"
+                        >
+                        <option value="">Choose</option>
+                        {% for class in class_list %}
+                        <option value="{{ forloop.counter }}">{{ class }}</option>
+                        {% endfor %}
+                      </select>
+                      <!-- End Select -->
+                    </div>
+                  </div>
+                  <!-- End Col -->
+  
+                  <div class="sm:col-span-3">
+                    <label
+                      for="af-account-full-name"
+                      class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+                      Mata Kuliah
+                    </label>
+                    <div class="hs-tooltip inline-block">
+                      <svg
+                        class="hs-tooltip-toggle ms-1 inline-block size-3 text-gray-400 dark:text-neutral-600"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                          d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                      </svg>
+                      <span
+                        class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+                        role="tooltip">
+                        Displayed on public forums, such as Preline
+                      </span>
+                    </div>
+                  </div>
+                  <!-- End Col -->
+  
+                  <div class="sm:col-span-9">
+                    <div class="sm:flex">
+                      <!-- Select -->
+                      <select
+                        data-hs-select='{
+  "placeholder": "Select option...",
+  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+  "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+  "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
+  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600 \" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+  "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+  }'
+                        class="hidden" name="course" >
+                        <option value="">Choose</option>
+                        {% for course in course_list %}
+                        <option value="{{ forloop.counter }}">{{ course }}</option>
+                        {% endfor %}
+                      </select>
+                      <!-- End Select -->
+                    </div>
+                  </div>
+                  <!-- End Col -->
+  
+                  <div class="sm:col-span-3">
+                    <label
+                      for="af-account-full-name"
+                      class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+                      Jurusan
+                    </label>
+                    <div class="hs-tooltip inline-block">
+                      <svg
+                        class="hs-tooltip-toggle ms-1 inline-block size-3 text-gray-400 dark:text-neutral-600"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                          d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                      </svg>
+                      <span
+                        class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+                        role="tooltip">
+                        Displayed on public forums, such as Preline
+                      </span>
+                    </div>
+                  </div>
+                  <!-- End Col -->
+  
+                  <div class="sm:col-span-9">
+                    <div class="sm:flex">
+                      <!-- Select -->
+                      <select
+                        data-hs-select='{
+                          "placeholder": "Select option...",
+                          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                          "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+                          "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
+                          "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600 \" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+                          "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+                          }'
+                        class="hidden" name="major" >
+                        <option value="">Choose</option>
+                        <option value="1">S1 Informatika</option>
+                        <option value="2">S1 Sistem Informasi</option>
+                      </select>
+                      <!-- End Select -->
+                    </div>
+                  </div>
+  
+                  <div class="sm:col-span-3">
+                    <label
+                      for="af-account-full-name"
+                      class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+                      Nama Dosen
+                    </label>
+                    <div class="hs-tooltip inline-block">
+                      <svg
+                        class="hs-tooltip-toggle ms-1 inline-block size-3 text-gray-400 dark:text-neutral-600"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                          d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                      </svg>
+                      <span
+                        class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+                        role="tooltip">
+                        Displayed on public forums, such as Preline
+                      </span>
+                    </div>
+                  </div>
+                  <!-- End Col -->
+  
+                  <div class="sm:col-span-9">
+                    <div class="sm:flex">
+                      <input
+                        id="af-account-full-name"
+                        type="text"
+                        name="lecture_name"
+                        class="py-2 px-3 pe-11 block w-full border-gray-200 shadow-sm -mt-px -ms-px first:rounded-t-lg last:rounded-b-lg sm:first:rounded-s-lg sm:mt-0 sm:first:ms-0 sm:first:rounded-se-none sm:last:rounded-es-none sm:last:rounded-e-lg text-sm relative focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                        placeholder="Endang Sunandar" />
+                    </div>
+                  </div>
+                  <!-- End Col -->
+                  <div class="sm:col-span-3">
+                    <label
+                      for="af-account-full-name"
+                      class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+                      Start Time
+                    </label>
+                    <div class="hs-tooltip inline-block">
+                      <svg
+                        class="hs-tooltip-toggle ms-1 inline-block size-3 text-gray-400 dark:text-neutral-600"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                          d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                      </svg>
+                      <span
+                        class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+                        role="tooltip">
+                        Displayed on public forums, such as Preline
+                      </span>
+                    </div>
+                  </div>
+                  <!-- End Col -->
+  
+                  <div class="sm:col-span-9">
+                    <div class="sm:flex">
+                      <div class="relative">
+                        <div
+                          class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                          <svg
+                            class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                              fill-rule="evenodd"
+                              d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                              clip-rule="evenodd" />
+                          </svg>
+                        </div>
+                        <input
+                          type="time"
+                          id="time"
+                          name="start"
+                          class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                          value="00:00"
+                          required />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sm:col-span-3">
+                    <label
+                      for="af-account-full-name"
+                      class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+                      End Time
+                    </label>
+                    <div class="hs-tooltip inline-block">
+                      <svg
+                        class="hs-tooltip-toggle ms-1 inline-block size-3 text-gray-400 dark:text-neutral-600"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                          d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                      </svg>
+                      <span
+                        class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+                        role="tooltip">
+                        Displayed on public forums, such as Preline
+                      </span>
+                    </div>
+                  </div>
+                  <!-- End Col -->
+  
+                  <div class="sm:col-span-9">
+                    <div class="sm:flex">
+                      <div class="relative">
+                        <div
+                          class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                          <svg
+                            class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                              fill-rule="evenodd"
+                              d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                              clip-rule="evenodd" />
+                          </svg>
+                        </div>
+                        <input
+                          type="time"
+                          id="time"
+                          name="end"
+                          class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                          value="00:00"
+                          required />
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Col -->
+                </div>
+  
+                <div class="mt-5 flex justify-end gap-x-2">
+                  <button
+                    type="button"
+                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                    Save changes
+                  </button>
+                </div>
+              </form>
+              <!-- End Form -->
             </div>
-            <div class="form-group">
-                <label for="major">Jurusan </label>
-                <select name="major" id="major" class="custom-select" required>
-                    <option value="">. . . </option>
-                    <option value="1">S1 Informatika</option>
-                    <option value="2">S1 Sistem Informasi</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="start">Start Time</label>
-                <input type="time" name="start" id="start" class="form-control" placeholder="ex : 08" required>
-            </div>
-            <div class="form-group">
-                <label for="end">End Time</label>
-                <input type="time" name="end" id="end" class="form-control" placeholder="ex : 1030" required>
-            </div>
-            {{ form | crispy }}
-            <div class="form-group">
-                <button class="btn btn-primary">Save</button>
-            </div>
-        </form>
-    </div>
-</div>
+          </div>
+        </div>
+      </main>
 {% endblock %}

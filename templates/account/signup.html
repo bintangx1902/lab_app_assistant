@@ -1,4 +1,4 @@
-{% extends "account/base.html" %}
+{% extends 'base-2.html'%}
 
 {% load i18n %}
 {% load static %}
@@ -7,63 +7,316 @@
 {% block head_title %}{% trans "Register" %}{% endblock %}
 
 {% block content %}
-<div class="container sm:px-10">
-    <div class="block xl:grid grid-cols-2 gap-4">
-        <!-- BEGIN: Register Info -->
-        <div class="hidden xl:flex flex-col min-h-screen">
-            <a href="" class="-intro-x flex items-center pt-5">
-                <img alt="SAQ - Logo" class="w-20" src="{% static 'user/images/logo.PNG' %}"/>
-                <span class="text-white font-bold text-2xl ml-3 "> SAQ Laboratory</span>
-            </a>
-            <div class="my-auto">
-                <img alt="Ilustration Login" class="-intro-x w-1/2 -mt-16"
-                     src="{% static 'user/midone/images/illustration.svg' %}"/>
-                <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
-                    Selamat Datang
-                    <br/>
-                    Sobat SAQ!!!
-                </div>
-                <div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Kelola akun SAQ kamu
-                    di satu tempat.
-                </div>
-            </div>
-        </div>
-        <!-- END: Register Info -->
-        <!-- BEGIN: Register Form -->
-        <div class="xl:hidden flex justify-center">
-            <img class="w-16" src="{% static 'user/images/logo.PNG' %}" alt="">
-            <span class="text-white text-2xl font-bold ml-3 mt-4"> SAQ Laboratory</span>
-        </div>
-        <div class="h-screen xl:h-auto flex ">
 
-            <form id="signup_form" method="post" action="{% url 'account_signup' %}"
-					class="my-auto mx-auto xl:ml-20 bg-cyan-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
-                <div class="intro-x mt-1 text-slate-400 dark:text-slate-400 xl:hidden text-center">Selamat Datang Sobat
-                    SAQ!!!. <br> Kelola akun SAQ kamu di satu tempat.
-                </div>
-                <br>
-                <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">Daftar</h2>
+<main
+class="w-full h-full py-4 px-4 overflow-hidden"
+style="width: 100vw; ">
+<!-- <div
+  class="absolute inset-0 -z-20 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
+  <div
+    class="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#f8fafc,transparent)]"></div>
+</div> -->
 
-                <div class="intro-x mt-8">
-					{% csrf_token %}
-					{% load crispy_forms_tags %}
-					{{ form | crispy }}
-					{% if redirect_field_value %}
-					<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-					{% endif %}
-                </div>
-                <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
-                    <button class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">Daftar</button>
-                    <a class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top"
-                       href="{{ login_url }}">Masuk</a>
-                </div>
-            </form>
-        </div>
-        <!-- END: Register Form -->
-    </div>
+<div class="relative w-full">
+  <div
+    class="absolute -right-24 -z-10 -top-28 h-72 w-72 animate-pop-blob rounded-sm bg-blue-400 p-8 opacity-45 mix-blend-multiply blur-3xl filter"></div>
+  <div
+    class="absolute -left-40 -z-10 -top-64 h-72 w-72 animate-pop-blob rounded-sm bg-purple-400 p-8 opacity-45 mix-blend-multiply blur-3xl filter"></div>
 </div>
 
-<script src="{% static 'user/midone/js/app.js' %}"></script>
-<script src="{% static 'user/js/signup_template.js' %}"></script>
+<!-- MAIN 2 -->
+<div class="lg:pt-12 lg:w-full lg:flex lg:flex-row justify-evenly">
+  <div>
+    <img
+      class="block lg:hidden w-28 lg:w-[14rem] py-4"
+      src="{% static 'user/images/logo.PNG' %}"
+      alt="" />
+
+    <div
+      class="hidden lg:block relative h-fit w-fit overflow-hidden rounded-2xl bg-gray-200 p-px">
+      <div
+        class="absolute inset-0 h-full w-full animate-trail"
+        style="
+          --duration: 6s;
+          --angle: 0deg;
+          background: conic-gradient(
+            from var(--angle) at 50% 50%,
+            transparent 90%,
+            #3085fe
+          );
+        "></div>
+      <div
+        class="relative overflow-hidden rounded-[15px] w-60 bg-white flex justify-center">
+        <img
+          class="w-28 lg:w-[14rem] py-4"
+          src="{% static 'user/images/logo.PNG' %}"
+          alt="" />
+      </div>
+    </div>
+
+    <div class="lg:p-4"></div>
+
+    <span class="font-semibold text-2xl font-lexend text-saqBlack">
+        Register Account
+    </span>
+    <br />
+    <span class="font-semibold text-2xl font-lexend text-saqBlack">
+      to
+    </span>
+    <a
+      class="font-semibold text-2xl text-saq1 font-lexend"
+      href="#"
+      aria-label="Brand"
+      >SAQ Laboratory</a
+    >
+  </div>
+
+  <div class="mt-0 rounded-xl">
+    <p class="font-light py-4 text-sm" style="color: #acafb5">
+      Hello there, Register to continue
+    </p>
+    <div class="mt-0">
+      <!-- Form -->
+      <form method="post" action="{% url 'account_signup' %}">
+        
+        {% if form.non_field_errors %}
+        <div id="dismiss-alert" class="hs-removing:translate-x-5 hs-removing:opacity-0 transition duration-300 mt-2 bg-blue-100 border border-blue-200 text-sm text-blue-800 rounded-lg p-4 fixed top-4 right-4" role="alert" tabindex="-1" aria-labelledby="hs-dismiss-button-label">
+            <div class="flex">
+            <div class="shrink-0">
+                <svg class="shrink-0 size-4 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                <path d="m9 12 2 2 4-4"></path>
+                </svg>
+            </div>
+            <div class="ms-2">
+                <h3 id="hs-dismiss-button-label" class="text-sm font-medium">
+                    <ul class='form-errors'>
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                       
+                    </ul>
+                </h3>
+            </div>
+            <div class="ps-3 ms-auto">
+                <div class="-mx-1.5 -my-1.5">
+                <button type="button" class="inline-flex bg-blue-50 rounded-lg p-1.5 text-blue-800 hover:bg-blue-100 focus:outline-none focus:bg-blue-100" data-hs-remove-element="#dismiss-alert">
+                    <span class="sr-only">Dismiss</span>
+                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                    </svg>
+                </button>
+                </div>
+            </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="flex flex-col gap-4">
+            {% csrf_token %}
+          <!-- Form Group -->
+          <!-- {% load crispy_forms_tags %}
+          {{ form | crispy }}  -->
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+            <div>
+
+           <!-- Form Group -->
+           <div>
+            <label for="username" class="block text-xs mb-2 text-saq1"
+              >Username*</label
+            >
+            <div class="relative">
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none text-saq1"
+                required
+                aria-describedby="username-error" />
+              <div
+                class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                <svg
+                  class="size-5 text-red-500"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  aria-hidden="true">
+                  <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                </svg>
+              </div>
+            </div>
+           
+            <div
+            class="text-xs text-red-600 mt-2"
+            id="username-error">
+                {% if form.username.errors %}
+                {{form.username.errors}}
+                {% endif %}
+            </div>
+            
+          </div>
+          <!-- End Form Group -->
+          <!-- Form Group -->
+          <div>
+            <label for="email" class="block text-xs mb-2 text-saq1"
+              >Email address</label
+            >
+            <div class="relative">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none text-saq1"
+                required
+                aria-describedby="email-error" />
+              <div
+                class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                <svg
+                  class="size-5 text-red-500"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  aria-hidden="true">
+                  <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                </svg>
+              </div>
+            </div>
+            <div
+            class="text-xs text-red-600 mt-2"
+            id="username-error">
+                {% if form.email.errors %}
+                {{form.email.errors}}
+                {% endif %}
+            </div>
+          </div>
+          <!-- End Form Group -->
+
+          <!-- Form Group -->
+          <div>
+            <div class="flex justify-between items-center">
+              <label for="password" class="block text-xs mb-2 text-saq1"
+                >Password</label
+              >
+            </div>
+            <div class="relative">
+              <input
+                type="password"
+                id="password"
+                name="password1"
+                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none text-saq1"
+                required
+                aria-describedby="password-error" />
+              <div
+                class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                <svg
+                  class="size-5 text-red-500"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  aria-hidden="true">
+                  <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                </svg>
+              </div>
+            </div>
+            <div
+            class="text-xs text-red-600 mt-2"
+            id="username-error">
+                {% if form.password1.errors %}
+                {{form.password1.errors}}
+                {% endif %}
+            </div>
+            <div
+            class="text-xs text-red-600 mt-2"
+            id="username-error">
+                {% if form.password2.errors %}
+                {{form.password2.errors}}
+                {% endif %}
+            </div>
+          </div>
+          <!-- End Form Group -->
+
+          <!-- Form Group -->
+          <div>
+            <div class="flex justify-between items-center">
+              <label for="password" class="block text-xs mb-2 text-saq1"
+                >Password (again)</label
+              >
+            </div>
+            <div class="relative">
+              <input
+                type="password"
+                id="password"
+                name="password2"
+                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none text-saq1"
+                required
+                aria-describedby="password-error" />
+              <div
+                class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                <svg
+                  class="size-5 text-red-500"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  aria-hidden="true">
+                  <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                </svg>
+              </div>
+            </div>
+            <p class=" text-xs text-red-600 mt-2" id="password-error">
+                Your password must contain at least 8 characters.
+            </p>
+            <p class=" text-xs text-red-600 mt-2" id="password-error">
+    Your password can’t be too similar to your other personal information.
+            </p>
+            <p class=" text-xs text-red-600 mt-2" id="password-error">
+    Your password can’t be a commonly used password.
+            </p>
+            <p class=" text-xs text-red-600 mt-2" id="password-error">
+  Your password can’t be entirely numeric.
+            </p>
+          </div>
+          <!-- End Form Group -->
+            </div>
+
+          <button
+          type="submit"
+          class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+          Register
+        </button>
+        </div>
+      </form>
+      <!-- End Form -->
+    </div>
+
+    <div
+      class="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-neutral-500 dark:before:border-neutral-600 dark:after:border-neutral-600">
+      Or
+    </div>
+    <div class="text-center">
+      <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
+        Already have an account ?
+        <a
+          class="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
+          href="{{ login_url }}">
+          Login Here
+        </a>
+      </p>
+    </div>
+
+  
+  </div>
+</div>
+</main>
+
 
 {% endblock %}

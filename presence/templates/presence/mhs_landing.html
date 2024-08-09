@@ -1,81 +1,257 @@
-{% extends 'base.html' %}
+{% extends 'base-3.html' %}
 
 {% block content %}
-<div class="container-fluid mt-5 mx-auto">
-    <div class="row mx-auto align-items-center justify-content-center">
 
-        <div class="col-lg-4 col-md-6 col-12">
-            <div class="card p-4 mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Presensi</h5>
-                    <p class="card-text">pindah ke halaman presensi</p>
-                    <a href="{% url 'presence:take-presence' %}" class="btn btn-primary col">Presensi</a>
-                </div>
-            </div>
 
-        </div>
-        <div class="col-lg-4 col-md-6 col-12">
-            <div class="card p-4 mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Data Pribadi</h5>
-                    <p class="card-text">pindah ke halaman lengkapi data pribadi</p>
-                    <a href="{% url 'presence:complete-data' %}" class="btn btn-primary col">Lengkapi Data</a>
-                </div>
-            </div>
-        </div>
+<main class="lg:flex" style="width: 100vw">
+<!-- <div
+  class="absolute inset-0 -z-20 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
+  <div
+    class="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#f8fafc,transparent)]"></div>
+</div> -->
 
-        <div class="col-lg-4 col-md-6 col-12">
-            <div class="card p-4 mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Kelas</h5>
-                    <p class="card-text">pindah ke halaman daftar kelas</p>
-                    <a href="{% url 'presence:class-list' %}" class="btn btn-primary col">Daftar Kelas</a>
-                </div>
-            </div>
+<!-- MAIN 2 -->
+<!-- <div class="lg:pt-12 lg:w-full lg:flex lg:flex-row justify-evenly"></div> -->
+<div class="flex-1">
+  <div class="mt-4 px-8">
+    <div class="flex justify-between items-center">
+      <div>
+        <p style="color: #acacac" class="font-normal">
+          Your Total Attendee
+        </p>
+        
+        <h1 class="py-2 text-6xl text-green-400 font-semibold">{{ total_presence }}</h1>
+      </div>
+      <div class="">
+        <div
+          class="relative overflow-hidden bg-white rounded-xl shadow-md">
+          <div
+            class="pointer-events-none absolute h-full w-full bg-size bg-gradient-to-r from-yellow-500 from-30% via-yellow-700 via-50% to-pink-500 to-80% opacity-15 animate-bg-position bg-[length:300%_auto]"></div>
+          <div
+            class="z-1 blur-lg pointer-events-none absolute h-full w-full"></div>
+          <div class="p-4">
+            <h4
+              class="text-md mb-2 flex flex-row items-center gap-2 font-bold text-orange-500">
+              <span>Hi, Welcome</span>
+            </h4>
+            <p class="break-words text-sm text-black font-semibold">
+                {{ request.user.username }}
+            </p>
+            <p
+              class="break-words text-xs text-stone-500 font-normal font-lexend">
+              
+            </p>
+          </div>
         </div>
-
-        <div class="col-lg-4 col-md-6 col-12">
-            <div class="card p-4 mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Gabung Kelas</h5>
-                    <p class="card-text">pindah ke halaman untuk masukan kode kelas</p>
-                    <a href="{% url 'presence:join-class' %}" class="btn btn-primary col">Gabung</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 col-12">
-            <div class="card p-4 mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Lihat Nilai</h5>
-                    <p class="card-text">Pindah ke halaman ini untuk melihat nilai yang sudah di rekap
-                        <small>New</small></p>
-                    <a href="{% url 'presence:class-list' %}" class="btn btn-primary col">See Nilai Saya</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 col-12">
-            <div class="card p-4 mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Upload File</h5>
-                    <p class="card-text">Unggah berkas yang kalian disini!</p>
-                    <a href="{% url 'file:upload' %}" class="btn btn-primary col">Upload !</a>
-                </div>
-            </div>
-        </div>
-
-        {% if user.user.is_controller %}
-        <div class="col-lg-4 col-md-6 col-12">
-            <div class="card p-4 mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Assistance Page</h5>
-                    <p class="card-text">pindah ke halaman Khusus Asisten</p>
-                    <a href="{% url 'assist:landing' %}" class="btn btn-primary col">Assistance</a>
-                </div>
-            </div>
-        </div>
-        {% endif %}
+      </div>
     </div>
+  </div>
+    
+
+
+  <div class="mt-6 px-8">
+    <div class="flex bg-blue-600 rounded-3xl justify-evenly py-3">
+      <a href="{% url 'presence:take-presence' %}" type="submit">
+        <div class="flex text-white items-center gap-1">
+          <div class="flex justify-center items-center size-8 rounded-xl">
+            <svg
+              class="shrink-0 size-6 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect width="10" height="14" x="3" y="8" rx="2" />
+              <path
+                d="M5 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2h-2.4" />
+              <path d="M8 18h.01" />
+            </svg>
+          </div>
+          <p>Presensi</p>
+        </div>
+      </a>
+
+      <div class="inline-block w-0.5 self-stretch bg-neutral-100"></div>
+      <a href="{% url 'presence:class-list' %}" type="submit">
+        <div class="flex text-white items-center gap-1">
+          <div class="flex justify-center items-center size-8 rounded-xl">
+            <svg
+              class="shrink-0 size-6 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+          </div>
+          <p>Lihat Nilai</p>
+        </div>
+      </a>
+    </div>
+  </div>
 </div>
+
+<div
+  class="flex-1 mt-8 w-full"
+  style="height: 100vh; background-color: #fcfcfc">
+  <hr
+    class="h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400" />
+  <div class="py-2 px-4 font-semibold text-xl text-slate-600">
+    Utility
+  </div>
+  <div class="px-6 flex flex-col gap-6">
+    <a href="{% url 'presence:complete-data' %}" type="submit">
+      <div
+        class="py-4 px-2 flex gap-4 shadow rounded-lg"
+        style="background-color: white">
+        <div
+          class="flex items-center p-2 rounded-full"
+          style="background-color: #eaf3ff; color: #3185fe">
+          <svg
+            width="24"
+            height="24"
+            class="size-8"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor">
+            <path
+              d="M3 6H21V18H3V6ZM2 4C1.44772 4 1 4.44772 1 5V19C1 19.5523 1.44772 20 2 20H22C22.5523 20 23 19.5523 23 19V5C23 4.44772 22.5523 4 22 4H2ZM13 8H19V10H13V8ZM18 12H13V14H18V12ZM10.5 10C10.5 11.3807 9.38071 12.5 8 12.5C6.61929 12.5 5.5 11.3807 5.5 10C5.5 8.61929 6.61929 7.5 8 7.5C9.38071 7.5 10.5 8.61929 10.5 10ZM8 13.5C6.067 13.5 4.5 15.067 4.5 17H11.5C11.5 15.067 9.933 13.5 8 13.5Z"></path>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <p class="font-semibold text-base">Data Pribadi</p>
+          <p class="font-light text-sm text-slate-800">
+            Lihat dan Ubah Profil
+          </p>
+        </div>
+        <div></div>
+      </div>
+    </a>
+    <a href="{% url 'presence:join-class' %}" type="submit">
+      <div
+        class="py-4 px-2 flex gap-4 shadow rounded-lg"
+        style="background-color: white">
+        <div
+          class="flex items-center p-2 rounded-full"
+          style="background-color: #eaf3ff; color: #3185fe">
+          <svg
+            width="24"
+            height="24"
+            class="size-8"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor">
+            <path
+              d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <p class="font-semibold text-base">Gabung Kelas</p>
+          <p class="font-light text-sm text-slate-800">
+            Masukan kode kelas
+          </p>
+        </div>
+        <div></div>
+      </div>
+    </a>
+    <a href="{% url 'presence:class-list' %}" type="submit">
+      <div
+        class="py-4 px-2 flex gap-4 shadow rounded-lg"
+        style="background-color: white">
+        <div
+          class="flex items-center p-2 rounded-full"
+          style="background-color: #eaf3ff; color: #3185fe">
+          <svg
+            width="24"
+            height="24"
+            class="size-8"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor">
+            <path
+              d="M8 4H21V6H8V4ZM3 3.5H6V6.5H3V3.5ZM3 10.5H6V13.5H3V10.5ZM3 17.5H6V20.5H3V17.5ZM8 11H21V13H8V11ZM8 18H21V20H8V18Z"></path>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <p class="font-semibold text-base">Kelas</p>
+          <p class="font-light text-sm text-slate-800">
+            Lihat semua kelas
+          </p>
+        </div>
+        <div></div>
+      </div>
+    </a>
+    <a href="{% url 'file:upload' %}" type="submit">
+      <div
+        class="py-4 px-2 flex gap-4 shadow rounded-lg"
+        style="background-color: white">
+        <div
+          class="flex items-center p-2 rounded-full"
+          style="background-color: #eaf3ff; color: #3185fe">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            class="size-8"
+            fill="currentColor">
+            <path
+              d="M12.4142 5H21C21.5523 5 22 5.44772 22 6V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H10.4142L12.4142 5ZM4 5V19H20V7H11.5858L9.58579 5H4ZM13 13V17H11V13H8L12 9L16 13H13Z"></path>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <p class="font-semibold text-base">Upload File</p>
+          <p class="font-light text-sm text-slate-800">
+            Unggah dan Kelola File
+          </p>
+        </div>
+        <div></div>
+      </div>
+    </a>
+    {% if user.user.is_controller %}
+    <a href="{% url 'assist:landing' %}" type="submit">
+        <div
+          class="py-4 px-2 flex gap-4 shadow rounded-lg"
+          style="background-color: white">
+          <div
+            class="flex items-center p-2 rounded-full text-fuchsia-600 bg-fuchsia-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              width="24"
+              height="24"
+              class="size-8"
+              stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <p class="font-semibold text-base">Assistant</p>
+            <p class="font-light text-sm text-slate-800">
+              Assistant Dashboard Page
+            </p>
+          </div>
+          <div></div>
+        </div>
+      </a>
+    {% endif %}
+  
+  </div>
+</div>
+</main>
 {% endblock %}

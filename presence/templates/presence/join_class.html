@@ -1,18 +1,120 @@
-{% extends 'base.html' %}
+{% extends 'base-3.html' %}
 
 {% block content %}
-<div class="container my-5 mx-auto">
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="class_code">Kode Kelas</label>
-            <input type="text" name="class_code" id="class_code" class="form-control">
+<main class="" style="width: 100vw">
+    <div
+      class="absolute inset-0 -z-20 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
+      <div
+        class="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#f8fafc,transparent)]"></div>
+    </div>
+    <div class="lg:flex py-2 lg:justify-evenly">
+      <div class="flex items-center lg:items-start gap-4 px-1 pb-5">
+        <div class="flex">
+          <a href="/" type="submit">
+            <div
+              class="flex items-center p-1 rounded-xl text-slate-600 flex-col bg-white border border-gray-200 shadow-sm md:p-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                class="size-8"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            </div>
+          </a>
         </div>
-        <div class="form-group">
-            <button class="btn btn-primary">Save</button>
-            <a href="{% url 'presence:class-list' %}" class="btn btn-secondary">Kelas Saya</a>
-            <a href="/" class="btn btn-secondary">Back To Home </a>
+
+        <div>
+          <div
+            class="py-3 px-2 flex gap-4 shadow rounded-lg flex-1"
+            style="background-color: white">
+            <div
+              class="flex items-center p-2 rounded-full"
+              style="background-color: #eaf3ff; color: #3185fe">
+              <svg
+                width="24"
+                height="24"
+                class="size-8"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor">
+                <path
+                  d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path>
+              </svg>
+            </div>
+            <div class="flex flex-col">
+              <p class="font-semibold text-base">Gabung kelas</p>
+              <p class="font-light text-sm text-slate-800">
+                Bergabung dengan Kelas
+              </p>
+            </div>
+            <div></div>
+          </div>
         </div>
-    </form>
-</div>
+      </div>
+
+      <div
+        class="mt-0 flex flex-col bg-white border border-gray-200 shadow-sm rounded-xl p-4 md:p-5">
+        <p class="font-light py-2 text-sm" style="color: #acafb5">
+          Hello there, input to continue
+        </p>
+        <div class="mt-0">
+          <!-- Form -->
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="flex flex-col gap-4">
+              <!-- Form Group -->
+              <div>
+                <label for="kode" class="block text-xs mb-2 text-saq1"
+                  >kode*</label
+                >
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="kode"
+                    name="class_code"
+                    class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none text-saq1"
+                    required
+                    aria-describedby="kode-error" />
+                  <div
+                    class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                    <svg
+                      class="size-5 text-red-500"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                      aria-hidden="true">
+                      <path
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                    </svg>
+                  </div>
+                </div>
+                <p class="hidden text-xs text-red-600 mt-2" id="kode-error">
+                  Please include a valid kode address so we can get back to
+                  you
+                </p>
+              </div>
+              <!-- End Form Group -->
+
+              <button
+                type="submit"
+                class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                Save
+              </button>
+            </div>
+          </form>
+          <!-- End Form -->
+        </div>
+      </div>
+    </div>
+  </main>
 {% endblock %}

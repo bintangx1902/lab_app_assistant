@@ -19,7 +19,11 @@ def templates(temp: str):
 
 class LandingView(View):
     def get(self, *args, **kwargs):
-        return render(self.request, templates('mhs_landing'))
+        context = {}
+        if self.request.user.is_authenticated:
+            context['total_presence'] = get_total_presence(self.request.user)
+            print(context['total_presence'])
+        return render(self.request, templates('mhs_landing'), context)
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
@@ -206,6 +210,7 @@ class MyPresenceRecaps(ListView):
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(MyPresenceRecaps, self).dispatch(request, *args, **kwargs)
+
 
 
 class ResetPassword(View):

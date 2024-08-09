@@ -1,31 +1,158 @@
-{% extends 'base.html' %}
+{% extends 'base-3.html' %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="table-responsive">
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nama Kelas</th>
-                <th scope="col">Detail</th>
-                <th scope="col">See File</th>
-                <th scope="col">Presence</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for class in classes %}
-            <tr>
-                <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ class }}</td>
-                <td><a href="{% url 'assist:my-class' class.link %}" class="btn btn-primary">Detail</a></td>
-                <td><a href="{% url 'assist:file-class' class.link %}" class="btn btn-primary">See File</a></td>
-                <td><a href="{% url 'assist:generated-qr' class.link %}" class="btn btn-primary">See Presence
-                    History</a></td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+<main class="" style="width: 100vw">
+    <div
+      class="absolute inset-0 -z-20 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
+      <div
+        class="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#f8fafc,transparent)]"></div>
     </div>
-</div>
+    <div class="lg:flex py-2 lg:justify-evenly">
+      <div class="flex items-center lg:items-start gap-4 px-1 pb-5">
+        <div class="flex">
+          <a href="{% url 'assist:landing' %}" type="submit">
+            <div
+              class="flex items-center p-1 rounded-xl text-slate-600 flex-col bg-white border border-gray-200 shadow-sm md:p-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                class="size-8"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            </div>
+          </a>
+        </div>
+
+        <div>
+          <div
+            class="py-3 px-2 flex gap-4 shadow rounded-lg flex-1"
+            style="background-color: white">
+            <div
+              class="flex items-center p-2 rounded-full text-fuchsia-600 bg-fuchsia-100">
+              <svg
+                width="24"
+                height="24"
+                class="size-8"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor">
+                <path
+                  d="M8 4H21V6H8V4ZM3 3.5H6V6.5H3V3.5ZM3 10.5H6V13.5H3V10.5ZM3 17.5H6V20.5H3V17.5ZM8 11H21V13H8V11ZM8 18H21V20H8V18Z"></path>
+              </svg>
+            </div>
+            <div class="flex flex-col">
+              <p class="font-semibold text-base">Kelas</p>
+              <p class="font-light text-sm text-slate-800">
+                Lihat semua kelas
+              </p>
+            </div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="mt-0 flex flex-col bg-white border border-gray-200 shadow-sm rounded-xl p-4 md:p-5">
+        <p class="font-light py-2 text-sm" style="color: #acafb5">
+          All of your class
+        </p>
+        <div class="mt-0">
+          <div class="flex flex-col">
+            <div class="-m-1.5 overflow-x-auto">
+              <div class="p-1.5 min-w-full inline-block align-middle">
+                <div class="overflow-hidden">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                          class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                          #
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                          Nama Kelas
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                          Detail
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                          See File
+                        </th>
+                        <th
+                          scope="col"
+                          class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
+                          Presence
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                            
+                    
+                        {% for class in classes %}
+                      <tr
+                        class="odd:bg-white even:bg-gray-100 hover:bg-gray-100">
+                        <th
+                          class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800" scope="row">
+                          {{ forloop.counter }}
+                        </th>
+                        <td
+                          class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                          {{ class }}
+                        </td>
+
+                        <td
+                          class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                          <a
+                            type="submit"
+                            href="{% url 'assist:my-class' class.link %}"
+                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
+                            See Detail
+                          </a>
+                        </td>
+                        <td
+                          class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                          <a
+                            type="button"
+                            href="{% url 'assist:file-class' class.link %}"
+                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
+                            See File
+                    </a>
+                        </td>
+                        <td
+                          class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                          <a
+                            type="button"
+                            href="{% url 'assist:generated-qr' class.link %}"
+                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
+                            See Presence History
+                            </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 {% endblock %}

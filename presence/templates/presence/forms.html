@@ -1,40 +1,267 @@
-{% extends 'base.html' %}
+{% extends 'base-3.html' %}
 
 {% block content %}
-<div class="container my-5 mx-auto">
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% load crispy_forms_tags %}
-        <div class="form-group">
-            <label for="f_name">First Name</label>
-            <input type="text" name="f_name" id="f_name" class="textinput textInput form-control" value="{{ user.first_name }}" required>
-        </div>
 
-        <div class="form-group">
-            <label for="l_name">Last Name</label>
-            <input type="text" name="l_name" id="l_name" class="textinput textInput form-control" value="{{ user.last_name }}" required>
+    <!-- Main 1 -->
+    <main class="" style="width: 100vw">
+        <div
+          class="absolute inset-0 -z-20 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
+          <div
+            class="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#f8fafc,transparent)]"></div>
         </div>
-
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" name="email" id="email" class="textinput textInput form-control" value="{{ user.email }}">
+        <div class="lg:flex py-2 lg:justify-evenly">
+          <div class="flex items-center lg:items-start gap-4 px-1 pb-5">
+            <div class="flex">
+              <a href="/" type="submit">
+                <div
+                  class="flex items-center p-1 rounded-xl text-slate-600 flex-col bg-white border border-gray-200 shadow-sm md:p-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    class="size-8"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15.75 19.5 8.25 12l7.5-7.5" />
+                  </svg>
+                </div>
+              </a>
+            </div>
+  
+            <div>
+              <div
+                class="py-3 px-2 flex gap-4 shadow rounded-lg flex-1"
+                style="background-color: white">
+                <div
+                  class="flex items-center p-2 rounded-full"
+                  style="background-color: #eaf3ff; color: #3185fe">
+                  <svg
+                    width="24"
+                    height="24"
+                    class="size-8"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor">
+                    <path
+                      d="M3 6H21V18H3V6ZM2 4C1.44772 4 1 4.44772 1 5V19C1 19.5523 1.44772 20 2 20H22C22.5523 20 23 19.5523 23 19V5C23 4.44772 22.5523 4 22 4H2ZM13 8H19V10H13V8ZM18 12H13V14H18V12ZM10.5 10C10.5 11.3807 9.38071 12.5 8 12.5C6.61929 12.5 5.5 11.3807 5.5 10C5.5 8.61929 6.61929 7.5 8 7.5C9.38071 7.5 10.5 8.61929 10.5 10ZM8 13.5C6.067 13.5 4.5 15.067 4.5 17H11.5C11.5 15.067 9.933 13.5 8 13.5Z"></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col">
+                  <p class="font-semibold text-base">Data Pribadi</p>
+                  <p class="font-light text-sm text-slate-800">
+                    Lihat dan Ubah profile
+                  </p>
+                </div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+  
+          <div
+            class="mt-0 flex flex-col bg-white border border-gray-200 shadow-sm rounded-xl p-4 md:p-5">
+            <p class="font-light py-2 text-sm" style="color: #acafb5">
+              Hello there, Fill this form to save
+            </p>
+            <div class="mt-0">
+              <!-- Form -->
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% load crispy_forms_tags %}
+                <div class="flex flex-col gap-4">
+                  <!-- Form Group -->
+                  <div>
+                    <label for="first_name" class="block text-xs mb-2 text-saq1"
+                      >First Name*</label
+                    >
+                    <div class="relative">
+                      <input
+                        type="text"
+                        id="first_name"
+                        name="f_name"
+                        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none text-saq1"
+                        required
+                        value="{{ user.first_name }}"
+                        aria-describedby="first_name-error" />
+                      <div
+                        class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                        <svg
+                          class="size-5 text-red-500"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          aria-hidden="true">
+                          <path
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <p
+                      class="hidden text-xs text-red-600 mt-2"
+                      id="first_name-error">
+                      Please include a valid first_name address so we can get back
+                      to you
+                    </p>
+                  </div>
+                  <!-- End Form Group -->
+                  <!-- Form Group -->
+                  <div>
+                    <label for="last_name" class="block text-xs mb-2 text-saq1"
+                      >Last Name*</label
+                    >
+                    <div class="relative">
+                      <input
+                        type="text"
+                        id="last_name"
+                        value="{{ user.last_name }}"
+                        name="l_name"
+                        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none text-saq1"
+                        required
+                        aria-describedby="last_name-error" />
+                      <div
+                        class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                        <svg
+                          class="size-5 text-red-500"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          aria-hidden="true">
+                          <path
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <p
+                      class="hidden text-xs text-red-600 mt-2"
+                      id="last_name-error">
+                      Please include a valid last_name address so we can get back
+                      to you
+                    </p>
+                  </div>
+                  <!-- End Form Group -->
+                  <!-- Form Group -->
+                  <div>
+                    <label for="email" class="block text-xs mb-2 text-saq1"
+                      >Email address</label
+                    >
+                    <div class="relative">
+                      <input
+                        type="email"
+                        id="email"
+                        value="{{ user.email }}"
+                        name="email"
+                        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none text-saq1"
+                        required
+                        aria-describedby="email-error" />
+                      <div
+                        class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                        <svg
+                          class="size-5 text-red-500"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          aria-hidden="true">
+                          <path
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <p class="hidden text-xs text-red-600 mt-2" id="email-error">
+                      Please include a valid email address so we can get back to
+                      you
+                    </p>
+                  </div>
+                  <!-- End Form Group -->
+  
+                  <!-- Form Group -->
+                  <div>
+                    <label for="nim" class="block text-xs mb-2 text-saq1"
+                      >NIM*</label
+                    >
+                    <div class="relative">
+                      <input
+                        type="text"
+                        value="{{ profile.nim }}"
+                        id="nim"
+                        name="nim"
+                        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none text-saq1"
+                        required
+                        aria-describedby="nim-error" />
+                      <div
+                        class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                        <svg
+                          class="size-5 text-red-500"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          aria-hidden="true">
+                          <path
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <p class="hidden text-xs text-red-600 mt-2" id="nim-error">
+                      Please include a valid nim address so we can get back to you
+                    </p>
+                  </div>
+                  <!-- End Form Group -->
+  
+                  <!-- Form Group -->
+                  <div>
+                    <label for="PhoneNumber" class="block text-xs mb-2 text-saq1"
+                      >Phone Number*</label
+                    >
+                    <div class="relative">
+                      <input
+                        type="text"
+                        value="{{ profile.phone_number }}"
+                        id="PhoneNumber"
+                        name="phone"
+                        class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none text-saq1"
+                        required
+                        aria-describedby="PhoneNumber-error" />
+                      <div
+                        class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                        <svg
+                          class="size-5 text-red-500"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          aria-hidden="true">
+                          <path
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <p
+                      class="hidden text-xs text-red-600 mt-2"
+                      id="PhoneNumber-error">
+                      Please include a valid PhoneNumber address so we can get
+                      back to you
+                    </p>
+                  </div>
+                  <!-- End Form Group -->
+  
+                  <button
+                    type="submit"
+                    class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                    Save
+                  </button>
+                </div>
+              </form>
+              <!-- End Form -->
+            </div>
+          </div>
         </div>
-
-        <div class="form-group">
-            <label for="nim">NIM</label>
-            <input type="text" name="nim" id="nim" class="textinput textInput form-control" value="{{ profile.nim }}" required>
-        </div>
-
-        <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="text" name="phone" id="phone" class="textinput textInput form-control" value="{{ profile.phone_number }}">
-        </div>
-
-        <div class="form-group">
-            <button class="btn btn-primary">Save</button>
-            <a href="{% url 'presence:join-class' %}" class="btn btn-secondary">Join Class</a>
-            <a href="/" class="btn btn-secondary">Back To Home </a>
-        </div>
-    </form>
-</div>
+      </main>
 {% endblock %}

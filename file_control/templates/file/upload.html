@@ -1,31 +1,131 @@
-{% extends 'base.html' %}
+{% extends 'base-3.html' %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="card">
-        <div class="card-body">
-            <form method="post" enctype="multipart/form-data">
+    <!-- Main 1 -->
+    <main class="" style="width: 100vw">
+        <div
+          class="absolute inset-0 -z-20 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
+          <div
+            class="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#f8fafc,transparent)]"></div>
+        </div>
+        <div class="lg:flex py-2 lg:justify-evenly">
+          <div class="flex items-center lg:items-start gap-4 px-1 pb-5">
+            <div class="flex">
+              <a href="/" type="submit">
+                <div
+                  class="flex items-center p-1 rounded-xl text-slate-600 flex-col bg-white border border-gray-200 shadow-sm md:p-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    class="size-8"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15.75 19.5 8.25 12l7.5-7.5" />
+                  </svg>
+                </div>
+              </a>
+            </div>
+  
+            <div>
+              <div
+                class="py-3 px-2 flex gap-4 shadow rounded-lg flex-1"
+                style="background-color: white">
+                <div
+                  class="flex items-center p-2 rounded-full"
+                  style="background-color: #eaf3ff; color: #3185fe">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    class="size-8"
+                    fill="currentColor">
+                    <path
+                      d="M12.4142 5H21C21.5523 5 22 5.44772 22 6V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H10.4142L12.4142 5ZM4 5V19H20V7H11.5858L9.58579 5H4ZM13 13V17H11V13H8L12 9L16 13H13Z"></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col">
+                  <p class="font-semibold text-base">Upload File</p>
+                  <p class="font-light text-sm text-slate-800">
+                    Unggah dan Kelola File
+                  </p>
+                </div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+  
+          <div
+            class="mt-0 flex flex-col bg-white border border-gray-200 shadow-sm rounded-xl p-4 md:p-5">
+            <p class="font-light py-2 text-sm" style="color: #acafb5">
+              Hello there, input to continue
+            </p>
+            <div class="mt-0">
+              <!-- Form -->
+              <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.media }}
-                <div class="form-group">
-                    <label for="class_">Kelas</label>
-                    <select class="custom-select" name="class_" id="class_">
-                        <option selected value="">Open this select menu</option>
-                        {% for class in my_class %}
-                        <option value="{{ class.unique_code }}">{{ class }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="file">File</label>
+                <h1>Kelas :</h1>
+                <div class="flex flex-col gap-4">
+                  <!-- Select -->
+                  <select
+                    data-hs-select='{
+    "placeholder": "Select option...",
+    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
+    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600 \" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+    "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+  }'
+                    class="hidden" name="class_">
+                    <option value="">Choose</option>
+                    {% for class in my_class %}
+                    <option value="{{ class.unique_code }}">{{ class }}</option>
+                    {% endfor %}
+                  </select>
+                  <!-- End Select -->
+                  <!-- File Upload -->
+                  <div
+                    data-hs-file-upload='{
+                    "url": "/upload",
+                    "maxFiles": 1,
+                    "singleton": true
+                  }'>
+                    <template data-hs-file-upload-preview="">
+                      <div class="flex items-center w-full">
+                        <span
+                          class="grow-0 overflow-hidden truncate"
+                          data-hs-file-upload-file-name=""></span>
+                        <span class="grow-0">.</span>
+                        <span
+                          class="grow-0"
+                          data-hs-file-upload-file-ext=""></span>
+                      </div>
+                    </template>
+  
+                    <label for="file">File :</label>
                     <input type="file" name="file" id="file" class="form-control-file">
+                  </div>
+                  <!-- File Upload END -->
+  
+                  <button
+                    type="submit"
+                    class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                    Save
+                  </button>
                 </div>
-                <div class="form-gruop">
-                    <button class="btn btn-primary">Save</button>
-                    <a href="{% url 'file:all-file' %}" class="btn btn-secondary">My Files</a>
-                </div>
-            </form>
+              </form>
+              <!-- End Form -->
+            </div>
+          </div>
         </div>
-    </div>
-</div>
+      </main>
 {% endblock %}s

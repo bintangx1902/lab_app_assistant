@@ -1,16 +1,122 @@
-{% extends 'base.html' %}
+{% extends 'base-2.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container my-5">
-    <h1>Password Reset Request</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-            <input type="text" class="form-control" name="NIM" id="NIM" autofocus>
+<main
+      class="w-full h-full py-4 px-4 overflow-hidden"
+      style="width: 100vw; height: 100vh">
+      <div
+        class="absolute inset-0 -z-20 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
+        <div
+          class="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#f8fafc,transparent)]"></div>
+      </div>
+
+      <div class="relative w-full">
+        <div
+          class="absolute -right-24 -z-10 -top-28 h-72 w-72 animate-pop-blob rounded-sm bg-blue-400 p-8 opacity-45 mix-blend-multiply blur-3xl filter"></div>
+        <div
+          class="absolute -left-40 -z-10 -top-64 h-72 w-72 animate-pop-blob rounded-sm bg-purple-400 p-8 opacity-45 mix-blend-multiply blur-3xl filter"></div>
+      </div>
+
+      <!-- MAIN 2 -->
+      <div class="lg:pt-12 lg:w-full lg:flex lg:flex-row justify-evenly">
+        <div class="flex justify-center">
+          <img
+            class="w-[14rem] lg:w-[20rem] py-4"
+            src="{% static 'user/images/Scenes08.png' %}"
+            alt="" />
         </div>
-        <div class="form-group">
-            <button class="btn btn-outline-primary">Request</button>
+
+        <div class="mt-0 rounded-xl">
+          <span class="font-semibold text-2xl font-lexend text-saqBlack">
+            Password Reset Request
+          </span>
+          <div class="mt-4">
+            <!-- Form -->
+            <form>
+              <div class="flex flex-col gap-4">
+                <!-- Form Group -->
+                <div>
+                  <label for="NIM" class="block text-xs mb-2 text-saq1"
+                    >NIM</label
+                  >
+                  <div class="relative">
+                    <input
+                      type="NIM"
+                      id="NIM"
+                      name="NIM"
+                      class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none text-saq1"
+                      required
+                      aria-describedby="NIM-error" />
+                    <div
+                      class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                      <svg
+                        class="size-5 text-red-500"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                        aria-hidden="true">
+                        <path
+                          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="hidden text-xs text-red-600 mt-2" id="NIM-error">
+                    Please include a valid NIM address so we can get back to
+                    you
+                  </p>
+                </div>
+                <!-- End Form Group -->
+
+                <button
+                  type="submit"
+                  class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                  Request
+                </button>
+              </div>
+            </form>
+            <!-- End Form -->
+          </div>
+
+          <div
+            class="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-neutral-500 dark:before:border-neutral-600 dark:after:border-neutral-600">
+            Or
+          </div>
+          <div class="text-center">
+            <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
+              Back to
+              <a
+                class="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
+                href="{% url 'presence:landing' %}">
+                Home
+              </a>
+            </p>
+          </div>
+
+          <!-- <div
+            class="relative h-fit w-fit overflow-hidden rounded-2xl bg-gray-200 p-px">
+            <div
+              class="absolute inset-0 h-full w-full animate-trail"
+              style="
+                --duration: 6s;
+                --angle: 0deg;
+                background: conic-gradient(
+                  from var(--angle) at 50% 50%,
+                  transparent 90%,
+                  purple
+                );
+              "></div>
+            <div class="relative overflow-hidden rounded-[15px] w-60 bg-white">
+              No longer wasting hours 🕕 looking for the inspiration or trying
+              to write everything from scratch 📝.
+              <img
+                class="w-28 lg:w-[14rem] py-4"
+                src="../public/images/logo.PNG"
+                alt="" />
+            </div>
+          </div> -->
         </div>
-    </form>
-</div>
+      </div>
+    </main>
 {% endblock %}
