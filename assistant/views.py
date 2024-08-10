@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.views import PasswordChangeView
 from django.db.models import Q as __
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -763,14 +763,24 @@ class DownloadScore(View):
 
 
 class AddNewAssistant(View):
-    template_name = templates('join_class')
+    template_name = templates('add_new_assistant')
 
     def get(self, *args, **kwargs):
-        return render(self.request, self.template_name, {'assist': True})
+        nim_list = self.request.GET.get('class_code')
+        context = {'assist': True}
+        if nim_list is not None:
+            nim_list = list(nim_list.split(', '))
+            user_list = UserData.objects.filter(nim__in=nim_list)
+            context['users'] = user_list
+        return render(self.request, self.template_name, context)
 
     def post(self, *args, **kwargs):
-        nim = self.request.POST.get('class_code')
+        nim = self.request.GET.get('class_code')
         nim = list(nim.split(', '))
+        code = self.request.POST.get('secret')
+        if not (code is not None and code == settings.SECRET_CODE):
+            return HttpResponseForbidden("Authentication Needed")
+
         for i in nim:
             get_user = get_object_or_404(UserData, nim=i)
             user = get_user.user
@@ -778,6 +788,8 @@ class AddNewAssistant(View):
             get_user.is_controller, user.is_staff = True, True
             get_user.save()
             user.save()
+
+        messages.info(self.request, f"Berhasil Promote Asisten baru dengan NIM : {', '.join([x for x in nim])}")
         return redirect('assist:landing')
 
 

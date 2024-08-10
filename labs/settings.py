@@ -26,6 +26,7 @@ BASE_DIR = dirname(dirname(abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
+SECRET_CODE = config("SECRET_CODE")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(config('DEBUG')))
