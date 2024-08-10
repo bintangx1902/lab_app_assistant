@@ -1,4 +1,4 @@
-# What tools has been provided
+# What has been provided?
 
 1. Delete cache (run this in terminal)
 > python manage clearcache
