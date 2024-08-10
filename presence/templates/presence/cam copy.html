@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <script src="{% static 'user/js/html5.qrcode.min.js' %}"></script>
+
+    <div class="d-lg-flex">
+        <div class="col-lg col mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div id="reader"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg col mx-auto">
+            <h4>SCAN RESULT</h4>
+            <div id="result"></div>
+        </div>
+    </div>
+</div>
+
+{% csrf_token %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script type="text/javascript">
+    let token = document.getElementsByName("csrfmiddlewaretoken");
+    console.log(token[0].value)
+    let handle;
+
+    function onScanSuccess(decodedText, decodedResult) {
+        axios({
+            method: 'post',
+            url: '{% url "api:take-presence" %}?format=json',
+            headers: {
+                'X-CSRFToken': token[0].value,
+                'Content-Type': 'Application/json'
+            },
+            data: {
+                "code": String(decodedText),
+                "number": "{{ request.user.id }}"
+            }
+        })
+            .then(response => {
+                alert(response.data.text)
+                window.location.replace('{% url "presence:landing" %}')
+            })
+            .catch(error => {
+                onScanFailure(error.response.data.text)
+                alert(handle)
+                window.location.replace('{% url "presence:landing" %}')
+            })
+        // document.getElementById('result').innerHTML = '<span class="alert alert-info">' + handle + '</span>'
+        // console.log(`Code matched = ${decodedText}`, decodedResult);
+    }
+
+    function onScanFailure(error) {
+        handle = error;
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader",
+        {fps: 10, qrbox: {width: 250, height: 250}},
+        /* verbose= */ false);
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+</script>
+{% endblock %}

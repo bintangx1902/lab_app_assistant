@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5 mx-auto">
+    <div class="form-group row">
+        <div class="col-lg-3 col-sm-3">Nama Kelas</div>
+        <div class="col-lg-9 col-sm-9">
+            <input type="text" name="name" id="name" value="{{ class.name }}" class="form-control bg-transparent" readonly>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-3 col-sm-3">Kode Kelas</div>
+        <div class="col-lg-9 col-sm-9">
+            <input type="text" name="code" id="code" class="form-control bg-transparent" readonly value="{{ class.unique_code }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-3 col-sm-3">Penanggung Jawab Kelas</div>
+        <div class="col-lg-9 col-sm-9">
+            <input type="text" name="pj" id="pj" class="form-control bg-transparent" readonly value="{{ class.creator }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-3 col-sm-3">Assisten Kelas</div>
+        <div class="col-lg-9 col-sm-9">
+            <select name="assist" id="assist" class="custom-select" multiple>
+                {% if class.pr.all %}
+                {% for pr in class.pr.all %}
+                <option>{{ pr }}</option>
+                {% endfor %}
+                {% else %}
+                <option>No Assistant Registered Here</option>
+                {% endif %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-12 col-md-3 col-lg-3">Langsung Generate QRCode</div>
+        <div class="col-12 col-md-9 col-lg-9">
+            <button type="button" class="btn btn-primary col" data-toggle="modal" data-target="#staticBackdropGenerate">
+                Generate QR Code
+            </button>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-12 col-md-3 col-lg-3">Lihat Rekap Presensi</div>
+        <div class="col-12 col-md-9 col-lg-9">
+            <a href="{% url 'assist:generated-qr' view.kwargs.link %}" class="btn btn-primary col"> Lihat Recap</a>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-3 col-sm-3">Ubah Detail Kelas</div>
+        <div class="col-12 col-md-9 col-lg-9">
+            <button type="button" class="btn btn-primary col" data-toggle="modal"
+                    data-target="#staticBackdropUpdate">Ubah Detail Kelas
+            </button>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-3 col-sm-3">Rekap Nilai Mahasiswa</div>
+        <div class="col-12 col-md-9 col-lg-9">
+            <a href="{% url 'assist:score' view.kwargs.link %}" class="btn btn-primary col">Lakukan Rekap</a>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-3 col-sm-3">Download Rekap Nilai Mahasiswa</div>
+        <div class="col-12 col-md-9 col-lg-9">
+            <a href="{% url 'assist:view-score' view.kwargs.link %}" class="btn btn-primary col">Download Nilai</a>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SECTION -->
+{% include 'temp_/modal/modal_update.html' %}
+{% include 'temp_/modal/modal_generate_confirm.html' %}
+{% endblock %}

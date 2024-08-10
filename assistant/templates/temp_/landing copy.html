@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid my-5">
+    <div class="row mx-auto align-items-center justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Kelas Saya</h5>
+                    <h6 class="card-subtitle">Seluruh kelas yang Saya Buat / Sebagai asisten</h6>
+                    <p class="card-text">{{ class }} kelas</p>
+                    <a href="{% url 'assist:my-class-list' %}" class="btn btn-primary col">Lihat Kelas</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Mahasiswa</h5>
+                    <h6 class="card-subtitle">Seluruh mahasiswa yang sudah terdaftar</h6>
+                    <p class="card-text">{{ student.count }} Mahasiswa </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Buat Kelas</h5>
+                    <p class="card-text">Buat kelas baru</p>
+                    <a href="{% url 'assist:create-class' %}" class="btn btn-primary col">Buat Kelas</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Join Assisten Kelas</h5>
+                    <p class="card-text">Masuk Sebagai assitent kelas agar kamu dapat privilege khusus</p>
+                    <a href="{% url 'assist:join-class' %}" class="btn btn-primary col">Join Kelas</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ubah Username</h5>
+                    <a href="{% url 'assist:change-username' %}" class="btn btn-primary col">Proses</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Generate Token untuk Ubah password</h5>
+                    <a href="{% url 'assist:generate-token' %}" class="btn btn-primary col">Proses</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Finder</h5>
+                    <p class="card-text">Finder ini berguna untuk mencari data mahasiswa yang terdata di sistem, cari berdasarkan username atau menggunakan nim mahasiswa tersebut</p>
+                    <a href="{% url 'assist:finder' %}" class="btn btn-primary col">Proses</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Angkat Asisten</h5>
+                    <p class="card-text">Fitur ini berguna untuk menambahkan jumlah asisten yang ada pada lab SAQ. Hanya dengan memasukan nim mahasiswa tersebut.</p>
+                    <a href="#" class="btn btn-primary col">Angkat Asisten Baru</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

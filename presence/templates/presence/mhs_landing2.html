@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="{% static 'user/css/output.css' %}" />
+
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %} {% endblock %}
+  </head>
+  <body>
+    
+    <script src="{% static 'user/js/preline.js' %}"></script>
+    <script>
+      window.HSStaticMethods.autoInit()
+    </script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.media }}
+                <div class="form-group">
+                    <label for="class_">Kelas</label>
+                    <select class="custom-select" name="class_" id="class_">
+                        <option selected value="">Open this select menu</option>
+                        {% for class in my_class %}
+                        <option value="{{ class.unique_code }}">{{ class }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="file">File</label>
+                    <input type="file" name="file" id="file" class="form-control-file">
+                </div>
+                <div class="form-gruop">
+                    <button class="btn btn-primary">Save</button>
+                    <a href="{% url 'file:all-file' %}" class="btn btn-secondary">My Files</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}s
